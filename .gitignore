@@ -1,0 +1,17 @@
+node_modules
+/dist
+/tmp/*
+
+/.idea
+
+!.gitkeep
+
+# debug and reports
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+dump.rdb
+
+*.tsbuildinfo
+/.eslintcache*

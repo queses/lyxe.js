@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2018",
+    "esModuleInterop": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "inlineSourceMap": true,
+    "strict": true,
+    "declaration": true,
+    "strictPropertyInitialization": false,
+    "outDir": "./dist"
+  },
+  "include": [ "./lib" ]
+}
