@@ -23,7 +23,6 @@ export abstract class BaseReadRepository <T extends IHasId<ID>, ID extends TPers
     return this.countEntities(q)
   }
 
-  // @todo проверить, работает ли со столбцами, название которых отлично от `id`
   public existsById (id: ID) {
     const q = this.queryBuilder().whereInIds(id)
     return this.entityExists(q)
