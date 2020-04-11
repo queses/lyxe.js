@@ -3,6 +3,8 @@ import { IHasId } from './IHasId'
 
 export type TPersistenceId = number | string
 
+export type TPersistenceConnectionName = 'default' | string
+
 export type TPagePromise<T> = Promise<Page<T>>
 
 export type TSortOrder = 'ASC' | 'DESC'

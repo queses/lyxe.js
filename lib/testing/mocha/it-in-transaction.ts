@@ -1,7 +1,5 @@
 import { TMochaTransactionalTest } from '../framework-testing'
-import { IPersistenceConnection } from '../../persistence/IPersistenceConnection'
 import { AppContainer } from '../../core/di/AppContainer'
-import { DefaultTypeormConnection } from '../../persistence-typeorm/DefaultTypeormConnection'
 import { IEntityManager } from '../../persistence/IEntityManager'
 import { ServiceFactory } from '../../core/context/ServiceFactory'
 import { TBaseContextInfo } from '../../core/context/luxe-context-info'
@@ -10,14 +8,15 @@ import { IDefaultContextFactory } from '../../core/context/IDefaultContextFactor
 import { PersistenceContextMeta } from '../../persistence/PersistenceContextMeta'
 import { IServiceFactory } from '../../core/context/IServiceFactory'
 import { InvalidArgumentError } from '../../core/application-errors/InvalidAgrumentError'
-import { TServiceId } from '../../core/di/luxe-di'
+import { TPersistenceConnectionName } from '../../persistence/luxe-persistence'
+import { PersistenceConnectionRegistry } from '../../persistence/PersistenceConnectionRegistry'
 
 export const itInTransaction = <C extends TBaseContextInfo> (
   expectation: string,
   assertion: TMochaTransactionalTest<C>,
-  connectionId?: TServiceId<IPersistenceConnection>
+  connectionName?: TPersistenceConnectionName
 ) => {
-  const connection = AppContainer.get(connectionId || DefaultTypeormConnection)
+  const connection = PersistenceConnectionRegistry.get(connectionName)
   if (!connection.transaction || !connection.nestedTransaction) {
     throw new InvalidArgumentError('itInTransaction error: provided connection is not transactional')
   }

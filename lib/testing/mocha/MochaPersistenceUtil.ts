@@ -1,21 +1,21 @@
-import { TClass, TServiceId } from '../../core/di/luxe-di'
+import { TClass } from '../../core/di/luxe-di'
 import { IDomainFixture } from '../fixture/IDomainFixture'
 import { IPersistenceConnection } from '../../persistence/IPersistenceConnection'
 import { AppContainer } from '../../core/di/AppContainer'
-import { DefaultTypeormConnection } from '../../persistence-typeorm/DefaultTypeormConnection'
 import { AppError } from '../../core/application-errors/AppError'
 import { DomainFixtureLoader } from '../fixture/DomainFixtureLoader'
 import { IHasId } from '../../persistence/IHasId'
-import { TPersistenceId } from '../../persistence/luxe-persistence'
+import { TPersistenceConnectionName, TPersistenceId } from '../../persistence/luxe-persistence'
 import { IRepository } from '../../persistence/IRepository'
 import { IEntityManager } from '../../persistence/IEntityManager'
+import { PersistenceConnectionRegistry } from '../../persistence/PersistenceConnectionRegistry'
 
 export class MochaPersistenceUtil {
   static loadFixturesIn (
     fixtures: TClass<IDomainFixture> | Array<TClass<IDomainFixture>>,
-    connectionId?: TServiceId<IPersistenceConnection>
+    connectionName?: TPersistenceConnectionName
   ) {
-    const connection = AppContainer.get(connectionId || DefaultTypeormConnection)
+    const connection = PersistenceConnectionRegistry.get(connectionName)
 
     before(async function () {
       await MochaPersistenceUtil.loadFixturesBefore(fixtures, connection, this)
@@ -28,9 +28,9 @@ export class MochaPersistenceUtil {
 
   static loadModuleFixturesIn = (
     modules: string | string[],
-    connectionId?: TServiceId<IPersistenceConnection>
+    connectionName?: TPersistenceConnectionName
   ) => {
-    const connection = AppContainer.get(connectionId || DefaultTypeormConnection)
+    const connection = PersistenceConnectionRegistry.get(connectionName)
 
     before(async function () {
       await MochaPersistenceUtil.loadModuleFixturesBefore(modules, connection, this)

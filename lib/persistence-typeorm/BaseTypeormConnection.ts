@@ -7,6 +7,8 @@ import { AppConfigurationError } from '../core/application-errors/AppConfigurati
 import { EntityManagerMeta } from '../persistence/EntityManagerMeta'
 import { InjectService } from '../core/di/annotations/InjectService'
 import { TransactionEventBus } from '../persistence/TransactionEventBus'
+import { PersistenceTypeormConfig } from './PersistenceTypeormConfig'
+import { TPersistenceConnectionName } from '../persistence/luxe-persistence'
 
 @AbstractService()
 export abstract class BaseTypeormConnection implements IPersistenceConnection {
@@ -14,6 +16,7 @@ export abstract class BaseTypeormConnection implements IPersistenceConnection {
   private transactionListener: TransactionEventBus
 
   protected abstract get config (): ConnectionOptions
+  protected abstract get persistenceConnectionName (): TPersistenceConnectionName
 
   private connection?: Connection
 
@@ -46,7 +49,7 @@ export abstract class BaseTypeormConnection implements IPersistenceConnection {
     return this.connection.synchronize(true)
   }
 
-  async transaction <T> (run: (transactional: IEntityManager) => Promise<T>): Promise<T> {
+  public async transaction <T> (run: (transactional: IEntityManager) => Promise<T>): Promise<T> {
     if (!this.connection) {
       await this.connect()
     }
@@ -68,7 +71,7 @@ export abstract class BaseTypeormConnection implements IPersistenceConnection {
     })
   }
 
-  nestedTransaction <T> (parent: IEntityManager, run: (transactional: IEntityManager) => Promise<T>): Promise<T> {
+  public nestedTransaction <T> (parent: IEntityManager, run: (transactional: IEntityManager) => Promise<T>): Promise<T> {
     const em = this.checkTransactionalEntityManager(parent)
     return em.transaction(transactional => {
       Reflect.defineMetadata(EntityManagerMeta.CONNECTION, this, transactional)
@@ -77,6 +80,16 @@ export abstract class BaseTypeormConnection implements IPersistenceConnection {
 
       return run(transactional as IEntityManager)
     })
+  }
+
+  protected getExtraDbEntities () {
+    const patches: string[] = []
+    const extraEntities = PersistenceTypeormConfig.inst.connectionExtraEntities.get(this.persistenceConnectionName) || []
+    for (const path of extraEntities) {
+      patches.push(path)
+    }
+
+    return patches
   }
 
   private checkTransactionalEntityManager (em: IEntityManager): EntityManager {

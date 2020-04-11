@@ -1,9 +1,10 @@
 import { ConnectionOptions } from 'typeorm'
+import { TPersistenceConnectionName } from '../persistence/luxe-persistence'
 
 export class PersistenceTypeormConfig {
   public useDefaultConnection: boolean = true
   public useDefaultOnlyInModules: string[] | undefined
-  public defaultConnectionExtraEntities: string[] = []
+  public connectionExtraEntities: Map<TPersistenceConnectionName, string[]> = new Map()
   public defaultConnectionParams: Partial<ConnectionOptions> | undefined
 
   public static useDefaultConnection (value: boolean) {
@@ -21,8 +22,13 @@ export class PersistenceTypeormConfig {
     return this
   }
 
-  public static addDefaultConnectionEntity (path: string) {
-    this.inst.defaultConnectionExtraEntities.push(path)
+  public static addConnectionEntity (name: TPersistenceConnectionName, path: string) {
+    const extraEntities = this.inst.connectionExtraEntities.get(name)
+    if (extraEntities) {
+      extraEntities.push(path)
+    } else {
+      this.inst.connectionExtraEntities.set(name, [ path ])
+    }
   }
 
   public static get inst (): PersistenceTypeormConfig {

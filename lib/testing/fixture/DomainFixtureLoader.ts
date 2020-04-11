@@ -1,13 +1,12 @@
 import { IEntityManager } from '../../persistence/IEntityManager'
 import { IDomainFixture } from './IDomainFixture'
-import { TClass, TServiceId } from '../../core/di/luxe-di'
+import { TClass } from '../../core/di/luxe-di'
 import { AppError } from '../../core/application-errors/AppError'
 import { IHasId } from '../../persistence/IHasId'
 import { AppPathUtil } from '../../core/config/AppPathUtil'
 import { SingletonService } from '../../core/di/annotations/SingletonService'
-import { IPersistenceConnection } from '../../persistence/IPersistenceConnection'
-import { AppContainer } from '../../core/di/AppContainer'
-import { DefaultPersistenceTkn } from '../../persistence/luxe-persistence-tokens'
+import { PersistenceConnectionRegistry } from '../../persistence/PersistenceConnectionRegistry'
+import { TPersistenceConnectionName } from '../../persistence/luxe-persistence'
 
 @SingletonService()
 export class DomainFixtureLoader {
@@ -48,8 +47,8 @@ export class DomainFixtureLoader {
     return wildcard ? this.loadAll(entityManager, wildcard) : Promise.resolve()
   }
 
-  public persistFixtures (connectionId?: TServiceId<IPersistenceConnection>, onlyInModules?: string[]): Promise<void> {
-    const connection = AppContainer.get(connectionId || DefaultPersistenceTkn)
+  public persistFixtures (connectionName?: TPersistenceConnectionName, onlyInModules?: string[]): Promise<void> {
+    const connection = PersistenceConnectionRegistry.get(connectionName)
     if (Array.isArray(onlyInModules)) {
       return this.loadInModules(onlyInModules, connection.getManager())
     } else {
