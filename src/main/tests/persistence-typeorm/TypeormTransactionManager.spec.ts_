@@ -1,0 +1,54 @@
+import { AppContainer } from 'lib/lx-framework/di/AppContainer'
+import { TransactionManagerTkn, RepositoryFactoryTkn } from 'lib/lx-framework/framework-tokens'
+import { BaseTestSpecialistRepositoryTkn } from 'lib/lx-framework/framework-test-tokens'
+import { TestSpecialist } from 'lib/lx-framework/test/classes/model/TestSpecialist'
+import { assert } from 'chai'
+import { getConnection } from 'typeorm'
+
+describe('typeorm transaction manager', function () {
+  it('should begin and rollback transaction', async function () {
+    const mgr = AppContainer.get(TransactionManagerTkn)
+    const repoFactory = AppContainer.get(RepositoryFactoryTkn)
+
+    const specRepoNonTrans = repoFactory.get(BaseTestSpecialistRepositoryTkn)
+    const oldCount = await specRepoNonTrans.count()
+
+    const em = await mgr.begin()
+    const specRepoTrans = repoFactory.get(BaseTestSpecialistRepositoryTkn, em)
+  
+    await specRepoTrans.save(TestSpecialist.create('Test', 'Testy'))
+    assert.equal(await specRepoTrans.count(), oldCount + 1)
+
+    await mgr.rollback(em)
+
+    assert.equal(await specRepoNonTrans.count(), oldCount)
+  })
+
+  it('should commit and rollback nested transation', async function () {
+    const mgr = AppContainer.get(TransactionManagerTkn)
+    const repoFactory = AppContainer.get(RepositoryFactoryTkn)
+    
+    const specRepoNonTrans = repoFactory.get(BaseTestSpecialistRepositoryTkn)
+    const oldCount = await specRepoNonTrans.count()
+
+    const em = await mgr.begin()
+
+    const specRepoTrans = repoFactory.get(BaseTestSpecialistRepositoryTkn, em)
+    await specRepoTrans.save(TestSpecialist.create('Test', 'Testy'))
+    assert.equal(await specRepoTrans.count(), oldCount + 1)
+
+    const em2 = await mgr.begin(em)
+
+    const specRepoTrans2 = repoFactory.get(BaseTestSpecialistRepositoryTkn, em2)
+    await specRepoTrans2.save(TestSpecialist.create('Test', 'Testy'))
+    assert.equal(await specRepoTrans2.count(), oldCount + 2)
+
+    await mgr.commit(em2)
+    
+    assert.equal(await specRepoTrans.count(), oldCount + 2)
+    await mgr.rollback(em)
+
+    const runner = await getConnection().createQueryRunner().connect()
+    assert.equal(await repoFactory.get(BaseTestSpecialistRepositoryTkn, runner.manager).count(), oldCount)
+  })
+})

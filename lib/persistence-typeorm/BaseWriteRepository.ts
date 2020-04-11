@@ -10,7 +10,7 @@ export abstract class BaseWriteRepository <T extends IHasId<ID>, ID extends TPer
 
   protected get manager () { return this._manager }
 
-  protected constructor (manager: EntityManager) {
+  public constructor (manager: EntityManager) {
     this._manager = manager
   }
 

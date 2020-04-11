@@ -6,7 +6,9 @@ import { fork } from 'child_process'
 export class TypeormController {
   @ConsoleAction('default', 'Run actions for default connection')
   public runDefaultConnectionActions (args: string[]) {
-    const typeormPath = require.resolve('typeorm')
-    fork(typeormPath + './cli.js', args, { stdio: 'inherit' })
+    const typeormIndexPath = require.resolve('typeorm')
+    const typeormIndex = typeormIndexPath.indexOf('typeorm')
+    const typeormPath = typeormIndexPath.substring(0, typeormIndex + 8)
+    fork(typeormPath + '/cli.js', args, { stdio: 'inherit' })
   }
 }

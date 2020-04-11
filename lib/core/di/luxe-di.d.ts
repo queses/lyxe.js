@@ -7,4 +7,10 @@ export type TClass<T> = {
   name: string
 }
 
+export type TNoNewClass<T> = {
+  new? (...args: any[]): T
+  name: string
+}
+
+
 export type TFactoryFunc<T, A = any> = (...args: A[]) => T

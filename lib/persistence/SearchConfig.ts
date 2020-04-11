@@ -15,5 +15,7 @@ export class SearchConfig {
     if (asRelation) {
       this.sortRelations[attr] = attr.split('.').shift() as string
     }
+
+    return this
   }
 }

@@ -1,4 +1,4 @@
-import { TClass } from '../../core/di/luxe-di'
+import { TClass, TServiceId } from '../../core/di/luxe-di'
 import { IDomainFixture } from '../fixture/IDomainFixture'
 import { IPersistenceConnection } from '../../persistence/IPersistenceConnection'
 import { AppContainer } from '../../core/di/AppContainer'
@@ -9,8 +9,16 @@ import { TPersistenceConnectionName, TPersistenceId } from '../../persistence/lu
 import { IRepository } from '../../persistence/IRepository'
 import { IEntityManager } from '../../persistence/IEntityManager'
 import { PersistenceConnectionRegistry } from '../../persistence/PersistenceConnectionRegistry'
+import { RepositoryFactoryTkn } from '../../persistence/luxe-persistence-tokens'
 
 export class MochaPersistenceUtil {
+  static repo <R extends IRepository<T, ID>, T extends IHasId<ID>, ID extends TPersistenceId> (
+    id: TServiceId<R>,
+    em: IEntityManager | undefined
+  ) {
+    return AppContainer.get(RepositoryFactoryTkn).get(id, em)
+  }
+
   static loadFixturesIn (
     fixtures: TClass<IDomainFixture> | Array<TClass<IDomainFixture>>,
     connectionName?: TPersistenceConnectionName

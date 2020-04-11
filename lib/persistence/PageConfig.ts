@@ -4,7 +4,7 @@ export class PageConfig {
   size: number
   current: number
 
-  protected constructor (size: number | string, current: number | string) {
+  public constructor (size: number | string, current: number | string = 1) {
     this.size = ((typeof size === 'string') ? parseInt(size, 10) || 0 : size) || 0
     this.current = ((typeof current === 'string') ? parseInt(current, 10) : current) || 1
   }

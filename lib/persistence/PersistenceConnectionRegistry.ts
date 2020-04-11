@@ -32,4 +32,13 @@ export class PersistenceConnectionRegistry {
   public replace (name: TPersistenceConnectionName, connection: TClass<IPersistenceConnection>) {
     this.addedConnections.set(name, connection)
   }
+
+  public addedNames () {
+    const names: string[] = []
+    for (const key of this.addedConnections.keys()) {
+      names.push(key)
+    }
+
+    return names
+  }
 }

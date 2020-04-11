@@ -26,7 +26,7 @@ export class ConsoleRunner {
 
     const tStart = process.hrtime()
     const method: Function = Reflect.get(inst, action.method)
-    await Reflect.apply(method, inst, args)
+    await method.call(inst, args)
 
     if (AppConfigurator.get('console.measureActionsTime')) {
       this.logTimeDiff(tStart)

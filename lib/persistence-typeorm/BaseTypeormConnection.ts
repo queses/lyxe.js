@@ -5,19 +5,21 @@ import { InvalidArgumentError } from '../core/application-errors/InvalidAgrument
 import { AbstractService } from '../core/di/annotations/AbstractService'
 import { AppConfigurationError } from '../core/application-errors/AppConfigurationError'
 import { EntityManagerMeta } from '../persistence/EntityManagerMeta'
-import { InjectService } from '../core/di/annotations/InjectService'
-import { TransactionEventBus } from '../persistence/TransactionEventBus'
 import { PersistenceTypeormConfig } from './PersistenceTypeormConfig'
 import { TPersistenceConnectionName } from '../persistence/luxe-persistence'
+import { AppPathUtil } from '../core/config/AppPathUtil'
+import { AppEnv } from '../core/config/AppEnv'
+import { InjectService } from '../core/di/annotations/InjectService'
+import { TransactionEventBusTkn } from '../persistence/luxe-persistence-tokens'
+import { ITransactionEvenBus } from '../persistence/ITransactionEvenBus'
 
 @AbstractService()
 export abstract class BaseTypeormConnection implements IPersistenceConnection {
-  @InjectService(TransactionEventBus)
-  private transactionListener: TransactionEventBus
+  @InjectService(TransactionEventBusTkn)
+  private transactionListener: ITransactionEvenBus
 
-  protected abstract get config (): ConnectionOptions
+  public abstract get config (): ConnectionOptions
   protected abstract get persistenceConnectionName (): TPersistenceConnectionName
-
   private connection?: Connection
 
   public async close (): Promise<void> {
@@ -82,8 +84,22 @@ export abstract class BaseTypeormConnection implements IPersistenceConnection {
     })
   }
 
-  protected getExtraDbEntities () {
-    const patches: string[] = []
+  protected getDbEntities (onlyInModules?: string[]) {
+    let modulesWildCard
+    if (Array.isArray(onlyInModules)) {
+      modulesWildCard = `+(${onlyInModules.join('|')})`
+    } else {
+      modulesWildCard = '*'
+    }
+
+    const fileExt = AppPathUtil.codeExtWildcard
+    const srcDir = AppPathUtil.appSrc
+    const patches = [ `${srcDir}/${modulesWildCard}/domain/model/*${fileExt}` ]
+
+    if (AppEnv.inTest) {
+      patches.push(`${srcDir}/${modulesWildCard}/tests/model/*${fileExt}`)
+    }
+
     const extraEntities = PersistenceTypeormConfig.inst.connectionExtraEntities.get(this.persistenceConnectionName) || []
     for (const path of extraEntities) {
       patches.push(path)

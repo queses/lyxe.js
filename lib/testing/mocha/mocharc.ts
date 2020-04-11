@@ -4,10 +4,10 @@ const getTargets = function () {
 }
 
 module.exports = {
-  timeout: Boolean(process.env.NODE_DEBUG) ? 36000000 : 60000,
+  timeout: (!!process.env.NODE_DEBUG) ? 36000000 : 60000,
   extension: 'js',
   spec: [
-    __dirname + '/bootstrap-test.js',
+    __dirname + '/bootstrap-tests.js',
     getTargets()
   ]
 }

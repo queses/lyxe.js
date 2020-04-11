@@ -16,13 +16,12 @@ export const itInTransaction = <C extends TBaseContextInfo> (
   assertion: TMochaTransactionalTest<C>,
   connectionName?: TPersistenceConnectionName
 ) => {
-  const connection = PersistenceConnectionRegistry.get(connectionName)
-  if (!connection.transaction || !connection.nestedTransaction) {
-    throw new InvalidArgumentError('itInTransaction error: provided connection is not transactional')
-  }
-
-  const { transaction, nestedTransaction } = connection
   const transactionalAssertion = function (this: Mocha.Test & any, done: Mocha.Done) {
+    const connection = PersistenceConnectionRegistry.get(connectionName)
+    if (!connection.transaction || !connection.nestedTransaction) {
+      throw new InvalidArgumentError('itInTransaction error: provided connection is not transactional')
+    }
+
     const run = async (entityManager: IEntityManager) => {
       const ctx = AppContainer.get<IDefaultContextFactory<C>>(DefaultContextFactoryTkn).get({ asSystem: true })
       Reflect.defineMetadata(PersistenceContextMeta.TRANSACTIONAL_EM, entityManager, ctx)
@@ -32,16 +31,10 @@ export const itInTransaction = <C extends TBaseContextInfo> (
     }
 
     const runningTransaction = (this.beforeAllEntityManager)
-      ? nestedTransaction(this.beforeAllEntityManager, run)
-      : transaction(run)
+      ? connection.nestedTransaction(this.beforeAllEntityManager, run)
+      : connection.transaction(run)
 
-    runningTransaction.catch((err) => {
-      if (err === errToRollbackTransaction) {
-        done()
-      } else {
-        done(err)
-      }
-    })
+    runningTransaction.catch((err: any) => (err === errToRollbackTransaction) ? done() : done(err))
   }
 
   return it(expectation, transactionalAssertion)

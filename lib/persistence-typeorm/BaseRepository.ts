@@ -6,7 +6,7 @@ import { IRepository } from '../persistence/IRepository'
 
 export const ENTITY_ALIAS = 'e'
 
-export abstract class BaseReadRepository <T extends IHasId<ID>, ID extends TPersistenceId>
+export abstract class BaseRepository <T extends IHasId<ID>, ID extends TPersistenceId>
   extends BaseWriteRepository<T, ID>
   implements IRepository<T, ID>
 {

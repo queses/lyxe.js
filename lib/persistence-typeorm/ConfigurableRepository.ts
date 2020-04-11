@@ -2,14 +2,14 @@ import { Page } from '../persistence/Page'
 import { SelectQueryBuilder } from 'typeorm'
 import { IHasId } from '../persistence/IHasId'
 import { TPersistenceId, TSortOrder } from '../persistence/luxe-persistence'
-import { BaseReadRepository, ENTITY_ALIAS } from './BaseReadRepository'
+import { BaseRepository, ENTITY_ALIAS } from './BaseRepository'
 import { IConfigurableRepository } from '../persistence/IConfigurableRepository'
 import { SearchConfig } from '../persistence/SearchConfig'
 import { PageConfig } from '../persistence/PageConfig'
 
 export abstract class ConfigurableRepository
   <T extends IHasId<ID>, ID extends TPersistenceId, C extends SearchConfig = SearchConfig>
-  extends BaseReadRepository<T, ID>
+  extends BaseRepository<T, ID>
   implements IConfigurableRepository<T, ID>
 {
   public transformQuery (q: SelectQueryBuilder<T>, config: SearchConfig | undefined) {
@@ -49,7 +49,7 @@ export abstract class ConfigurableRepository
     let pageConfig: PageConfig | undefined
     if (config instanceof SearchConfig) {
       pageConfig = config.page
-      q = this.applyOptionsToQuery(q, config)
+      q = this.applyConfigToQuery(q, config)
     }
 
     return this.getPageFromValues(await super.queryEntities(q), q as SelectQueryBuilder<T>, pageConfig)
@@ -61,48 +61,48 @@ export abstract class ConfigurableRepository
       pageOptions = config.page
     }
 
-    q = this.applyOptionsToQuery(q, config)
+    q = this.applyConfigToQuery(q, config)
     return this.getPageFromValues(await super.queryRawEntities(q), q as SelectQueryBuilder<T>, pageOptions)
   }
 
   protected queryEntity (q?: SelectQueryBuilder<T>, config?: C) {
-    q = this.applyOptionsToQuery(q, config)
+    q = this.applyConfigToQuery(q, config)
 
     return super.queryEntity(q)
   }
 
   protected countEntities (q?: SelectQueryBuilder<T>, config?: C) {
-    q = this.applyOptionsToQuery(q, config)
+    q = this.applyConfigToQuery(q, config)
 
     return q.getCount()
   }
 
   protected async entityExists (q?: SelectQueryBuilder<T>, config?: C) {
-    q = this.applyOptionsToQuery(q, config)
+    q = this.applyConfigToQuery(q, config)
 
     return (await q.getCount()) > 0
   }
 
-  private applyOptionsToQuery (q: SelectQueryBuilder<T> | undefined, config?: C) {
+  private applyConfigToQuery (q: SelectQueryBuilder<T> | undefined, config?: C) {
     if (!q) {
       q = this.queryBuilder()
     }
 
-    const { sort, page } = config || {} as any
     this.transformQuery(q, config)
 
-    if (sort && sort.options) {
+    const { sortOptions, sortRelations, page } = config || {} as C
+    if (sortOptions) {
       const orderBy: { [key: string]: TSortOrder } = {}
-      Object.keys(sort.options).forEach((attr) => {
-        const relationName = sort.relations[attr]
+      Object.keys(sortOptions).forEach((attr) => {
+        const relationName = sortRelations[attr]
         if (relationName) {
           if (!this.getQueryHasAlias(q as SelectQueryBuilder<T>, relationName)) {
             (q as SelectQueryBuilder<T>).leftJoinAndSelect(`${ENTITY_ALIAS}.${relationName}`, relationName)
           }
 
-          orderBy[attr] = sort.options[attr]
+          orderBy[attr] = sortOptions[attr]
         } else {
-          orderBy[`${ENTITY_ALIAS}.${attr}`] = sort.options[attr]
+          orderBy[`${ENTITY_ALIAS}.${attr}`] = sortOptions[attr]
         }
       })
 
