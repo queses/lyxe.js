@@ -7,6 +7,7 @@ import { AppPathUtil } from '../../core/config/AppPathUtil'
 import { SingletonService } from '../../core/di/annotations/SingletonService'
 import { PersistenceConnectionRegistry } from '../../persistence/PersistenceConnectionRegistry'
 import { TPersistenceConnectionName } from '../../persistence/luxe-persistence'
+import { InvalidArgumentError } from '../../core/application-errors/InvalidAgrumentError'
 
 @SingletonService()
 export class DomainFixtureLoader {
@@ -39,7 +40,9 @@ export class DomainFixtureLoader {
       }
     })
 
-    return this.load(fixturesClasses as any, entityManager)
+    for (const fixtureClass of fixturesClasses) {
+      await this.loadFixture(fixtureClass, entityManager, false)
+    }
   }
 
   public loadInModules (modules: string[], entityManager: IEntityManager): Promise<void> {
@@ -56,9 +59,13 @@ export class DomainFixtureLoader {
     }
   }
 
-  private async loadFixture (fixtureClass: TClass<IDomainFixture>, entityManager: IEntityManager) {
-    if (!fixtureClass.prototype || fixtureClass.prototype['getEntities' as keyof IDomainFixture] !== 'function') {
-      return
+  private async loadFixture (fixtureClass: TClass<IDomainFixture>, entityManager: IEntityManager, throwOnInvalid: boolean = true) {
+    if (!fixtureClass.prototype || !fixtureClass.prototype.hasOwnProperty('getEntities' as keyof IDomainFixture)) {
+      if (throwOnInvalid) {
+        throw new InvalidArgumentError('Invalid DomainFixture provided')
+      } else {
+        return
+      }
     }
 
     const loaded = this.loaded.get(fixtureClass) || 0

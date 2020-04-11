@@ -10,6 +10,8 @@ import { IDefaultContextFactory } from '../core/context/IDefaultContextFactory'
 import { DefaultContextFactoryTkn } from '../core/luxe-core-tokens'
 import { PersistenceContextUtil } from '../persistence/PersistenceContextUtil'
 import { TBaseContextInfo } from '../core/context/luxe-context-info'
+import { IServiceFactory } from '../core/context/IServiceFactory'
+import { ServiceFactory } from '../core/context/ServiceFactory'
 
 export class TestUtil {
   static createRepo <R extends IRepository<T, ID>, T extends IHasId<ID>, ID extends TPersistenceId> (
@@ -30,5 +32,9 @@ export class TestUtil {
     }
 
     return service
+  }
+
+  static createServiceFactory <C extends TBaseContextInfo> (em: IEntityManager | undefined) {
+    return this.createContextService<IServiceFactory<C>, C>(ServiceFactory, em)
   }
 }

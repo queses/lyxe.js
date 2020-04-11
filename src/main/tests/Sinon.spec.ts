@@ -3,7 +3,7 @@ import { assert } from 'chai'
 import { AppContainer } from '../../../lib/core/di/AppContainer'
 import { HelloWorldUseCaseTkn } from '../test-tokens'
 
-describe('sinon', function () {
+describe('Sinon', function () {
   it('should replace Date.now', function () {
     const constDate = new Date('01.01.2019 12:00')
     sinon.replace(Date, 'now', sinon.fake.returns(constDate.getTime()))
@@ -12,10 +12,6 @@ describe('sinon', function () {
   })
 
   it('should replace current time', function () {
-    /**
-     * Если это будет ломать другие тесты, есть способ, как заменить new Date() с помощью fake:
-     * https://github.com/facebook/jest/issues/2234
-     */
     const constDate = new Date('01.01.2019 12:00')
     sinon.useFakeTimers(constDate)
     assert.equal(new Date().getTime(), constDate.getTime())

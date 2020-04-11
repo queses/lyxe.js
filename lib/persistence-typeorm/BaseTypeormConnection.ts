@@ -107,7 +107,7 @@ export abstract class BaseTypeormConnection implements IPersistenceConnection {
 
     const extraEntities = PersistenceTypeormConfig.inst.connectionExtraEntities.get(this.persistenceConnectionName) || []
     for (const path of extraEntities) {
-      patches.push(path)
+      patches.push(path + `/*${fileExt}`)
     }
 
     return patches

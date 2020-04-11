@@ -1,5 +1,4 @@
 import { TMochaTransactionalTest } from '../framework-testing'
-import { ServiceFactory } from '../../core/context/ServiceFactory'
 import { TBaseContextInfo } from '../../core/context/luxe-context-info'
 import { InvalidArgumentError } from '../../core/application-errors/InvalidAgrumentError'
 import { TPersistenceConnectionName } from '../../persistence/luxe-persistence'
@@ -22,9 +21,8 @@ export const itInTransaction = <C extends TBaseContextInfo> (
       this.contextInfo = {}
     }
 
-    const sf = TestUtil.createContextService<ServiceFactory<C>, C>(ServiceFactory, transactionalEm)
     try {
-      await assertion.call(this, sf, transactionalEm)
+      await assertion.call(this, TestUtil.createServiceFactory<C>(transactionalEm), transactionalEm)
     } finally {
       await connection.rollbackTransaction(transactionalEm)
     }

@@ -4,7 +4,7 @@ import { AppContainer } from '../core/di/AppContainer'
 import { IDomainEventHandler } from './IDomainEventHandler'
 import { IDomainEvent } from './IDomainEvent'
 
-export abstract class AbstractDomainEventHandler <E extends IDomainEvent> implements IDomainEventHandler<E> {
+export abstract class BaseDomainEventHandler <E extends IDomainEvent> implements IDomainEventHandler<E> {
   private serviceFactoryCache: ServiceFactory
 
   public abstract handle (event: E): void | Promise<void>

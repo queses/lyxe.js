@@ -9,6 +9,9 @@ import { Cached } from '../../core/lang/annotations/Cached'
 import { TransactionError } from '../../core/application-errors/TransactionError'
 import { PersistenceContextUtil } from '../../persistence/PersistenceContextUtil'
 import { PersistenceConnectionRegistry } from '../../persistence/PersistenceConnectionRegistry'
+import { EntityManagerMeta } from '../../persistence/EntityManagerMeta'
+import { KeyValueTypeormConfig } from '../KeyValueTypeormConfig'
+import { BaseTypeormConnection } from '../../persistence-typeorm/BaseTypeormConnection'
 
 @TransientService(KeyValueContextStorageTkn)
 export class KeyValueTypeormStorage extends BaseContextService implements IKeyValueContextStorage {
@@ -45,12 +48,18 @@ export class KeyValueTypeormStorage extends BaseContextService implements IKeyVa
 
   @Cached()
   private get entityManager () {
-    const em = PersistenceContextUtil.getTransactionalEm(this) || PersistenceConnectionRegistry.get().getManager()
+    const connection = PersistenceConnectionRegistry.get(KeyValueTypeormConfig.inst.useWithConnection)
+    if (!(connection instanceof BaseTypeormConnection)) {
+      throw new TransactionError('Trying to use KeyValueTypeormStorage with invalid connection')
+    }
 
-    if (em instanceof EntityManager) {
-      return em
+    const em = PersistenceContextUtil.getTransactionalEm(this) as EntityManager
+    if (!em) {
+      return connection.getManager() as EntityManager
+    } else if (connection !== Reflect.getMetadata(EntityManagerMeta.CONNECTION, em)) {
+      throw new TransactionError('Trying to use KeyValueTypeormStorage with invalid connection')
     } else {
-      throw new TransactionError('Trying to use KeyValueTypeOrmStorage with wrong connection or in invalid transaction')
+      return em
     }
   }
 }
