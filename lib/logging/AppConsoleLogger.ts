@@ -1,12 +1,11 @@
-import { ConsoleOnly } from '../core/lang/annotations/ConsoleOnly'
 import { SingletonService } from '../core/di/annotations/SingletonService'
 import { AppLoggerTkn } from './luxe-logging-tokens'
 import { IAppLogger } from './IAppLogger'
 
-@ConsoleOnly(SingletonService(AppLoggerTkn))
+@SingletonService(AppLoggerTkn)
 export class AppConsoleLogger implements IAppLogger {
   public error (message: string, stack?: string): void {
-    console.error(message, stack)
+    console.error(message, stack || '')
   }
 
   public log (message: string): void {

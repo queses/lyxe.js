@@ -1,3 +1,4 @@
+import './register-luxe'
 import { AppConfigurationError } from './application-errors/AppConfigurationError'
 import { ServiceInitHandlersRegistry } from './init/ServiceInitHandlersRegistry'
 import { ServiceShutdownHandlersRegistry } from './init/ServiceShutdownHandlersRegistry'
@@ -7,10 +8,10 @@ export class LuxeFramework {
   private bootstrappedPlugins: Map<string, boolean> = new Map()
   private bootstrappedModules: Map<string, boolean> = new Map()
 
-  public static requirePlugin (...pluginNames: string[]) {
+  public static requirePlugins (...pluginNames: string[]) {
     for (const pluginName of pluginNames) {
       if (!this.inst.bootstrappedPlugins.has(pluginName)) {
-        this.inst.requirePluginBootstrap(pluginName).call(undefined)
+        this.inst.requirePluginBootstrap(pluginName)()
         this.inst.bootstrappedPlugins.set(pluginName, true)
       }
     }
@@ -18,11 +19,11 @@ export class LuxeFramework {
     return this
   }
 
-  public static requireModule (...moduleNames: string[]) {
+  public static requireModules (...moduleNames: string[]) {
     for (const moduleName of moduleNames) {
       if (!this.inst.bootstrappedModules.has(moduleName)) {
-        this.inst.requireModuleBootstrap(moduleName).call(undefined)
-        this.inst.bootstrappedPlugins.set(moduleName, true)
+        this.inst.requireModuleBootstrap(moduleName)()
+        this.inst.bootstrappedModules.set(moduleName, true)
       }
     }
 
@@ -56,7 +57,7 @@ export class LuxeFramework {
   private requireModuleBootstrap (moduleName: string) {
     let bootstrapModule: (() => void) | undefined
     try {
-      bootstrapModule = require(`${AppPathUtil.appSrc}/${moduleName}/bootstrap`)
+      bootstrapModule = require(`${AppPathUtil.appSrc}/${moduleName}/bootstrap`).default
     } catch (e) {
       // No module in "src" folder found
     }
@@ -71,7 +72,7 @@ export class LuxeFramework {
   private requirePluginBootstrap (pluginName: string) {
     let bootstrapPlugin: (() => void) | undefined
     try {
-      bootstrapPlugin = require(`../${pluginName}/bootstrap`)
+      bootstrapPlugin = require(`../${pluginName}/bootstrap`).default
     } catch (e) {
       // No plugin in default package found
     }
@@ -81,7 +82,7 @@ export class LuxeFramework {
     }
 
     try {
-      bootstrapPlugin = require(`${AppPathUtil.appLib}/${pluginName}/bootstrap`)
+      bootstrapPlugin = require(`${AppPathUtil.appLib}/${pluginName}/bootstrap`).default
     } catch (e) {
       // No plugin in "lib" folder found
     }
@@ -91,7 +92,7 @@ export class LuxeFramework {
     }
 
     try {
-      bootstrapPlugin = require(`luxe-plugin-${pluginName}/bootstrap`)
+      bootstrapPlugin = require(`luxe-plugin-${pluginName}/bootstrap`).default
     } catch (e) {
       // No plugin in `node_modules` found
     }
@@ -104,6 +105,9 @@ export class LuxeFramework {
   }
 
   public static get inst (): LuxeFramework {
+    // Register framework and bootstrap core module when first time accessed to framework
+    require('./bootstrap').default()
+
     return Object.defineProperty(this, 'inst', { value: new this() }).inst
   }
 }

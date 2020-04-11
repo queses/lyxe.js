@@ -1,11 +1,12 @@
 import { TBaseContextInfo } from './luxe-context-info'
-import { IContextService, IServiceFactory } from './IContextService'
+import { IContextService} from './IContextService'
 import { IUseCase } from './IUseCase'
 import Token from '../di/Token'
 import { IReadService } from './IReadService'
 import { AbstractService } from '../di/annotations/AbstractService'
 import { TClass, TServiceId } from '../di/luxe-di'
 import { AppContainer } from '../di/AppContainer'
+import { IServiceFactory } from './IServiceFactory'
 
 @AbstractService()
 export abstract class BaseContextService <C extends TBaseContextInfo = TBaseContextInfo>

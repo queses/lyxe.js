@@ -29,13 +29,21 @@ export abstract class BaseTypeormConnection implements IPersistenceConnection {
 
   public getManager (): IEntityManager {
     if (!this.connection) {
-      throw new AppConfigurationError('Trying to get entity manager on closed connection ' + this.constructor.name)
+      throw new AppConfigurationError('Trying to get entity manager with closed connection ' + this.constructor.name)
     }
 
     const em = this.connection.createEntityManager()
     Reflect.defineMetadata(EntityManagerMeta.CONNECTION, this, em)
 
     return em as IEntityManager
+  }
+
+  public clearStorage (): Promise<void> {
+    if (!this.connection) {
+      throw new AppConfigurationError('Trying to clear storage with closed connection ' + this.constructor.name)
+    }
+
+    return this.connection.synchronize(true)
   }
 
   async transaction <T> (run: (transactional: IEntityManager) => Promise<T>): Promise<T> {

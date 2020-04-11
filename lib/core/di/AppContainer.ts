@@ -2,10 +2,8 @@ import { TClass, TFactoryFunc, TServiceId } from './luxe-di'
 import { ContainerInstance } from './ContainerInstance'
 
 export class AppContainer {
-  private constructor () {}
-
   public static get inst (): ContainerInstance {
-    return Object.defineProperty(this, 'inst', { value: new this() }).inst
+    return Object.defineProperty(this, 'inst', { value: new ContainerInstance() }).inst
   }
 
   public static get <T> (id: TServiceId<T> | TClass<T>): T {

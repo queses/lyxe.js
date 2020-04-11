@@ -91,7 +91,7 @@ export class AppConfigurator {
         break
       }
 
-      this.parseConfigStrLine(configStr.substring(lineStartIndex + 1, lineEndIndex))
+      this.parseConfigStrLine(configStr.substring(lineStartIndex, lineEndIndex))
       lineStartIndex = lineEndIndex + 1
     }
   }
@@ -109,7 +109,11 @@ export class AppConfigurator {
     }
 
     let value: string | number | boolean | undefined = param
-    if (param.startsWith('@')) {
+    if (param === 'false') {
+      value = false
+    } else if (param === 'true') {
+      value = true
+    } else if (param.startsWith('@')) {
       value = this.getEnvString(param.substr(1))
     } else if (param.startsWith('string@')) {
       value = this.getEnvString(param.substr(7))
@@ -119,6 +123,9 @@ export class AppConfigurator {
       value = this.getEnvInt(param.substr(4))
     } else if (param.startsWith('float@')) {
       value = this.getEnvFloat(param.substr(6))
+    } else if (param.length <= 8) {
+      const numValue = parseInt(value, 10)
+      value = isNaN(numValue) ? param : numValue
     }
 
     this.set(name, value)

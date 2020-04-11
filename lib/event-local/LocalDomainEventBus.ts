@@ -28,7 +28,7 @@ export class LocalDomainEventBus implements IDomainEventBus {
 
   public listen <E extends IDomainEvent> (eventType: TDomainEventType, handler: IDomainEventHandler<E>): void {
     this.emitter.addListener(eventType, (...args: any) => {
-      const result = handler.handle.apply(handler, args)
+      const result = Reflect.apply(handler.handle, handler, args)
       if (result instanceof Promise) {
         const index = this.pendingPromises.length
         this.pendingPromises.push(

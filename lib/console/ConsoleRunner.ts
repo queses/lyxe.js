@@ -5,6 +5,7 @@ import { IAppLogger } from '../logging/IAppLogger'
 import { ConsoleControllerRegistry } from './ConsoleControllerRegistry'
 import { AppContainer } from '../core/di/AppContainer'
 import { AppConfigurator } from '../core/config/AppConfigurator'
+import { DebugUtil } from '../core/lang/DebugUtil'
 
 @SingletonService()
 export class ConsoleRunner {
@@ -25,7 +26,7 @@ export class ConsoleRunner {
 
     const tStart = process.hrtime()
     const method: Function = Reflect.get(inst, action.method)
-    await method(args)
+    await Reflect.apply(method, inst, args)
 
     if (AppConfigurator.get('console.measureActionsTime')) {
       this.logTimeDiff(tStart)
@@ -33,7 +34,6 @@ export class ConsoleRunner {
   }
 
   private logTimeDiff (oldTime: [ number, number ]) {
-    const time = process.hrtime(oldTime)
-    this.logger.log(`Controller action took ${time[0]}.${time[1].toString().substr(0, 4)}s`)
+    this.logger.log(`Controller action execution took ${DebugUtil.formatHrtime(process.hrtime(oldTime))}`)
   }
 }

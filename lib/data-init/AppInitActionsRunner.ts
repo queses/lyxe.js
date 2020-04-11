@@ -8,7 +8,7 @@ import { AppInitActionTkn } from './luxe-app-init-tokens'
 import { IAppInitAction } from './IAppInitAction'
 
 @TransientService()
-export class InitActionsRunner {
+export class AppInitActionsRunner {
   @InjectService(KeyValueContextStorageTkn)
   private keyValue: IKeyValueContextStorage
 

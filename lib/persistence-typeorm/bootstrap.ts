@@ -2,7 +2,7 @@ import { LuxeFramework } from '../core/LuxeFramework'
 import { PersistenceTypeormConfig } from './PersistenceTypeormConfig'
 
 export default () => {
-  LuxeFramework.requireModule('persistence')
+  LuxeFramework.requirePlugins('persistence', 'console')
 
   if (PersistenceTypeormConfig.inst.useDefaultConnection) {
     require('./DefaultTypeormConnection')

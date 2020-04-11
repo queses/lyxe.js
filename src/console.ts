@@ -1,6 +1,14 @@
-import '../lib/core/register-luxe'
 import { LuxeFramework } from '../lib/core/LuxeFramework'
+import { AppContainer } from '../lib/core/di/AppContainer'
+import bootstrap from './bootstrap'
+import { ConsoleRunner } from '../lib/console/ConsoleRunner'
 
-const run = () => {
-  LuxeFramework.requirePlugin('persistence-typeorm', 'event-local', 'crypto')
+const main = async () => {
+  LuxeFramework.requirePlugins('console')
+  bootstrap()
+
+  await LuxeFramework.run()
+  await AppContainer.get(ConsoleRunner).run()
 }
+
+main().then()
