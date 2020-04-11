@@ -1,4 +1,4 @@
-import { EntityManager, getConnection, QueryBuilder } from 'typeorm'
+import { EntityManager, QueryBuilder } from 'typeorm'
 import { KeyValueItem } from '../model/KeyValueItem'
 import { KeyValueContextStorageTkn } from '../../key-value/luxe-key-value-tokens'
 import { TransientService } from '../../core/di/annotations/TransientService'
@@ -6,9 +6,9 @@ import { BaseContextService } from '../../core/context/BaseContextService'
 import { IKeyValueContextStorage } from '../../key-value/IKeyValueContextStorage'
 import { InvalidArgumentError } from '../../core/application-errors/InvalidAgrumentError'
 import { Cached } from '../../core/lang/annotations/Cached'
-import { IEntityManager } from '../../persistence/IEntityManager'
-import { PersistenceContextMeta } from '../../persistence/PersistenceContextMeta'
 import { TransactionError } from '../../core/application-errors/TransactionError'
+import { PersistenceContextUtil } from '../../persistence/PersistenceContextUtil'
+import { PersistenceConnectionRegistry } from '../../persistence/PersistenceConnectionRegistry'
 
 @TransientService(KeyValueContextStorageTkn)
 export class KeyValueTypeormStorage extends BaseContextService implements IKeyValueContextStorage {
@@ -45,16 +45,12 @@ export class KeyValueTypeormStorage extends BaseContextService implements IKeyVa
 
   @Cached()
   private get entityManager () {
-    const em: IEntityManager | undefined = (this.contextInfo)
-      ? Reflect.getMetadata(PersistenceContextMeta.TRANSACTIONAL_EM, this.contextInfo)
-      : undefined
+    const em = PersistenceContextUtil.getTransactionalEm(this) || PersistenceConnectionRegistry.get().getManager()
 
-    if (!em) {
-      return getConnection().createEntityManager()
-    } else if (em instanceof EntityManager) {
+    if (em instanceof EntityManager) {
       return em
     } else {
-      throw new TransactionError('Trying to use TypeOrm KeyValueLocalStorage in transaction with invalid connection')
+      throw new TransactionError('Trying to use KeyValueTypeOrmStorage with wrong connection or in invalid transaction')
     }
   }
 }

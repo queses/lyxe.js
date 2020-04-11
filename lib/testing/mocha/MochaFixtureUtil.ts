@@ -1,4 +1,4 @@
-import { TClass, TServiceId } from '../../core/di/luxe-di'
+import { TClass } from '../../core/di/luxe-di'
 import { IDomainFixture } from '../fixture/IDomainFixture'
 import { IPersistenceConnection } from '../../persistence/IPersistenceConnection'
 import { AppContainer } from '../../core/di/AppContainer'
@@ -7,45 +7,34 @@ import { DomainFixtureLoader } from '../fixture/DomainFixtureLoader'
 import { IHasId } from '../../persistence/IHasId'
 import { TPersistenceConnectionName, TPersistenceId } from '../../persistence/luxe-persistence'
 import { IRepository } from '../../persistence/IRepository'
-import { IEntityManager } from '../../persistence/IEntityManager'
 import { PersistenceConnectionRegistry } from '../../persistence/PersistenceConnectionRegistry'
-import { RepositoryFactoryTkn } from '../../persistence/luxe-persistence-tokens'
+import { TransactionError } from '../../core/application-errors/TransactionError'
 
-export class MochaPersistenceUtil {
-  static repo <R extends IRepository<T, ID>, T extends IHasId<ID>, ID extends TPersistenceId> (
-    id: TServiceId<R>,
-    em: IEntityManager | undefined
-  ) {
-    return AppContainer.get(RepositoryFactoryTkn).get(id, em)
-  }
-
+export class MochaFixtureUtil {
   static loadFixturesIn (
     fixtures: TClass<IDomainFixture> | Array<TClass<IDomainFixture>>,
     connectionName?: TPersistenceConnectionName
   ) {
-    const connection = PersistenceConnectionRegistry.get(connectionName)
-
     before(async function () {
-      await MochaPersistenceUtil.loadFixturesBefore(fixtures, connection, this)
+      const connection = PersistenceConnectionRegistry.get(connectionName)
+      await MochaFixtureUtil.loadFixturesBefore(fixtures, connection, this)
     })
 
     after(async function () {
-      await MochaPersistenceUtil.rollbackBeforeAllTransaction(this)
+      const connection = PersistenceConnectionRegistry.get(connectionName)
+      await MochaFixtureUtil.rollbackBeforeAllTransaction(connection, this)
     })
   }
 
-  static loadModuleFixturesIn = (
-    modules: string | string[],
-    connectionName?: TPersistenceConnectionName
-  ) => {
-    const connection = PersistenceConnectionRegistry.get(connectionName)
-
+  static loadModuleFixturesIn = (modules: string | string[], connectionName?: TPersistenceConnectionName) => {
     before(async function () {
-      await MochaPersistenceUtil.loadModuleFixturesBefore(modules, connection, this)
+      const connection = PersistenceConnectionRegistry.get(connectionName)
+      await MochaFixtureUtil.loadModuleFixturesBefore(modules, connection, this)
     })
 
     after(async function () {
-      await MochaPersistenceUtil.rollbackBeforeAllTransaction(this)
+      const connection = PersistenceConnectionRegistry.get(connectionName)
+      await MochaFixtureUtil.rollbackBeforeAllTransaction(connection, this)
     })
   }
 
@@ -75,45 +64,32 @@ export class MochaPersistenceUtil {
     await AppContainer.get(DomainFixtureLoader).loadInModules(Array.isArray(modules) ? modules : [ modules ], em)
   }
 
-  private static async rollbackBeforeAllTransaction (context: Mocha.Context) {
+  private static async rollbackBeforeAllTransaction (connection: IPersistenceConnection, context: Mocha.Context) {
     if (!context.currentTest || !context.currentTest.ctx) {
       return
     }
 
     const innerContext = context.currentTest.ctx
-    if (innerContext.beforeAllEntityManager && innerContext.transactionPromise && innerContext.rollbackTransaction) {
-      innerContext.rollbackTransaction()
-      await innerContext.transactionPromise
-
-      delete context.currentTest.ctx.beforeAllEntityManager
-      delete context.currentTest.ctx.transactionPromise
-      delete context.currentTest.ctx.rollbackTransaction
+    if (!innerContext.beforeAllEntityManager) {
+      return
+    } else if (!connection.rollbackTransaction) {
+      throw new TransactionError('MochaPersistenceUtil error: cannot rollback test function with provided connection')
     }
+
+    await connection.rollbackTransaction(innerContext.beforeAllEntityManager)
+    delete innerContext.beforeAllEntityManager
   }
 
   private static async startBeforeAllTransaction (connection: IPersistenceConnection, context: Mocha.Context) {
-    if (!connection.transaction) {
+    if (!connection.beginTransaction) {
       throw new AppError('Trying to load fixtures into persistence connection which doesn\'t support transactions')
     } else if (!context.currentTest || !context.currentTest.ctx) {
-      throw new AppError('MochaPersistenceUtil error: can\'t write transaction info in test context')
+      throw new AppError('MochaPersistenceUtil error: can\'t write transaction info in test function context')
     }
 
-    let fixturesLoadingFinished: () => void
-    const fixturesLoadingPromise = new Promise((resolve => {
-      fixturesLoadingFinished = resolve
-    }))
+    const transactionalEm = await connection.beginTransaction()
+    context.currentTest.ctx.beforeAllEntityManager = transactionalEm
 
-    const innerContext = context.currentTest.ctx
-    innerContext.transactionPromise = connection.transaction(async (em) => {
-      innerContext.beforeAllEntityManager = em
-      return new Promise((resolve, reject) => {
-        innerContext.rollbackTransaction = reject
-        fixturesLoadingFinished()
-      })
-    })
-
-    await fixturesLoadingPromise
-
-    return innerContext.beforeAllEntityManager as IEntityManager
+    return transactionalEm
   }
 }

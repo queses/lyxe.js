@@ -7,6 +7,6 @@ export const OnShutdown = <C> () => {
       throw new AppError(`Class member ${name} annotated with "@OnShutdown" should be a function`)
     }
     
-    ServiceShutdownHandlersRegistry.add(descriptor.value)
+    ServiceShutdownHandlersRegistry.add(descriptor.value.bind(target))
   }
 }

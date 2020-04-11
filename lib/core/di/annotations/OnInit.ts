@@ -7,6 +7,6 @@ export const OnInit = <C> () => {
       throw new AppError(`Class member ${name} annotated with "@OnInit" should be a function`)
     }
 
-    ServiceInitHandlersRegistry.add(descriptor.value)
+    ServiceInitHandlersRegistry.add(descriptor.value.bind(target))
   }
 }

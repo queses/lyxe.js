@@ -5,6 +5,7 @@ export interface IPersistenceConnection {
   close (): Promise<void>
   getManager (): IEntityManager
   clearStorage (): Promise<void>
-  transaction? <T> (run: (transactional: IEntityManager) => Promise<T>): Promise<T>
-  nestedTransaction? <T> (parent: IEntityManager, run: (transactional: IEntityManager) => Promise<T>): Promise<T>
+  beginTransaction? <T> (currentTransactionEntityManager?: IEntityManager): Promise<IEntityManager>
+  commitTransaction? <T> (entityManager: IEntityManager): Promise<void>
+  rollbackTransaction? <T> (entityManager: IEntityManager): Promise<void>
 }

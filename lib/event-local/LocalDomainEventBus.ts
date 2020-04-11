@@ -11,12 +11,12 @@ import { Cached } from '../core/lang/annotations/Cached'
 import { AppContainer } from '../core/di/AppContainer'
 import { TransactionEventBusTkn } from '../persistence/luxe-persistence-tokens'
 import { LuxeFramework } from '../core/LuxeFramework'
-import { PersistenceContextMeta } from '../persistence/PersistenceContextMeta'
 import { DomainEventBusTkn } from '../event/luxe-event-tokens'
 import { IDomainEventBus } from '../event/IDomainEventBus'
 import { IDomainEvent } from '../event/IDomainEvent'
 import { TDomainEventType } from '../event/luxe-event'
 import { IDomainEventHandler } from '../event/IDomainEventHandler'
+import { PersistenceContextUtil } from '../persistence/PersistenceContextUtil'
 
 @SingletonService(DomainEventBusTkn)
 export class LocalDomainEventBus implements IDomainEventBus {
@@ -42,7 +42,7 @@ export class LocalDomainEventBus implements IDomainEventBus {
 
   public emit <E extends IDomainEvent> (service: IContextService, eventType: TDomainEventType, event: E): void {
     if (service.contextInfo && LuxeFramework.hasPlugin('persistence')) {
-      const em: IEntityManager | undefined = Reflect.getMetadata(PersistenceContextMeta.TRANSACTIONAL_EM, service.contextInfo)
+      const em: IEntityManager | undefined = PersistenceContextUtil.getTransactionalEm(service)
       if (em) {
         return this.emitWithManager(eventType, event, em)
       }

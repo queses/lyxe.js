@@ -3,11 +3,11 @@ import { itInTransaction } from '../../../../lib/testing/mocha/it-in-transaction
 import { TestSpecialist } from '../../domain/model/TestSpecialist'
 import { IRepository } from '../../../../lib/persistence/IRepository'
 import { TestSpecialistRepoTkn } from '../../test-tokens'
-import { MochaPersistenceUtil } from '../../../../lib/testing/mocha/MochaPersistenceUtil'
+import { TestUtil } from '../../../../lib/testing/TestUtil'
 
 describe('BaseRepository', function () {
   itInTransaction('should find all entities', async function (sf, em) {
-    const repo = MochaPersistenceUtil.repo(TestSpecialistRepoTkn, em)
+    const repo = TestUtil.createRepo(TestSpecialistRepoTkn, em)
     await saveEntities(repo)
 
     const collection = await repo.findAll()
@@ -20,7 +20,7 @@ describe('BaseRepository', function () {
   }, 'test')
 
   itInTransaction('should save entity', async function (sf, em) {
-    const repo = MochaPersistenceUtil.repo(TestSpecialistRepoTkn, em)
+    const repo = TestUtil.createRepo(TestSpecialistRepoTkn, em)
     const specialist = TestSpecialist.create('Test', 'Testy')
 
     assert.isTrue(await repo.save(specialist) instanceof TestSpecialist)
@@ -28,7 +28,7 @@ describe('BaseRepository', function () {
   }, 'test')
 
   itInTransaction('should update entity', async function (sf, em) {
-    const repo = MochaPersistenceUtil.repo(TestSpecialistRepoTkn, em)
+    const repo = TestUtil.createRepo(TestSpecialistRepoTkn, em)
     const specialist = TestSpecialist.create('Test', 'Testy')
     await repo.save(specialist)
 
@@ -41,7 +41,7 @@ describe('BaseRepository', function () {
   }, 'test')
 
   itInTransaction('should find entity', async function (sf, em) {
-    const repo = MochaPersistenceUtil.repo(TestSpecialistRepoTkn, em)
+    const repo = TestUtil.createRepo(TestSpecialistRepoTkn, em)
     await repo.saveMany([
       TestSpecialist.create('Test', 'Testy'),
       TestSpecialist.create('Good', 'Boi'),

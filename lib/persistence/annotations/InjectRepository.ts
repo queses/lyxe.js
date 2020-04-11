@@ -5,8 +5,7 @@ import { TServiceId } from '../../core/di/luxe-di'
 import { AppContainer } from '../../core/di/AppContainer'
 import { RepositoryFactoryTkn } from '../luxe-persistence-tokens'
 import { IContextService } from '../../core/context/IContextService'
-import { IEntityManager } from '../IEntityManager'
-import { PersistenceContextMeta } from '../PersistenceContextMeta'
+import { PersistenceContextUtil } from '../PersistenceContextUtil'
 
 export const InjectRepository = <
   R extends IRepository<T, ID>,
@@ -15,11 +14,7 @@ export const InjectRepository = <
 > (id: TServiceId<R>) => (target: IContextService, name: string) => {
   Object.defineProperty(target, name, {
     get (this: IContextService) {
-      const em: IEntityManager | undefined = (this.contextInfo)
-        ? Reflect.getMetadata(PersistenceContextMeta.TRANSACTIONAL_EM, this.contextInfo)
-        : undefined
-
-      const value = AppContainer.get(RepositoryFactoryTkn).get(id, em)
+      const value = AppContainer.get(RepositoryFactoryTkn).get(id, PersistenceContextUtil.getTransactionalEm(this))
       Object.defineProperty(this, name, { value })
       return value
     },

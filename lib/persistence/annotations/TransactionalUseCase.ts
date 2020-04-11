@@ -2,10 +2,9 @@ import { TClass, TServiceId } from '../../core/di/luxe-di'
 import { IUseCase } from '../../core/context/IUseCase'
 import { InvalidArgumentError } from '../../core/application-errors/InvalidAgrumentError'
 import { TransientService } from '../../core/di/annotations/TransientService'
-import { IEntityManager } from '../IEntityManager'
-import { PersistenceContextMeta } from '../PersistenceContextMeta'
 import { PersistenceConnectionRegistry } from '../PersistenceConnectionRegistry'
 import { TPersistenceConnectionName } from '../luxe-persistence'
+import { PersistenceContextUtil } from '../PersistenceContextUtil'
 
 export const TransactionalUseCase = (
   id?: TServiceId<IUseCase>,
@@ -14,29 +13,30 @@ export const TransactionalUseCase = (
   const runMethodName: keyof IUseCase = 'run'
   const runMethod: Function = Reflect.get(target.prototype, runMethodName)
 
-  Reflect.set(target.prototype, runMethodName, async function <A = any> (this: IUseCase, ...args: A[]) {
+  Reflect.set(target.prototype, runMethodName, async function (this: IUseCase, ...args: any[]) {
     const connection = PersistenceConnectionRegistry.get(connectionName)
-    if (!connection.nestedTransaction || !connection.transaction) {
+    if (!connection.beginTransaction || !connection.commitTransaction || !connection.rollbackTransaction) {
       throw new InvalidArgumentError('Trying to start UseCase transaction with non-transactional connection')
+    } else if (!this.contextInfo) {
+      throw new InvalidArgumentError('Cannot start transaction in UseCase without context')
     }
 
-    const oldEm: IEntityManager | undefined = (this.contextInfo)
-      ? Reflect.getMetadata(PersistenceContextMeta.TRANSACTIONAL_EM, this.contextInfo)
-      : undefined
+    const currentTransactionEm = PersistenceContextUtil.getTransactionalEm(this)
+    const transactionalEm = await connection.beginTransaction(currentTransactionEm)
+    PersistenceContextUtil.setTransactionalEm(this, transactionalEm)
 
-    const run = async (transactionalEm: IEntityManager) => {
-      if (!this.contextInfo) {
-        this.contextInfo = {}
-      }
-
-      Reflect.defineMetadata(PersistenceContextMeta.TRANSACTIONAL_EM, transactionalEm, this.contextInfo)
-      const result = await Reflect.apply(runMethod, this, args)
-      Reflect.defineMetadata(PersistenceContextMeta.TRANSACTIONAL_EM, oldEm, this.contextInfo)
-
-      return result
+    let result: void | any
+    try {
+      result = await Reflect.apply(runMethod, this, args)
+    } catch (e) {
+      await connection.rollbackTransaction(transactionalEm)
+      throw e
+    } finally {
+      PersistenceContextUtil.setTransactionalEm(this, currentTransactionEm)
     }
 
-    return (oldEm) ? connection.nestedTransaction(oldEm, run) : connection.transaction(run)
+    await connection.commitTransaction(transactionalEm)
+    return result
   })
   
   return TransientService(id)(target)

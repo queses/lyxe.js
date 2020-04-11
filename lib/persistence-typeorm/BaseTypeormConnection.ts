@@ -12,24 +12,33 @@ import { AppEnv } from '../core/config/AppEnv'
 import { InjectService } from '../core/di/annotations/InjectService'
 import { TransactionEventBusTkn } from '../persistence/luxe-persistence-tokens'
 import { ITransactionEvenBus } from '../persistence/ITransactionEvenBus'
+import { TypeormTransactionManager } from './TypeormTransactionManager'
+import { OnInit } from '../core/di/annotations/OnInit'
+import { OnShutdown } from '../core/di/annotations/OnShutdown'
 
 @AbstractService()
 export abstract class BaseTypeormConnection implements IPersistenceConnection {
   @InjectService(TransactionEventBusTkn)
   private transactionListener: ITransactionEvenBus
 
+  @InjectService(TypeormTransactionManager)
+  private transactionManager: TypeormTransactionManager
+
   public abstract get config (): ConnectionOptions
   protected abstract get persistenceConnectionName (): TPersistenceConnectionName
+
   private connection?: Connection
 
+  @OnInit()
+  public async connect (): Promise<void> {
+    this.connection = await createConnection(this.config)
+  }
+
+  @OnShutdown()
   public async close (): Promise<void> {
     if (this.connection) {
       await this.connection.close()
     }
-  }
-
-  public async connect (): Promise<void> {
-    this.connection = await createConnection(this.config)
   }
 
   public getManager (): IEntityManager {
@@ -51,37 +60,33 @@ export abstract class BaseTypeormConnection implements IPersistenceConnection {
     return this.connection.synchronize(true)
   }
 
-  public async transaction <T> (run: (transactional: IEntityManager) => Promise<T>): Promise<T> {
+  async beginTransaction <T> (currentTransactionEntityManager?: IEntityManager): Promise<IEntityManager> {
     if (!this.connection) {
       await this.connect()
     }
 
-    return (this.connection as Connection).transaction(async transactional => {
-      Reflect.defineMetadata(EntityManagerMeta.CONNECTION, this, transactional)
-      Reflect.defineMetadata(EntityManagerMeta.TRANSACTION_STARTER, transactional, transactional)
+    let entityManager: EntityManager
+    if (!currentTransactionEntityManager) {
+      entityManager = await this.transactionManager.begin(this.connection as Connection)
+      Reflect.defineMetadata(EntityManagerMeta.TRANSACTION_STARTER, entityManager, entityManager)
+    } else {
+      entityManager = await this.transactionManager.beginNested(this.checkEntityManager(currentTransactionEntityManager))
+      Reflect.defineMetadata(EntityManagerMeta.TRANSACTION_STARTER, currentTransactionEntityManager, entityManager)
+    }
 
-      let result: any
-      try {
-        result = await run(transactional as IEntityManager)
-      } catch (e) {
-        this.transactionListener.handleRollback(transactional as IEntityManager)
-        throw e
-      }
+    Reflect.defineMetadata(EntityManagerMeta.CONNECTION, this, entityManager)
 
-      this.transactionListener.handleCommit(transactional as IEntityManager)
-      return result
-    })
+    return entityManager as IEntityManager
   }
 
-  public nestedTransaction <T> (parent: IEntityManager, run: (transactional: IEntityManager) => Promise<T>): Promise<T> {
-    const em = this.checkTransactionalEntityManager(parent)
-    return em.transaction(transactional => {
-      Reflect.defineMetadata(EntityManagerMeta.CONNECTION, this, transactional)
-      const transactionStarter = Reflect.getMetadata(EntityManagerMeta.TRANSACTION_STARTER, parent)
-      Reflect.defineMetadata(EntityManagerMeta.TRANSACTION_STARTER, transactionStarter, transactional)
+  public async commitTransaction <T> (entityManager: IEntityManager): Promise<void> {
+    await this.transactionManager.commit(this.checkEntityManager(entityManager))
+    this.transactionListener.handleCommit(entityManager)
+  }
 
-      return run(transactional as IEntityManager)
-    })
+  public async rollbackTransaction <T> (entityManager: IEntityManager): Promise<void> {
+    await this.transactionManager.rollback(this.checkEntityManager(entityManager))
+    this.transactionListener.handleRollback(entityManager)
   }
 
   protected getDbEntities (onlyInModules?: string[]) {
@@ -108,14 +113,12 @@ export abstract class BaseTypeormConnection implements IPersistenceConnection {
     return patches
   }
 
-  private checkTransactionalEntityManager (em: IEntityManager): EntityManager {
-    if (
-      em instanceof EntityManager &&
-      Reflect.getMetadata(EntityManagerMeta.CONNECTION, em) instanceof this.constructor
-    ) {
+  private checkEntityManager (em: IEntityManager): EntityManager {
+    const connection: this | undefined = Reflect.getMetadata(EntityManagerMeta.CONNECTION, em)
+    if (em instanceof EntityManager && connection instanceof this.constructor) {
       return em
     } else {
-      throw new InvalidArgumentError('Wrong IEntityManager implementation passed to TypeormConnection')
+      throw new InvalidArgumentError('Wrong IEntityManager implementation passed to TypeORM PersistenceConnection')
     }
   }
 }

@@ -1,43 +1,34 @@
 import { TMochaTransactionalTest } from '../framework-testing'
-import { AppContainer } from '../../core/di/AppContainer'
-import { IEntityManager } from '../../persistence/IEntityManager'
 import { ServiceFactory } from '../../core/context/ServiceFactory'
 import { TBaseContextInfo } from '../../core/context/luxe-context-info'
-import { DefaultContextFactoryTkn } from '../../core/luxe-core-tokens'
-import { IDefaultContextFactory } from '../../core/context/IDefaultContextFactory'
-import { PersistenceContextMeta } from '../../persistence/PersistenceContextMeta'
-import { IServiceFactory } from '../../core/context/IServiceFactory'
 import { InvalidArgumentError } from '../../core/application-errors/InvalidAgrumentError'
 import { TPersistenceConnectionName } from '../../persistence/luxe-persistence'
 import { PersistenceConnectionRegistry } from '../../persistence/PersistenceConnectionRegistry'
+import { TestUtil } from '../TestUtil'
 
 export const itInTransaction = <C extends TBaseContextInfo> (
   expectation: string,
   assertion: TMochaTransactionalTest<C>,
   connectionName?: TPersistenceConnectionName
 ) => {
-  const transactionalAssertion = function (this: Mocha.Test & any, done: Mocha.Done) {
+  const transactionalAssertion = async function (this: Mocha.Test & any) {
     const connection = PersistenceConnectionRegistry.get(connectionName)
-    if (!connection.transaction || !connection.nestedTransaction) {
+    if (!connection.beginTransaction || !connection.rollbackTransaction) {
       throw new InvalidArgumentError('itInTransaction error: provided connection is not transactional')
     }
 
-    const run = async (entityManager: IEntityManager) => {
-      const ctx = AppContainer.get<IDefaultContextFactory<C>>(DefaultContextFactoryTkn).get({ asSystem: true })
-      Reflect.defineMetadata(PersistenceContextMeta.TRANSACTIONAL_EM, entityManager, ctx)
-      const sf = AppContainer.get<IServiceFactory<C>>(ServiceFactory).configure(ctx)
-      await assertion.bind(this)(sf, entityManager)
-      throw errToRollbackTransaction
+    const transactionalEm = await connection.beginTransaction(this.beforeAllEntityManager)
+    if (!this.contextInfo) {
+      this.contextInfo = {}
     }
 
-    const runningTransaction = (this.beforeAllEntityManager)
-      ? connection.nestedTransaction(this.beforeAllEntityManager, run)
-      : connection.transaction(run)
-
-    runningTransaction.catch((err: any) => (err === errToRollbackTransaction) ? done() : done(err))
+    const sf = TestUtil.createContextService<ServiceFactory<C>, C>(ServiceFactory, transactionalEm)
+    try {
+      await assertion.call(this, sf, transactionalEm)
+    } finally {
+      await connection.rollbackTransaction(transactionalEm)
+    }
   }
 
   return it(expectation, transactionalAssertion)
 }
-
-const errToRollbackTransaction = new Error()

@@ -1,14 +1,14 @@
 import { assert } from 'chai'
 import { itInTransaction } from '../../../../lib/testing/mocha/it-in-transaction'
 import { TestSpecialist } from '../../domain/model/TestSpecialist'
-import { MochaPersistenceUtil } from '../../../../lib/testing/mocha/MochaPersistenceUtil'
 import { ConfigurableTestSpecialistRepoTkn } from '../../test-tokens'
 import { TestSpecialistSearchConf } from '../../domain/model/TestSpecialistSearchConf'
 import { PageConfig } from '../../../../lib/persistence/PageConfig'
+import { TestUtil } from '../../../../lib/testing/TestUtil'
 
-describe('ConfigurableQueryRepository', function () {
+describe('ConfigurableRepository', function () {
   itInTransaction('should sort entities', async function (sf, em) {
-    const repo = MochaPersistenceUtil.repo(ConfigurableTestSpecialistRepoTkn, em)
+    const repo = TestUtil.createRepo(ConfigurableTestSpecialistRepoTkn, em)
     await repo.saveMany(createEntities())
     const list = await repo.findAll(new TestSpecialistSearchConf().sortFirstName())
 
@@ -18,7 +18,7 @@ describe('ConfigurableQueryRepository', function () {
   }, 'test')
 
   itInTransaction('should paginate entities', async function (sf, em) {
-    const repo = MochaPersistenceUtil.repo(ConfigurableTestSpecialistRepoTkn, em)
+    const repo = TestUtil.createRepo(ConfigurableTestSpecialistRepoTkn, em)
     await repo.saveMany(createEntities())
     const page = await repo.findAll(new TestSpecialistSearchConf(new PageConfig(2)))
 
@@ -34,7 +34,7 @@ describe('ConfigurableQueryRepository', function () {
   }, 'test')
 
   itInTransaction('should sort and paginate entities', async function (sf, em) {
-    const repo = MochaPersistenceUtil.repo(ConfigurableTestSpecialistRepoTkn, em)
+    const repo = TestUtil.createRepo(ConfigurableTestSpecialistRepoTkn, em)
     await repo.saveMany(createEntities())
     const page = await repo.findAll(new TestSpecialistSearchConf(new PageConfig(2, 2)).sortFirstNameDesc())
 
@@ -45,7 +45,7 @@ describe('ConfigurableQueryRepository', function () {
   }, 'test')
 
   itInTransaction('should find entity', async function (sf, em) {
-    const repo = MochaPersistenceUtil.repo(ConfigurableTestSpecialistRepoTkn, em)
+    const repo = TestUtil.createRepo(ConfigurableTestSpecialistRepoTkn, em)
     await repo.saveMany(createEntities())
     const opts: TestSpecialistSearchConf = new TestSpecialistSearchConf(new PageConfig(2, 1)).sortFirstName()
 
@@ -60,7 +60,7 @@ describe('ConfigurableQueryRepository', function () {
   }, 'test')
 
   itInTransaction('should count entities', async function (sf, em) {
-    const repo = MochaPersistenceUtil.repo(ConfigurableTestSpecialistRepoTkn, em)
+    const repo = TestUtil.createRepo(ConfigurableTestSpecialistRepoTkn, em)
     await repo.saveMany(createEntities())
     const opts: TestSpecialistSearchConf = new TestSpecialistSearchConf(new PageConfig(2))
 
