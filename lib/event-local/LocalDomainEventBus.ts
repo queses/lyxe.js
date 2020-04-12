@@ -17,14 +17,28 @@ import { IDomainEvent } from '../event/IDomainEvent'
 import { TDomainEventType } from '../event/luxe-event'
 import { IDomainEventHandler } from '../event/IDomainEventHandler'
 import { PersistenceContextUtil } from '../persistence/PersistenceContextUtil'
+import { OnInit } from '../core/di/annotations/OnInit'
 
 @SingletonService(DomainEventBusTkn)
 export class LocalDomainEventBus implements IDomainEventBus {
   @InjectService(AppLoggerTkn)
   private logger: IAppLogger
 
-  private emitter: EventEmitter = new EventEmitter()
-  private pendingPromises: Array<Promise<void> | undefined> = []
+  private emitter: EventEmitter
+  private pendingPromises: Array<Promise<void> | undefined>
+
+  @OnInit()
+  public async init (): Promise<void> {
+    this.emitter = new EventEmitter()
+    this.pendingPromises = []
+  }
+
+  @OnShutdown()
+  public async waitForFinish (): Promise<void> {
+    if (this.pendingPromises.length) {
+      await Promise.all(this.pendingPromises)
+    }
+  }
 
   public listen <E extends IDomainEvent> (eventType: TDomainEventType, handler: IDomainEventHandler<E>): void {
     this.emitter.addListener(eventType, (...args: any) => {
@@ -59,13 +73,6 @@ export class LocalDomainEventBus implements IDomainEventBus {
     const transactionStarter: IEntityManager = Reflect.getMetadata(EntityManagerMeta.TRANSACTION_STARTER, em)
     if (transactionStarter) {
       this.transactionEventBus.listenToCommit(transactionStarter, () => this.emitter.emit(eventType, event))
-    }
-  }
-
-  @OnShutdown()
-  public async waitForFinish (): Promise<void> {
-    if (this.pendingPromises.length) {
-      await Promise.all(this.pendingPromises)
     }
   }
 
