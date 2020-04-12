@@ -1,12 +1,7 @@
 import { SingletonService } from '../core/di/annotations/SingletonService'
-import { CacheModule, NestModule } from '@nestjs/common'
-import { ModuleMetadata } from '@nestjs/common/interfaces'
-import { APP_FILTER, APP_INTERCEPTOR, NestFactory } from '@nestjs/core'
-import { DomainExceptionFilter } from './DomainExceptionFilter'
-import { AppExceptionFilter } from './AppExceptionFilter'
-import { AppEnv } from '../core/config/AppEnv'
+import { NestModule } from '@nestjs/common'
+import { NestFactory } from '@nestjs/core'
 import { AppConfigurator } from '../core/config/AppConfigurator'
-import { AppHttpCacheInterceptor } from './AppHttpCacheInterceptor'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { TClass } from '../core/di/luxe-di'
 import { LuxeFramework } from '../core/LuxeFramework'
@@ -19,7 +14,7 @@ import { AppPathUtil } from '../core/config/AppPathUtil'
 
 @SingletonService()
 export class NestExpressRunner {
-  public async run (appModuleClass: TClass<NestModule>, runFramework: boolean = true): Promise<void> {
+  public async run (appModuleClass: TClass<NestModule>, runFramework: boolean = true) {
     const [ app ] =  await Promise.all([
       NestFactory.create<NestExpressApplication>(
         appModuleClass,
@@ -41,25 +36,9 @@ export class NestExpressRunner {
       app.useStaticAssets(AppPathUtil.appData + '/public', { prefix: '/public/' })
       app.useStaticAssets(AppPathUtil.appData + '/static-root')
     }
-  }
 
-  public createModuleMeta (base: ModuleMetadata) {
-    if (!base.imports) {
-      base.imports = []
-    }
+    await app.listen(AppConfigurator.get<number>('web.port'))
 
-    if (!base.providers) {
-      base.providers = []
-    }
-
-    base.providers.push(
-      { provide: APP_FILTER, useClass: DomainExceptionFilter },
-      { provide: APP_FILTER, useClass: AppExceptionFilter }
-    )
-
-    if (AppEnv.inProduction && AppConfigurator.get('web.httpCache')) {
-      base.imports.push(CacheModule.register())
-      base.providers.push({ provide: APP_INTERCEPTOR, useClass: AppHttpCacheInterceptor })
-    }
+    return app
   }
 }

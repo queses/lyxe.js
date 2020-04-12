@@ -12,6 +12,6 @@ export default () => {
   PersistenceTypeormConfig.useDefaultConnection(false)
   KeyValueTypeormConfig.useWithConnection('test')
 
-  LuxeFramework.requirePlugins('logging', 'persistence-typeorm', 'key-value-typeorm', 'event-local')
+  LuxeFramework.requirePlugins('logging', 'key-value-typeorm', 'event-local', 'validation-yup')
   LuxeFramework.requireModules('main')
 }
