@@ -12,27 +12,20 @@ export class PromiseUtil {
   }
 
   static limitPromiseMap <T, U> (concurrency: number, items: T[], mapper: (item: T, index: number, all: T[]) => Promise<U>) {
-    const mapped: U[] = []
-
-    const addPromise = (index: number): Promise<void> => {
-      if (index >= items.length) {
-        return Promise.resolve()
-      }
-
-      return mapper(items[index], index, items).catch(e => { throw e }).then(result => {
-        mapped.push(result)
+    const mapped: U[] = new Array(items.length)
+    const addPromise = (index: number): Promise<void> | undefined => (index < items.length)
+      ? mapper(items[index], index, items).then(result => {
+        mapped[index] = result
         return addPromise(index + concurrency)
       })
-    }
+      : undefined
 
-    const promises: Array<Promise<void>> = []
+    const promises: Array<Promise<void> | undefined> = []
     for (let i = 0; i < concurrency; i++) {
       promises.push(addPromise(i))
     }
 
-    return Promise.all(promises).catch(e => {
-      throw e
-    }).then(() => {
+    return Promise.all(promises).then(() => {
       return mapped
     })
   }

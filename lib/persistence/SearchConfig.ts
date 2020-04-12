@@ -10,11 +10,14 @@ export class SearchConfig {
     this.page = page
   }
 
-  protected addSort (attr: string, order: TSortOrder = 'ASC', asRelation: boolean = false) {
+  protected addSort (attr: string, order: TSortOrder = 'ASC') {
     this.sortOptions[attr] = order
-    if (asRelation) {
-      this.sortRelations[attr] = attr.split('.').shift() as string
-    }
+    return this
+  }
+  protected addRelationSort (relation: string, attr: string, order: TSortOrder = 'ASC') {
+    const relationAttr = `${relation}.${attr}`
+    this.sortOptions[relationAttr] = order
+    this.sortRelations[relationAttr] = relation
 
     return this
   }

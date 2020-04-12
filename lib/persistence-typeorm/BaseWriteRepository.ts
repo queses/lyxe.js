@@ -44,7 +44,9 @@ export abstract class BaseWriteRepository <T extends IHasId<ID>, ID extends TPer
 
     const result: T[] = []
     for (const id of ids) {
-      result.push(data[dataIdsMap.get(id) as number])
+      const numberId = parseInt(id as string, 10)
+      const idsMapKey = isNaN(numberId) ? id : numberId as ID
+      result.push(data[dataIdsMap.get(idsMapKey) as number])
     }
 
     return result
