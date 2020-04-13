@@ -22,7 +22,7 @@ export class NestModuleMetaUtil {
       { provide: APP_FILTER, useClass: AppExceptionFilter }
     )
 
-    if (AppEnv.inProduction && AppConfigurator.get('web.httpCache')) {
+    if (AppEnv.inProduction && AppConfigurator.get('web.cache')) {
       base.imports.push(CacheModule.register())
       base.providers.push({ provide: APP_INTERCEPTOR, useClass: AppHttpCacheInterceptor })
     }
