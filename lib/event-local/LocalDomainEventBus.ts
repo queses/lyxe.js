@@ -17,26 +17,20 @@ import { IDomainEvent } from '../event/IDomainEvent'
 import { TDomainEventType } from '../event/luxe-event'
 import { IDomainEventHandler } from '../event/IDomainEventHandler'
 import { PersistenceContextUtil } from '../persistence/PersistenceContextUtil'
-import { OnInit } from '../core/di/annotations/OnInit'
 
 @SingletonService(DomainEventBusTkn)
 export class LocalDomainEventBus implements IDomainEventBus {
   @InjectService(AppLoggerTkn)
   private logger: IAppLogger
 
-  private emitter: EventEmitter
-  private pendingPromises: Array<Promise<void> | undefined>
-
-  @OnInit()
-  public async init (): Promise<void> {
-    this.emitter = new EventEmitter()
-    this.pendingPromises = []
-  }
+  private emitter: EventEmitter = new EventEmitter()
+  private pendingPromises: Array<Promise<void> | undefined> = []
 
   @OnShutdown()
-  public async waitForFinish (): Promise<void> {
-    if (this.pendingPromises.length) {
-      await Promise.all(this.pendingPromises)
+  public static async waitForFinish (): Promise<void> {
+    const inst = AppContainer.get(DomainEventBusTkn)
+    if (inst instanceof this && inst.pendingPromises.length) {
+      await Promise.all(inst.pendingPromises)
     }
   }
 

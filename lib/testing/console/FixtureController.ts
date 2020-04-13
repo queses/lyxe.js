@@ -4,6 +4,7 @@ import ConsoleAction from '../../console/annotations/ConsoleAction'
 import { DomainFixtureLoader } from '../fixture/DomainFixtureLoader'
 import { TPersistenceConnectionName } from '../../persistence/luxe-persistence'
 import { PersistenceConnectionRegistry } from '../../persistence/PersistenceConnectionRegistry'
+import { AppContainer } from '../../core/di/AppContainer'
 
 @ConsoleDevController('lx:fixture')
 export class FixtureController {
@@ -13,13 +14,13 @@ export class FixtureController {
   @ConsoleAction('persist', 'Persist all domain fixtures with defined persistence connection')
   public loadFixtures (args: string[]) {
     const connectionName: TPersistenceConnectionName = args[0] || 'default'
-    const connection = PersistenceConnectionRegistry.get(connectionName)
+    const connection = AppContainer.get(PersistenceConnectionRegistry).get(connectionName)
     return connection.clearStorage().then(() => this.fixtureLoader.persistFixtures())
   }
 
   @ConsoleAction('clear', 'Drop all data from the storage with defined persistence connection')
   public async drop (args: string[]) {
     const connectionName: TPersistenceConnectionName = args[0] || 'default'
-    return PersistenceConnectionRegistry.get(connectionName).clearStorage()
+    return AppContainer.get(PersistenceConnectionRegistry).get(connectionName).clearStorage()
   }
 }

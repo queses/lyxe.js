@@ -39,16 +39,19 @@ export class LuxeFramework {
     return ServiceInitHandlersRegistry.callAll()
   }
 
+  public static shutdown () {
+    return this.inst.onExit()
+  }
+
   public static hasPlugin (name: string) {
     return this.inst.bootstrappedPlugins.has(name)
   }
 
   private shutdownOnExit () {
-    process.on('beforeExit', this.beforeExit.bind(this))
-    process.on('SIGINT', this.beforeExit.bind(this))
+    process.on('SIGINT', () => this.onExit().then(() => process.exit()))
   }
 
-  private beforeExit () {
+  private async onExit () {
     if (ServiceShutdownHandlersRegistry.hasHandles()) {
       return ServiceShutdownHandlersRegistry.callAll()
     }

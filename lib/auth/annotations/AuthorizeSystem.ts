@@ -1,6 +1,6 @@
 import { IContextService } from '../../core/context/IContextService'
 import { AppError } from '../../core/application-errors/AppError'
-import { TAuthContextInfo, TContextAuth } from '../auth-context'
+import { TAuthContextInfo } from '../auth-context'
 import { AuthorityUtil } from '../AuthorityUtil'
 
 export const AuthorizeSystem = <S extends IContextService<C>, C extends TAuthContextInfo> (
@@ -14,10 +14,12 @@ export const AuthorizeSystem = <S extends IContextService<C>, C extends TAuthCon
 
   const method: Function = descriptor.value
   Reflect.set(target, name, function <A = any> (this: S, ...args: A[]) {
-    if (!this.contextInfo || !this.contextInfo.asSystem) {
-      const auth: TContextAuth | undefined = this.contextInfo ? this.contextInfo.auth : undefined
-      AuthorityUtil.checkAuth(auth, authorities, message)
+    if (this.contextInfo && this.contextInfo.asSystem) {
+      return
     }
+
+    const auth = this.contextInfo ? (this.contextInfo as TAuthContextInfo).auth : undefined
+    AuthorityUtil.checkAuth(auth, authorities, message)
 
     return Reflect.apply(method, this, args)
   })

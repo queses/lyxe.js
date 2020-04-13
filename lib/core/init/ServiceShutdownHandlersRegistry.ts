@@ -10,7 +10,7 @@ export class ServiceShutdownHandlersRegistry {
   }
 
   public static async callAll () {
-    await this.inst.handlers.map((handler) => handler())
+    await Promise.all(this.inst.handlers.map(handler => handler()))
     delete this.inst.handlers
     this.inst.handlers = []
   }

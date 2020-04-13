@@ -13,8 +13,6 @@ import { InjectService } from '../core/di/annotations/InjectService'
 import { TransactionEventBusTkn } from '../persistence/luxe-persistence-tokens'
 import { ITransactionEvenBus } from '../persistence/ITransactionEvenBus'
 import { TypeormTransactionManager } from './TypeormTransactionManager'
-import { OnInit } from '../core/di/annotations/OnInit'
-import { OnShutdown } from '../core/di/annotations/OnShutdown'
 
 @AbstractService()
 export abstract class BaseTypeormConnection implements IPersistenceConnection {
@@ -29,14 +27,12 @@ export abstract class BaseTypeormConnection implements IPersistenceConnection {
 
   private connection?: Connection
 
-  @OnInit()
   public async connect (): Promise<void> {
     this.connection = await createConnection(this.config)
   }
 
-  @OnShutdown()
   public async close (): Promise<void> {
-    if (this.connection) {
+    if (this.connection && this.connection.isConnected) {
       await this.connection.close()
     }
   }

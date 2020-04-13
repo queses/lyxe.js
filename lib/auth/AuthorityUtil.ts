@@ -21,7 +21,7 @@ export class AuthorityUtil {
       hasAccess = Array.isArray(item) ? this.hasAll(item, ctxAuthorities) : ctxAuthorities.has(item)
     }
 
-    if (hasAccess) {
+    if (!hasAccess) {
       throw new DomainAccessError(errorMessage)
     }
   }

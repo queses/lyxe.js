@@ -5,6 +5,7 @@ import { TransientService } from '../../core/di/annotations/TransientService'
 import { PersistenceConnectionRegistry } from '../PersistenceConnectionRegistry'
 import { TPersistenceConnectionName } from '../luxe-persistence'
 import { PersistenceContextUtil } from '../PersistenceContextUtil'
+import { AppContainer } from '../../core/di/AppContainer'
 
 export const TransactionalUseCase = (
   id?: TServiceId<IUseCase>,
@@ -14,7 +15,7 @@ export const TransactionalUseCase = (
   const runMethod: Function = Reflect.get(target.prototype, runMethodName)
 
   Reflect.set(target.prototype, runMethodName, async function (this: IUseCase, ...args: any[]) {
-    const connection = PersistenceConnectionRegistry.get(connectionName)
+    const connection = AppContainer.get(PersistenceConnectionRegistry).get(connectionName)
     if (!connection.beginTransaction || !connection.commitTransaction || !connection.rollbackTransaction) {
       throw new InvalidArgumentError('Trying to start UseCase transaction with non-transactional connection')
     } else if (!this.contextInfo) {

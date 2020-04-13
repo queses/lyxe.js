@@ -9,7 +9,7 @@ export interface IJwtService {
 
   buildRefreshToken (authId: number): Promise<string>
 
-  verifyAndDecode <P extends TAuthJwtPayload> (token: string): Promise<P>
+  verifyAndDecode <P extends {}> (token: string): Promise<P>
 
   getTokenTimeLeft <P extends TAuthJwtPayload> (token: P): number
 }

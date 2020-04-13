@@ -2,6 +2,7 @@ import { assert, AssertionError } from 'chai'
 import { ParentTransactionalUseCaseTkn, TestSpecialistAccountRepoTkn, TestSpecialistRepoTkn } from '../../test-tokens'
 import { PersistenceConnectionRegistry } from '../../../../lib/persistence/PersistenceConnectionRegistry'
 import { TestUtil } from '../../../../lib/testing/TestUtil'
+import { AppContainer } from '../../../../lib/core/di/AppContainer'
 
 describe('TransactionalUseCase', function () {
   it('should begin and rollback transactional use case', async function () {
@@ -22,7 +23,7 @@ describe('TransactionalUseCase', function () {
     const nonTransSpecRepo = TestUtil.createRepo(TestSpecialistRepoTkn, undefined)
     const oldCount = await nonTransSpecRepo.count()
 
-    const connection = PersistenceConnectionRegistry.get('test')
+    const connection = AppContainer.get(PersistenceConnectionRegistry).get('test')
     if (!connection.beginTransaction || !connection.rollbackTransaction) {
       throw new AssertionError('Connection should support transactions')
     }
@@ -43,7 +44,7 @@ describe('TransactionalUseCase', function () {
     const nonTransSpecRepo = TestUtil.createRepo(TestSpecialistRepoTkn, undefined)
     const oldCount = await nonTransSpecRepo.count()
 
-    const connection = PersistenceConnectionRegistry.get('test')
+    const connection = AppContainer.get(PersistenceConnectionRegistry).get('test')
     if (!connection.beginTransaction || !connection.rollbackTransaction) {
       throw new AssertionError('Connection should support transactions')
     }

@@ -16,24 +16,24 @@ export class MochaFixtureUtil {
     connectionName?: TPersistenceConnectionName
   ) {
     before(async function () {
-      const connection = PersistenceConnectionRegistry.get(connectionName)
+      const connection = AppContainer.get(PersistenceConnectionRegistry).get(connectionName)
       await MochaFixtureUtil.loadFixturesBefore(fixtures, connection, this)
     })
 
     after(async function () {
-      const connection = PersistenceConnectionRegistry.get(connectionName)
+      const connection = AppContainer.get(PersistenceConnectionRegistry).get(connectionName)
       await MochaFixtureUtil.rollbackBeforeAllTransaction(connection, this)
     })
   }
 
   static loadModuleFixturesIn = (modules: string | string[], connectionName?: TPersistenceConnectionName) => {
     before(async function () {
-      const connection = PersistenceConnectionRegistry.get(connectionName)
+      const connection = AppContainer.get(PersistenceConnectionRegistry).get(connectionName)
       await MochaFixtureUtil.loadModuleFixturesBefore(modules, connection, this)
     })
 
     after(async function () {
-      const connection = PersistenceConnectionRegistry.get(connectionName)
+      const connection = AppContainer.get(PersistenceConnectionRegistry).get(connectionName)
       await MochaFixtureUtil.rollbackBeforeAllTransaction(connection, this)
     })
   }
@@ -68,7 +68,7 @@ export class MochaFixtureUtil {
     if (!context.currentTest || !context.currentTest.ctx) {
       return
     }
-
+    
     const innerContext = context.currentTest.ctx
     if (!innerContext.beforeAllEntityManager) {
       return

@@ -1,15 +1,14 @@
 import { InjectService } from '../core/di/annotations/InjectService'
 import { JwtServiceTkn } from './luxe-web-auth-jwt-tokens'
 import { IJwtService } from './IJwtService'
-import { WebContextFactoryTkn, WebFacadeTkn } from '../web/luxe-web-tokens'
-import { IWebFacade } from '../web/IWebFacade'
+import { WebFacadeTkn } from '../web/luxe-web-tokens'
 import { TAnyRequest, TAnyResponse } from '../web/luxe-web'
 import { TAuthJwtPayload } from './luxe-web-auth-jwt'
 import { Cached } from '../core/lang/annotations/Cached'
 import { AppContainer } from '../core/di/AppContainer'
-import { AppConfigurationError } from '../core/application-errors/AppConfigurationError'
 import { AppConfigurator } from '../core/config/AppConfigurator'
 import { SingletonService } from '../core/di/annotations/SingletonService'
+import { TBaseContextInfo } from '../core/context/luxe-context-info'
 
 const REQ_KEY_CONTEXT = 'luxe-context-info'
 const REQ_KEY_JWT = 'luxe-jwt-content'
@@ -19,27 +18,16 @@ export class WebAuthJwtService {
   @InjectService(JwtServiceTkn)
   private jwtSrv: IJwtService
 
-  @InjectService(WebFacadeTkn)
-  private webFacade: IWebFacade
-
-  public extractContextInfoFromReq (req: TAnyRequest) {
+  public readContextInfoFromReq (req: TAnyRequest) {
     return req[REQ_KEY_CONTEXT]
   }
 
-  public extractAuthTokenFromReq (req: TAnyRequest): TAuthJwtPayload | undefined {
+  public readAuthTokenFromReq (req: TAnyRequest): TAuthJwtPayload | undefined {
     return req[REQ_KEY_JWT]
   }
 
-  public async saveAuthDataToReq (req: TAnyRequest, jwt: TAuthJwtPayload) {
-    if (!jwt) {
-      return
-    }
-
-    req[REQ_KEY_JWT] = jwt
-    req[REQ_KEY_CONTEXT] = this.contextInfoFactory.getContext(req, {
-      authId: parseInt(jwt.uid, 10),
-      authorities: await this.jwtSrv.decryptAuthorities(jwt.atl)
-    })
+  public async writeContextInfoToReq (context: TBaseContextInfo, req: TAnyRequest) {
+    req[REQ_KEY_CONTEXT] = context
   }
 
   public async getAuthTokenFromReq (req: TAnyRequest): Promise<TAuthJwtPayload | undefined> {
@@ -53,7 +41,10 @@ export class WebAuthJwtService {
     }
 
     const token = authHeader.substr(7)
-    return this.jwtSrv.verifyAndDecode(token).catch(() => {}) as Promise<TAuthJwtPayload | undefined>
+    const decoded = this.jwtSrv.verifyAndDecode(token).catch(() => {}) as Promise<TAuthJwtPayload | undefined>
+    req[REQ_KEY_JWT] = decoded
+
+    return decoded
   }
 
   public setRefreshTokenCookie (res: TAnyResponse, refreshToken: string, durationSec: number): void {
@@ -64,7 +55,7 @@ export class WebAuthJwtService {
     }, res)
   }
 
-  removeRefreshTokenCookie (res: TAnyRequest) {
+  public removeRefreshTokenCookie (res: TAnyRequest) {
     return this.webFacade.removeCookie(
       AppConfigurator.get<string>('auth.refreshTokenCookie'),
       { httpOnly: true, domain: this.cookieDomain },
@@ -77,16 +68,12 @@ export class WebAuthJwtService {
   }
 
   @Cached()
-  private get contextInfoFactory () {
-    try {
-      return AppContainer.get(WebContextFactoryTkn)
-    } catch (e) {
-      throw new AppConfigurationError('WebAuthJwtService Error: interface `IWebContextFactory` should be implemented')
-    }
+  private get cookieDomain () {
+    return AppConfigurator.get<string>('web.mainHost').replace(/^https?:\/\//, '')
   }
 
   @Cached()
-  private get cookieDomain () {
-    return AppConfigurator.get<string>('web.mainHost').replace(/^https?:\/\//, '')
+  private get webFacade () {
+    return AppContainer.get(WebFacadeTkn)
   }
 }

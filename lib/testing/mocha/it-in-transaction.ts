@@ -4,6 +4,7 @@ import { InvalidArgumentError } from '../../core/application-errors/InvalidAgrum
 import { TPersistenceConnectionName } from '../../persistence/luxe-persistence'
 import { PersistenceConnectionRegistry } from '../../persistence/PersistenceConnectionRegistry'
 import { TestUtil } from '../TestUtil'
+import { AppContainer } from '../../core/di/AppContainer'
 
 export const itInTransaction = <C extends TBaseContextInfo> (
   expectation: string,
@@ -11,7 +12,7 @@ export const itInTransaction = <C extends TBaseContextInfo> (
   connectionName?: TPersistenceConnectionName
 ) => {
   const transactionalAssertion = async function (this: Mocha.Test & any) {
-    const connection = PersistenceConnectionRegistry.get(connectionName)
+    const connection = AppContainer.get(PersistenceConnectionRegistry).get(connectionName)
     if (!connection.beginTransaction || !connection.rollbackTransaction) {
       throw new InvalidArgumentError('itInTransaction error: provided connection is not transactional')
     }

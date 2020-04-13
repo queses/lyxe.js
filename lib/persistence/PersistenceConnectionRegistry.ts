@@ -4,16 +4,38 @@ import { TClass } from '../core/di/luxe-di'
 import { AppConfigurationError } from '../core/application-errors/AppConfigurationError'
 import { AppContainer } from '../core/di/AppContainer'
 import { InvalidArgumentError } from '../core/application-errors/InvalidAgrumentError'
+import { SingletonService } from '../core/di/annotations/SingletonService'
+import { OnInit } from '../core/di/annotations/OnInit'
+import { OnShutdown } from '../core/di/annotations/OnShutdown'
 
+@SingletonService()
 export class PersistenceConnectionRegistry {
-  private addedConnections: Map<string, TClass<IPersistenceConnection>> = new Map()
+  private addedConnections: Map<string, symbol> = new Map()
 
-  public static get inst (): PersistenceConnectionRegistry {
-    return Object.defineProperty(this, 'inst', { value: new this() }).inst
+  @OnInit()
+  public static async openConnections () {
+    const inst = AppContainer.get(PersistenceConnectionRegistry)
+    const promises: Promise<void>[] = []
+    for (const name of inst.addedConnections.keys()) {
+      promises.push(inst.get(name).connect())
+    }
+
+    await Promise.all(promises)
   }
 
-  public static get <T extends IPersistenceConnection = IPersistenceConnection> (name: TPersistenceConnectionName = 'default') {
-    const connectionClass = this.inst.addedConnections.get(name)
+  @OnShutdown()
+  public static async closeConnections () {
+    const inst = AppContainer.get(PersistenceConnectionRegistry)
+    const promises: Promise<void>[] = []
+    for (const name of inst.addedConnections.keys()) {
+      promises.push(inst.get(name).close())
+    }
+
+    await Promise.all(promises)
+  }
+
+  public get <T extends IPersistenceConnection = IPersistenceConnection> (name: TPersistenceConnectionName = 'default') {
+    const connectionClass = this.addedConnections.get(name)
     if (!connectionClass) {
       throw new InvalidArgumentError(`Cannot find persistence connection with name "${name}"`)
     }
@@ -26,17 +48,20 @@ export class PersistenceConnectionRegistry {
       throw new AppConfigurationError(`Cannot add "${name}" connection: persistence connection with same name exists`)
     }
 
-    this.addedConnections.set(name, connection)
+    const id = Symbol(name)
+    this.addedConnections.set(name, id)
+    AppContainer.inst.setSingleton(id, connection)
   }
 
   public replace (name: TPersistenceConnectionName, connection: TClass<IPersistenceConnection>) {
-    this.addedConnections.set(name, connection)
+    const id = this.addedConnections.get(name) || Symbol('name')
+    AppContainer.inst.replaceSingleton(id, connection)
   }
 
   public addedNames () {
     const names: string[] = []
-    for (const key of this.addedConnections.keys()) {
-      names.push(key)
+    for (const name of this.addedConnections.keys()) {
+      names.push(name)
     }
 
     return names

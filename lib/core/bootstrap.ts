@@ -1,3 +1,1 @@
-export default () => {
-  require('./context/DefaultBaseContextFactory')
-}
+export default () => {}

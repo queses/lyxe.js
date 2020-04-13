@@ -12,6 +12,7 @@ import { PersistenceConnectionRegistry } from '../../persistence/PersistenceConn
 import { EntityManagerMeta } from '../../persistence/EntityManagerMeta'
 import { KeyValueTypeormConfig } from '../KeyValueTypeormConfig'
 import { BaseTypeormConnection } from '../../persistence-typeorm/BaseTypeormConnection'
+import { AppContainer } from '../../core/di/AppContainer'
 
 @TransientService(KeyValueContextStorageTkn)
 export class KeyValueTypeormStorage extends BaseContextService implements IKeyValueContextStorage {
@@ -48,7 +49,7 @@ export class KeyValueTypeormStorage extends BaseContextService implements IKeyVa
 
   @Cached()
   private get entityManager () {
-    const connection = PersistenceConnectionRegistry.get(KeyValueTypeormConfig.inst.useWithConnection)
+    const connection = AppContainer.get(PersistenceConnectionRegistry).get(KeyValueTypeormConfig.inst.useWithConnection)
     if (!(connection instanceof BaseTypeormConnection)) {
       throw new TransactionError('Trying to use KeyValueTypeormStorage with invalid connection')
     }

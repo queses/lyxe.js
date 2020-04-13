@@ -2,9 +2,10 @@ import { TPersistenceConnectionName } from '../luxe-persistence'
 import { TClass } from '../../core/di/luxe-di'
 import { IPersistenceConnection } from '../IPersistenceConnection'
 import { PersistenceConnectionRegistry } from '../PersistenceConnectionRegistry'
-import { SingletonService } from '../../core/di/annotations/SingletonService'
+import { AppContainer } from '../../core/di/AppContainer'
+import { injectable } from 'inversify'
 
 export const PersistenceConnection = (name: TPersistenceConnectionName) => (target: TClass<IPersistenceConnection>) => {
-  PersistenceConnectionRegistry.inst.add(name, target)
-  return SingletonService()(target)
+  AppContainer.get(PersistenceConnectionRegistry).add(name, target)
+  return injectable()(target)
 }

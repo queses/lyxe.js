@@ -7,20 +7,25 @@ import { LuxeFramework } from '../../core/LuxeFramework'
 
 use(chaiAsPromised)
 
+let bootstrapApp: (() => void) | undefined
+try {
+  bootstrapApp = require(AppPathUtil.appSrc + '/bootstrap').default
+} catch (e) {
+  // No bootstrap file in "src" folder found
+}
+
+if (!bootstrapApp) {
+  throw new AppConfigurationError('Cannot find application bootstrap file. Tests cannot be started')
+}
+
+bootstrapApp()
+
 before(async function () {
-  let bootstrapApp: (() => void) | undefined
-  try {
-    bootstrapApp = require(AppPathUtil.appSrc + '/bootstrap').default
-  } catch (e) {
-    // No bootstrap file in "src" folder found
-  }
-
-  if (!bootstrapApp) {
-    throw new AppConfigurationError('Cannot find application bootstrap file. Tests cannot be started')
-  }
-
-  bootstrapApp()
   await LuxeFramework.run()
+})
+
+after(async function () {
+  await LuxeFramework.shutdown()
 })
 
 afterEach(() => {

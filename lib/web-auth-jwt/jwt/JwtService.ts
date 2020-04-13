@@ -29,7 +29,7 @@ export class JwtService implements IJwtService {
     return this.buildToken({ uid: authId.toString() }, AppConfigurator.get('auth.refreshTokenDuration'))
   }
 
-  async verifyAndDecode <P extends {} = TAuthJwtPayload> (token: string): Promise<P> {
+  async verifyAndDecode <P extends {}> (token: string): Promise<P> {
     return new Promise<P>((resolve, reject) => jwt.verify(
       token,
       this.signKey,

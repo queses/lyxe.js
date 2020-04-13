@@ -37,8 +37,10 @@ export class EntityUtil {
     }
   }
 
-  async processInChunks <E extends IHasId, S extends SearchConfig, R extends IRepository<E, any>> (
-    so: S, search: (so: S) => TPagePromise<E>, handle: (item: E) => any | Promise<any>
+  static async processInChunks <E extends IHasId, S extends SearchConfig, R extends IRepository<E, any>> (
+    so: S,
+    search: (so: S) => TPagePromise<E>,
+    handle: (item: E) => any | Promise<any>
   ): Promise<void> {
     while (true) {
       const chunk = await search(so)
@@ -54,7 +56,7 @@ export class EntityUtil {
     }
   }
 
-  mapToDto <D extends object, E extends object = object> (entity: E, extra?: Partial<D> | any): D | undefined {
+  static mapToDto <D extends object, E extends object = object> (entity: E, extra?: Partial<D> | any): D | undefined {
     if (!entity || !entity.constructor) {
       return undefined
     }
@@ -71,7 +73,7 @@ export class EntityUtil {
     return extra ? Object.assign(dto, extra) : dto
   }
 
-  private parseKeysForDto <D extends {}, E extends {} = {}> (keys: string[], dto: D, entity: E, extra?: Partial<D>): D {
+  private static parseKeysForDto <D extends {}, E extends {} = {}> (keys: string[], dto: D, entity: E, extra?: Partial<D>): D {
     for (const key of keys) {
       if (!key.startsWith('get')) {
         continue

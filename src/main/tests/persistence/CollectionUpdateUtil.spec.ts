@@ -99,7 +99,7 @@ describe('CollectionUpdateUtil', function () {
     photosUrls.unshift('https://picsum.photos/id/913/536/354.jpg')
     assert.lengthOf(photosUrls, 3)
 
-    const updatedValues = await CollectionUpdateUtil.updateFromAsync(
+    const updatedValues = await CollectionUpdateUtil.fromAsync(
       photosValues, photosUrls,
       (item) => item.getUrl(),
       async (value, index, oldItem) => (
@@ -120,7 +120,7 @@ describe('CollectionUpdateUtil', function () {
 })
 
 const updatePhotoCollection = (old: TestPhoto[], values: string[]) => {
-  return CollectionUpdateUtil.updateFrom(
+  return CollectionUpdateUtil.from(
     old, values,
     (item) => item.getUrl(),
     (value, index, old) => old || new TestPhoto(value)

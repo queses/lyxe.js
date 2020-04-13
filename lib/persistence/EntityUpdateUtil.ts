@@ -2,7 +2,7 @@ import { IHasId } from './IHasId'
 import { TPersistenceId, TUpdateEntityConfig, TUpdateEntityResult } from './luxe-persistence'
 
 export class EntityUpdateUtil {
-  async fromDto <E extends IHasId<ID>, ID extends TPersistenceId, D extends {}> (
+  static async fromDto <E extends IHasId<ID>, ID extends TPersistenceId, D extends {}> (
     fieldsConfig: TUpdateEntityConfig<E, ID, D>, entity: E, dto: D
   ): Promise<TUpdateEntityResult<D>> {
     const result: TUpdateEntityResult<D> = {}

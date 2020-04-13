@@ -1,20 +1,28 @@
 import { ServiceFactory } from '../core/context/ServiceFactory'
-import { Cached } from '../core/lang/annotations/Cached'
 import { AppContainer } from '../core/di/AppContainer'
 import { IDomainEventHandler } from './IDomainEventHandler'
 import { IDomainEvent } from './IDomainEvent'
+import { IServiceFactory } from '../core/context/IServiceFactory'
 
 export abstract class BaseDomainEventHandler <E extends IDomainEvent> implements IDomainEventHandler<E> {
-  private serviceFactoryCache: ServiceFactory
-
   public abstract handle (event: E): void | Promise<void>
 
-  protected get sf () {
-    return this.serviceFactoryCache
+  public configure (sf: IServiceFactory) {
+    this._serviceFactory = sf
+    return this
   }
 
-  @Cached()
+  private _serviceFactory: IServiceFactory
+
   protected get serviceFactory () {
-    return AppContainer.get(ServiceFactory).configure({ asSystem: true })
+    if (!this._serviceFactory) {
+      this._serviceFactory = AppContainer.get(ServiceFactory).configure({ asSystem: true })
+    }
+
+    return this._serviceFactory
+  }
+
+  protected get sf () {
+    return this.serviceFactory
   }
 }

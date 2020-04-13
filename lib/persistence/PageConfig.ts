@@ -10,7 +10,7 @@ export class PageConfig {
   }
 
   static ofDefaultSize (current: number = 1) {
-    return new this(AppConfigurator.get('conf.web.defaultPageSize'), current)
+    return new this(AppConfigurator.get('web.defaultPageSize'), current)
   }
 
   static ofChunkSize (current: number = 1) {

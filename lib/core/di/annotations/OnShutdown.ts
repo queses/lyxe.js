@@ -4,7 +4,7 @@ import { ServiceShutdownHandlersRegistry } from '../../init/ServiceShutdownHandl
 export const OnShutdown = <C> () => {
   return (target: C, name: string, descriptor: PropertyDescriptor) => {
     if (!descriptor || typeof descriptor.value !== 'function') {
-      throw new AppError(`Class member ${name} annotated with "@OnShutdown" should be a function`)
+      throw new AppError(`Class member ${name} annotated with "@OnShutdown" should be a static function`)
     }
     
     ServiceShutdownHandlersRegistry.add(descriptor.value.bind(target))

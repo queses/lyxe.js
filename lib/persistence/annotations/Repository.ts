@@ -12,7 +12,7 @@ export const Repository = <T extends IHasId<ID>, ID extends TPersistenceId> (
   id: TServiceId<IRepository<T, ID>>,
   connectionName?: TPersistenceConnectionName
 ) => (target: TClass<IRepository<T, ID>>) => {
-  const connection = PersistenceConnectionRegistry.get(connectionName)
+  const connection = AppContainer.get(PersistenceConnectionRegistry).get(connectionName)
   AppContainer.inst.setFactory(id, (transactionalEm: IEntityManager | undefined) => {
     if (!transactionalEm) {
       return new target(connection.getManager())

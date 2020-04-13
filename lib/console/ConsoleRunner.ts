@@ -6,19 +6,24 @@ import { ConsoleControllerRegistry } from './ConsoleControllerRegistry'
 import { AppContainer } from '../core/di/AppContainer'
 import { AppConfigurator } from '../core/config/AppConfigurator'
 import { DebugUtil } from '../core/lang/DebugUtil'
+import { LuxeFramework } from '../core/LuxeFramework'
 
 @SingletonService()
 export class ConsoleRunner {
   @InjectService(AppLoggerTkn)
   private logger: IAppLogger
 
-  public async run (actionPath?: string, args?: string[]): Promise<void> {
+  public async run (actionPath?: string, args?: string[], shutdownFramework: boolean = true): Promise<void> {
     actionPath = actionPath || process.argv[2]
     args = args || process.argv.slice(3)
 
     const action = ConsoleControllerRegistry.inst.getAction(actionPath)
     if (!action) {
       this.logger.error(`No console action found for path "${actionPath}"`)
+      if (shutdownFramework) {
+        await LuxeFramework.shutdown()
+      }
+
       return
     }
 
@@ -30,6 +35,10 @@ export class ConsoleRunner {
 
     if (AppConfigurator.get('console.measureActionsTime')) {
       this.logTimeDiff(tStart)
+    }
+
+    if (shutdownFramework) {
+      await LuxeFramework.shutdown()
     }
   }
 

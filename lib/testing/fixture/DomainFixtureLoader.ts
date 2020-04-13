@@ -8,12 +8,13 @@ import { SingletonService } from '../../core/di/annotations/SingletonService'
 import { PersistenceConnectionRegistry } from '../../persistence/PersistenceConnectionRegistry'
 import { TPersistenceConnectionName } from '../../persistence/luxe-persistence'
 import { InvalidArgumentError } from '../../core/application-errors/InvalidAgrumentError'
+import { AppContainer } from '../../core/di/AppContainer'
+
+const META_EM_LOADED = 'domain-fixture-loader:loaded'
+const META_EM_DATA_INSERTED = 'domain-fixture-loader:data-inserted'
 
 @SingletonService()
 export class DomainFixtureLoader {
-  private loaded: WeakMap<TClass<IDomainFixture>, number> = new WeakMap()
-  private dataInserted: WeakMap<TClass<IDomainFixture>, boolean> = new WeakMap()
-
   public async load (fixtures: TClass<IDomainFixture> | Array<TClass<IDomainFixture>>, entityManager: IEntityManager): Promise<void> {
     if (Array.isArray(fixtures)) {
       for (const fixtureClass of fixtures) {
@@ -51,7 +52,7 @@ export class DomainFixtureLoader {
   }
 
   public persistFixtures (connectionName?: TPersistenceConnectionName, onlyInModules?: string[]): Promise<void> {
-    const connection = PersistenceConnectionRegistry.get(connectionName)
+    const connection = AppContainer.get(PersistenceConnectionRegistry).get(connectionName)
     if (Array.isArray(onlyInModules)) {
       return this.loadInModules(onlyInModules, connection.getManager())
     } else {
@@ -68,15 +69,18 @@ export class DomainFixtureLoader {
       }
     }
 
-    const loaded = this.loaded.get(fixtureClass) || 0
-    if (this.dataInserted.has(fixtureClass)) {
-      this.loaded.set(fixtureClass, loaded + 1)
+    const loadedMap = this.getLoadedFixturesMap(entityManager)
+    const insertedDataMap = this.getInsertedDataMap(entityManager)
+
+    const loaded = loadedMap.get(fixtureClass) || 0
+    if (insertedDataMap.has(fixtureClass)) {
+      loadedMap.set(fixtureClass, loaded + 1)
       return
     } else if (loaded) {
       throw new AppError(`Domain fixture circular dependency appeared in '${fixtureClass.name}'`)
     }
 
-    this.loaded.set(fixtureClass, 1)
+    loadedMap.set(fixtureClass, 1)
 
     const fixture = new fixtureClass()
     if (Array.isArray(fixture.depends) && fixture.depends.length) {
@@ -89,9 +93,29 @@ export class DomainFixtureLoader {
       await this.loadInModules(fixture.dependsOnModules, entityManager)
     }
 
-    const models: IHasId[] = Object.values(await fixture.getEntities())
+    const models: IHasId[] = Object.values(await fixture.getEntities(entityManager))
     await entityManager.save(models)
 
-    this.dataInserted.set(fixtureClass, true)
+    insertedDataMap.set(fixtureClass, true)
+  }
+
+  private getLoadedFixturesMap (entityManager: IEntityManager) {
+    let map: WeakMap<TClass<IDomainFixture>, number> = Reflect.getMetadata(META_EM_LOADED, entityManager)
+    if (!map) {
+      map = new WeakMap()
+      Reflect.defineMetadata(META_EM_LOADED, map, entityManager)
+    }
+
+    return map
+  }
+
+  private getInsertedDataMap (entityManager: IEntityManager) {
+    let map: WeakMap<TClass<IDomainFixture>, boolean> = Reflect.getMetadata(META_EM_LOADED, entityManager)
+    if (!map) {
+      map = new WeakMap()
+      Reflect.defineMetadata(META_EM_DATA_INSERTED, map, entityManager)
+    }
+
+    return map
   }
 }
