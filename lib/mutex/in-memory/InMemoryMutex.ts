@@ -7,6 +7,7 @@ import { MutexLockError } from '../domain/errors/MutexLockError'
 import { MutexTkn } from '../luxe-mutex-tokens'
 import { Conditional } from '../../core/lang/annotations/Conditional'
 import { AppConfigurator } from '../../core/config/AppConfigurator'
+import { TMutexExtend } from '../domain/mutex-types'
 
 @Conditional(() => !AppConfigurator.get<boolean>('redis.enabled'), SingletonService(MutexTkn))
 export class InMemoryMutex implements IMutex {
@@ -17,12 +18,16 @@ export class InMemoryMutex implements IMutex {
     if (oldUnlockAt && oldUnlockAt >= Date.now()) {
       await PromiseUtil.waitFor(() => {
         const currentOldUnlockAt = this.locks.get(name)
-        return (!currentOldUnlockAt || currentOldUnlockAt < Date.now())
-      }, 100, lockTime)
+        if (currentOldUnlockAt && currentOldUnlockAt >= Date.now()) {
+          return false
+        } else {
+          this.locks.set(name, Date.now() + lockTime)
+          return true
+        }
+      }, 100, lockTime * 100)
+    } else {
+      this.locks.set(name, Date.now() + lockTime)
     }
-
-    const unlockAt = Date.now() + lockTime
-    this.locks.set(name, unlockAt)
 
     return new MutexLock(name, this)
   }
@@ -47,7 +52,7 @@ export class InMemoryMutex implements IMutex {
   async wrap <T> (
     name: string,
     lockTime: MutexLockTime | number,
-    cb: (extend: (lockTime: MutexLockTime | number) => Promise<void>) => Promise<T> | T
+    cb: (extend: TMutexExtend) => Promise<T> | T
   ): Promise<T> {
     const lock = await this.lock(name, lockTime)
     const result = await cb(lock.extend.bind(lock))

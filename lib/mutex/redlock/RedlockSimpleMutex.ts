@@ -12,6 +12,7 @@ import { MutexLockTime } from '../domain/MutexLockTime'
 import { MutexLock } from '../domain/MutexLock'
 import { MutexLockError } from '../domain/errors/MutexLockError'
 import { Conditional } from '../../core/lang/annotations/Conditional'
+import { TMutexExtend } from '../domain/mutex-types'
 
 @Conditional(() => AppConfigurator.get<boolean>('redis.enabled'), SingletonService(MutexTkn))
 export class RedlockSimpleMutex implements IMutex {
@@ -64,7 +65,7 @@ export class RedlockSimpleMutex implements IMutex {
   async wrap <T> (
     name: string,
     lockTime: MutexLockTime | number,
-    cb: (extend: (lockTime: MutexLockTime | number) => Promise<void>) => Promise<T> | T
+    cb: (extend: TMutexExtend) => Promise<T> | T
   ): Promise<T> {
     const lock = await this.lock(name, lockTime)
     const result = await cb(lock.extend.bind(lock))
