@@ -8,8 +8,12 @@ export class AuthCheck {
 
   constructor (private readonly srv: IContextService) {}
 
-  static of (srv: IContextService) {
+  public static of (srv: IContextService) {
     return new this(srv)
+  }
+
+  public static isSystem (srv: IContextService) {
+    return (srv.contextInfo && !srv.contextInfo.asSystem) || false
   }
 
   public message (message: string) {

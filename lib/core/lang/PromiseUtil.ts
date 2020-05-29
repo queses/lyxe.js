@@ -30,7 +30,11 @@ export class PromiseUtil {
     })
   }
 
-  async waitForPromise (condition: () => boolean, timeStepMs: number = 200, maxWaitTimeMs = 5000) {
+  static async waitFor (
+    condition: () => boolean | Promise<boolean>,
+    timeStepMs: number = 200,
+    maxWaitTimeMs = 5000
+  ) {
     const maxIndex = maxWaitTimeMs / timeStepMs
     let i = 0
 
@@ -39,7 +43,9 @@ export class PromiseUtil {
         throw new AppError(`Wait for: ${maxWaitTimeMs}ms timeout exceeded`)
       }
 
-      if (condition()) {
+      const calledCondition = condition()
+      const conditionResult = (calledCondition instanceof Promise) ? await calledCondition : calledCondition
+      if (conditionResult) {
         break
       }
 

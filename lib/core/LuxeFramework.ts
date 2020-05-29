@@ -1,4 +1,3 @@
-import './register-luxe'
 import { AppConfigurationError } from './application-errors/AppConfigurationError'
 import { ServiceInitHandlersRegistry } from './init/ServiceInitHandlersRegistry'
 import { ServiceShutdownHandlersRegistry } from './init/ServiceShutdownHandlersRegistry'
@@ -52,7 +51,7 @@ export class LuxeFramework {
   }
 
   private async onExit () {
-    if (ServiceShutdownHandlersRegistry.hasHandles()) {
+    if (ServiceShutdownHandlersRegistry.hasHandlers()) {
       return ServiceShutdownHandlersRegistry.callAll()
     }
   }

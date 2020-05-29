@@ -20,7 +20,7 @@ export class AppInitActionsRunner {
       return
     }
 
-    await PromiseUtil.limitPromiseMap(8, actions, this.runAction.bind(this))
+    await PromiseUtil.limitPromiseMap(8, actions, action => this.runAction(action))
   }
 
   private async runAction (action: IAppInitAction) {

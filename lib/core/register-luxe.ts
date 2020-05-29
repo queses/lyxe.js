@@ -1,24 +1,18 @@
 import { AppPathUtil } from './config/AppPathUtil'
 
-let registered = false
+require('reflect-metadata')
+require('source-map-support/register')
 
-if (!registered) {
-  registered = true
+require('dotenv').config()
 
-  require('reflect-metadata')
-  require('source-map-support/register')
+const moduleAlias = require('module-alias')
+moduleAlias.addAlias('src', AppPathUtil.appSrc)
+moduleAlias.addAlias('lib', AppPathUtil.appLib)
 
-  require('dotenv').config()
+process.on('unhandledRejection', (err) => {
+  if (err) {
+    console.error(err)
+  }
 
-  const moduleAlias = require('module-alias')
-  moduleAlias.addAlias('src', AppPathUtil.appSrc)
-  moduleAlias.addAlias('lib', AppPathUtil.appLib)
-
-  process.on('unhandledRejection', (err) => {
-    if (err) {
-      console.error(err)
-    }
-
-    process.exit(1)
-  })
-}
+  process.exit(1)
+})

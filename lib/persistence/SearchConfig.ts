@@ -14,6 +14,7 @@ export class SearchConfig {
     this.sortOptions[attr] = order
     return this
   }
+
   protected addRelationSort (relation: string, attr: string, order: TSortOrder = 'ASC') {
     const relationAttr = `${relation}.${attr}`
     this.sortOptions[relationAttr] = order

@@ -20,4 +20,11 @@ export class Page<T> extends Array<T> {
   public get pageSize () { return this._pageSize }
   public get totalPages () { return this._totalPages }
   public get totalElements () { return this._totalElements }
+
+  /**
+   * Return usual array from `map`, `filter`, etc methods to avoid unexpected behavior
+   */
+  static get [Symbol.species] () {
+    return Array
+  }
 }

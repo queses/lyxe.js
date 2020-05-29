@@ -7,12 +7,14 @@ import { InvalidArgumentError } from '../core/application-errors/InvalidAgrument
 import { SingletonService } from '../core/di/annotations/SingletonService'
 import { OnInit } from '../core/di/annotations/OnInit'
 import { OnShutdown } from '../core/di/annotations/OnShutdown'
+import { AppShutdownPhase } from '../core/di/AppShutdownPhase'
+import { AppInitPhase } from '../core/di/AppInitPhase'
 
 @SingletonService()
 export class PersistenceConnectionRegistry {
   private addedConnections: Map<string, symbol> = new Map()
 
-  @OnInit()
+  @OnInit(AppInitPhase.INITIAL)
   public static async openConnections () {
     const inst = AppContainer.get(PersistenceConnectionRegistry)
     const promises: Promise<void>[] = []
@@ -23,7 +25,7 @@ export class PersistenceConnectionRegistry {
     await Promise.all(promises)
   }
 
-  @OnShutdown()
+  @OnShutdown(AppShutdownPhase.LAST)
   public static async closeConnections () {
     const inst = AppContainer.get(PersistenceConnectionRegistry)
     const promises: Promise<void>[] = []

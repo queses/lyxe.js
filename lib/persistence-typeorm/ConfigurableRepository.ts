@@ -83,6 +83,11 @@ export abstract class ConfigurableRepository
     return (await q.getCount()) > 0
   }
 
+  protected emptyPage (config?: C): Page<T> {
+    const pageSize = config?.page?.size || 0
+    return this.createPage([], 1, pageSize, 0)
+  }
+
   private applyConfigToQuery (q: SelectQueryBuilder<T> | undefined, config?: C) {
     if (!q) {
       q = this.queryBuilder()

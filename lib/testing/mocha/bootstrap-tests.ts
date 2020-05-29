@@ -1,3 +1,4 @@
+import '../../core/register-luxe'
 import * as sinon from 'sinon'
 import { use } from 'chai'
 import * as chaiAsPromised from 'chai-as-promised'
