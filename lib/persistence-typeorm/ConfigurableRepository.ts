@@ -67,8 +67,12 @@ export abstract class ConfigurableRepository
 
   protected queryEntity (q?: SelectQueryBuilder<T>, config?: C) {
     q = this.applyConfigToQuery(q, config)
-
     return super.queryEntity(q)
+  }
+
+  protected queryRawEntity <U extends any> (q?: SelectQueryBuilder<T>, config?: C): Promise<U> {
+    q = this.applyConfigToQuery(q, config)
+    return super.queryRawEntity(q)
   }
 
   protected countEntities (q?: SelectQueryBuilder<T>, config?: C) {

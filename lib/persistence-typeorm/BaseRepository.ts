@@ -64,6 +64,11 @@ export abstract class BaseRepository <T extends IHasId<ID>, ID extends TPersiste
     return q.getOne()
   }
 
+  protected queryRawEntity <U extends any> (q?: SelectQueryBuilder<T>): Promise<U> {
+    q = this.setCacheOptionsToQuery(q)
+    return q.getRawOne()
+  }
+
   protected countEntities (q?: SelectQueryBuilder<T>) {
     q = this.setCacheOptionsToQuery(q)
     return q.getCount()

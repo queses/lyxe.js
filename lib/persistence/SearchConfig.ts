@@ -10,6 +10,11 @@ export class SearchConfig {
     this.page = page
   }
 
+  public clearSort () {
+    this.sortOptions = {}
+    this.sortRelations = {}
+  }
+
   protected addSort (attr: string, order: TSortOrder = 'ASC') {
     this.sortOptions[attr] = order
     return this
