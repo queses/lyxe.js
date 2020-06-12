@@ -10,6 +10,7 @@ import { InjectService } from '../../core/di/annotations/InjectService'
 import { ResourceNotFoundError } from '../../core/application-errors/ResourceNotFoundError'
 import { InvalidArgumentError } from '../../core/application-errors/InvalidAgrumentError'
 import { AppPathUtil } from '../../core/config/AppPathUtil'
+import { PromiseUtil } from '../../core/lang/PromiseUtil'
 
 const MAX_FILE_SIZE = 50000000 // 50 mb
 const MAX_TTL_MS = 43200000 // 12 hours
@@ -41,11 +42,17 @@ export class FsAppFileCache implements IAppFileCache {
     })
   }
 
-  moveToPath (key: string, path: string): Promise<void> {
+  moveToPath (key: string, path: string, secondTry: boolean = false): Promise<void> {
     const cachedPath = this.transformKeyToPath(key)
     return access(cachedPath)
       .then(() => rename(cachedPath, path))
-      .catch(() => { throw new ResourceNotFoundError(`App File Cache Error: ${key} not found`) })
+      .catch(() => {
+        if (!secondTry) {
+          return PromiseUtil.sleep(100).then(() => this.moveToPath(key, path, true))
+        } else {
+          throw new ResourceNotFoundError(`App File Cache Error: ${key} not found`)
+        }
+      })
   }
 
   public async set (key: string, value: Buffer | string): Promise<void> {

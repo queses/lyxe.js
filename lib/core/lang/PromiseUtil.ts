@@ -2,11 +2,15 @@ import { CalculationTimeourError } from '../application-errors/CalculationTimeou
 import { AppError } from '../application-errors/AppError'
 
 export class PromiseUtil {
+  static sleep (timeMs: number) {
+    return new Promise(r => setTimeout(r, timeMs))
+  }
+
   static timeoutExecution <V> (promise: Promise<V>, operationDescription: string, timeoutMs: number = 2500): Promise<V> {
     return Promise.race([
       promise,
       new Promise((resolve, reject) => {
-        return  setTimeout(() => reject(new CalculationTimeourError(operationDescription, timeoutMs)), timeoutMs)
+        return setTimeout(() => reject(new CalculationTimeourError(operationDescription, timeoutMs)), timeoutMs)
       })
     ]) as Promise<V>
   }
