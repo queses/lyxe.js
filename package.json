@@ -7,10 +7,10 @@
   "license": "MIT",
   "scripts": {
     "do": "tsc && node dist/src/console.js",
-    "do:dbg": "tsc && cross-env NODE_DEBUG=true node --inspect-brk --nolazy dist/src/app/console.js",
+    "do:dbg": "tsc && cross-env DEBUGGER=true node --inspect-brk --nolazy dist/src/app/console.js",
     "do:prod": "cross-env NODE_ENV=production node dist/src/app/console.js",
     "start": "nodemon --config lib/run/nodemon.json --exec \"tsc && node dist/src/app/web.js\"",
-    "start:dbg": "tsc && cross-env NODE_DEBUG=true node --inspect-brk --nolazy dist/src/app/web.js",
+    "start:dbg": "tsc && cross-env DEBUGGER=true node --inspect-brk --nolazy dist/src/app/web.js",
     "start:prod": "gulp build && cross-env NODE_ENV=production node dist/src/app/web.js",
     "build": "gulp build",
     "build:lib": "gulp clean && tsc -p tsconfig.build.json",
