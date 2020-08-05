@@ -21,7 +21,7 @@ export class LuxeFramework {
   public static requireModules (...moduleNames: string[]) {
     for (const moduleName of moduleNames) {
       if (!this.inst.bootstrappedModules.has(moduleName)) {
-        this.inst.requireModuleBootstrap(moduleName)()
+        this.inst.requireModuleBootstrap(moduleName)
         this.inst.bootstrappedModules.set(moduleName, true)
       }
     }
@@ -57,18 +57,11 @@ export class LuxeFramework {
   }
 
   private requireModuleBootstrap (moduleName: string) {
-    let bootstrapModule: (() => void) | undefined
     try {
-      bootstrapModule = require(`${AppPathUtil.appSrc}/${moduleName}/bootstrap`).default
+      require(`${AppPathUtil.appSrc}/${moduleName}/register`)
     } catch (e) {
-      // No module in "src" folder found
-    }
-
-    if (!bootstrapModule) {
       throw new AppConfigurationError(`App bootstrap error: module "${moduleName}" not found`)
     }
-
-    return bootstrapModule
   }
 
   private requirePluginBootstrap (pluginName: string) {
