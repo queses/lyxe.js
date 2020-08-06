@@ -1,13 +1,13 @@
 {
   "name": "lyxe",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "LyxeFramework - Build modular, solid and reliable web apps easily",
   "main": "lib/core/LyxeFramework.js",
   "author": "Maxim Kobozev <quesesr@gmail.com>",
   "license": "MIT",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/queses/lyxe.js"
+    "type": "git",
+    "url": "https://github.com/queses/lyxe.js"
   },
   "keywords": [
     "ddd",
