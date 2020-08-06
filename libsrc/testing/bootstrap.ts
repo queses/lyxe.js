@@ -1,4 +1,4 @@
-import { LyxeFramework } from '../core/LuxieFramework'
+import { LyxeFramework } from '../core/LyxeFramework'
 
 export default () => {
   LyxeFramework.requireModules('persistence')

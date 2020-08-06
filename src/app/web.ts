@@ -1,5 +1,5 @@
 import '../../libsrc/core/register-lyxe'
-import { LyxeFramework } from '../../libsrc/core/LuxieFramework'
+import { LyxeFramework } from '../../libsrc/core/LyxeFramework'
 import { AppContainer } from '../../libsrc/core/di/AppContainer'
 import bootstrap from '../bootstrap'
 import { NestExpressRunner } from '../../libsrc/web-nest-express/NestExpressRunner'

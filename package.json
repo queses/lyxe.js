@@ -3,8 +3,12 @@
   "version": "1.2.0",
   "description": "LyxeFramework - Build modular, solid and reliable web apps easily",
   "main": "lib/core/LyxeFramework.js",
-  "author": "MaxRattle <quesesr@gmail.com>",
+  "author": "Maxim Kobozev <quesesr@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/queses/lyxe.js"
+  },
   "scripts": {
     "lyxe": "lyxe",
     "prepublish": "lyxe build-lib",
@@ -35,6 +39,7 @@
     "cache-manager-redis": "^0.6.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
+    "cross-env": "^7.0.2",
     "cross-spawn": "^7.0.3",
     "dotenv": "^8.2.0",
     "gulp": "^4.0.2",
@@ -42,7 +47,7 @@
     "jake": "^10.8.2",
     "jsonwebtoken": "^8.5.1",
     "mobile-detect": "^1.4.4",
-    "mocha": "^8.1.1",
+    "mocha": "^7.2.0",
     "module-alias": "^2.2.2",
     "mysql2": "^2.1.0",
     "nodemon": "^2.0.3",
@@ -52,6 +57,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "sinon": "^9.0.2",
+    "source-map-support": "^0.5.16",
+    "string-argv": "^0.3.1",
     "winston": "^3.2.1",
     "yargs": "^15.3.1",
     "yup": "^0.28.3"
@@ -78,12 +85,9 @@
     "@typescript-eslint/eslint-plugin": "^2.19.2",
     "@typescript-eslint/parser": "^2.19.2",
     "copyfiles": "^2.3.0",
-    "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.20.1",
-    "source-map-support": "^0.5.16",
     "sqlite3": "^4.1.1",
-    "string-argv": "^0.3.1",
     "typeorm": "0.3.0-rc.9",
     "typescript": "^3.8.3"
   },

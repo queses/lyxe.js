@@ -11,6 +11,6 @@ export class HelloConsoleAction {
 
   @ConsoleAction('run', 'Log into console')
   public run () {
-    this.logger.log('Luxie Framework successfully started!')
+    this.logger.log('Lyxe Framework successfully started!')
   }
 }

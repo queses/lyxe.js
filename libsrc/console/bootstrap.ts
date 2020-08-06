@@ -1,4 +1,4 @@
-import { LyxeFramework } from '../core/LuxieFramework'
+import { LyxeFramework } from '../core/LyxeFramework'
 import { AppEnv } from '../core/config/AppEnv'
 
 export default () => {

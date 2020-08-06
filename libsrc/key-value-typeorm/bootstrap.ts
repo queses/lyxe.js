@@ -1,4 +1,4 @@
-import { LyxeFramework } from '../core/LuxieFramework'
+import { LyxeFramework } from '../core/LyxeFramework'
 import { PersistenceTypeormConfig } from '../persistence-typeorm/PersistenceTypeormConfig'
 import { KeyValueTypeormConfig } from './KeyValueTypeormConfig'
 

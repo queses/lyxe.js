@@ -1,4 +1,4 @@
-import { LyxeFramework } from '../libsrc/core/LuxieFramework'
+import { LyxeFramework } from '../libsrc/core/LyxeFramework'
 import { AppConfigurator } from '../libsrc/core/config/AppConfigurator'
 import * as fs from 'fs'
 import { AppPathUtil } from '../libsrc/core/config/AppPathUtil'

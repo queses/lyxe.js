@@ -40,7 +40,7 @@ flag('watch', 'watch files')
 flag('dbg', 'debug mode')
 task('test', ['lint', 'tsc'], () => {
   const { slow, watch, only, dbg } = process.env
-  const args = [ 'NODE_ENV=test', './node_modules/mocha/bin/mocha' ]
+  const args = ['NODE_ENV=test', './node_modules/mocha/bin/mocha']
 
   if (watch) {
     args.push('--watch')

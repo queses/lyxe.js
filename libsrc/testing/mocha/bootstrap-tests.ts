@@ -4,7 +4,7 @@ import { use } from 'chai'
 import * as chaiAsPromised from 'chai-as-promised'
 import { AppPathUtil } from '../../core/config/AppPathUtil'
 import { AppConfigurationError } from '../../core/application-errors/AppConfigurationError'
-import { LyxeFramework } from '../../core/LuxieFramework'
+import { LyxeFramework } from '../../core/LyxeFramework'
 
 use(chaiAsPromised)
 

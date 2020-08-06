@@ -6,7 +6,7 @@ import { ConsoleControllerRegistry } from './ConsoleControllerRegistry'
 import { AppContainer } from '../core/di/AppContainer'
 import { AppConfigurator } from '../core/config/AppConfigurator'
 import { DebugUtil } from '../core/lang/DebugUtil'
-import { LyxeFramework } from '../core/LuxieFramework'
+import { LyxeFramework } from '../core/LyxeFramework'
 
 @SingletonService()
 export class ConsoleRunner {
