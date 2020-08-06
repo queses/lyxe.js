@@ -1,1 +1,1 @@
-module.exports = require('./dist/lib/persistence-typeorm/ormconfig').default
+module.exports = require('./dist/libsrc/persistence-typeorm/ormconfig').default

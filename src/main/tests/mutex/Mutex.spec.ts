@@ -1,7 +1,7 @@
 import { assert } from 'chai'
-import { AppContainer } from '../../../../lib/core/di/AppContainer'
-import { MutexTkn } from '../../../../lib/mutex/luxie-mutex-tokens'
-import { PromiseUtil } from '../../../../lib/core/lang/PromiseUtil'
+import { AppContainer } from '../../../../libsrc/core/di/AppContainer'
+import { MutexTkn } from '../../../../libsrc/mutex/luxie-mutex-tokens'
+import { PromiseUtil } from '../../../../libsrc/core/lang/PromiseUtil'
 
 describe('Mutex', function () {
   it('should wait on lock', async function () {

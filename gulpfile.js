@@ -1,5 +1,5 @@
 Object.assign(
   module.exports,
-  require('./lib/run/gulpfile-base'),
-  require('./lib/persistence-typeorm/run/gulpfile-typeorm')
+  require('./libsrc/run/gulpfile-base'),
+  require('./libsrc/persistence-typeorm/run/gulpfile-typeorm')
 )

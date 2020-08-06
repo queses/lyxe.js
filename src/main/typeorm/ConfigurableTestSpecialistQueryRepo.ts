@@ -1,9 +1,9 @@
 import { TestSpecialist } from '../domain/model/TestSpecialist'
 import { ObjectLiteral, SelectQueryBuilder } from 'typeorm'
 import { TestSpecialistSearchConf } from '../domain/model/TestSpecialistSearchConf'
-import { Repository } from '../../../lib/persistence/annotations/Repository'
+import { Repository } from '../../../libsrc/persistence/annotations/Repository'
 import { ConfigurableTestSpecialistRepoTkn } from '../test-tokens'
-import { ConfigurableRepository } from '../../../lib/persistence-typeorm/ConfigurableRepository'
+import { ConfigurableRepository } from '../../../libsrc/persistence-typeorm/ConfigurableRepository'
 
 @Repository(ConfigurableTestSpecialistRepoTkn, 'test')
 export class ConfigurableTestSpecialistQueryRepo extends ConfigurableRepository<TestSpecialist, number> {

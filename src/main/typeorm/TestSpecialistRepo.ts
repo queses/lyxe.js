@@ -1,7 +1,7 @@
 import { TestSpecialist } from '../domain/model/TestSpecialist'
-import { Repository } from '../../../lib/persistence/annotations/Repository'
+import { Repository } from '../../../libsrc/persistence/annotations/Repository'
 import { TestSpecialistRepoTkn } from '../test-tokens'
-import { BaseRepository } from '../../../lib/persistence-typeorm/BaseRepository'
+import { BaseRepository } from '../../../libsrc/persistence-typeorm/BaseRepository'
 import { ITestSpecialistRepo } from '../domain/test-repos'
 
 @Repository(TestSpecialistRepoTkn, 'test')

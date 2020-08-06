@@ -1,6 +1,6 @@
 import { assert } from 'chai'
 import * as path from 'path'
-import { AppPathUtil } from '../../../../../lib/core/config/AppPathUtil'
+import { AppPathUtil } from '../../../../../libsrc/core/config/AppPathUtil'
 
 describe('PathUtil', function () {
   it('should return app paths', function () {

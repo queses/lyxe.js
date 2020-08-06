@@ -1,9 +1,9 @@
-import { LuxieFramework } from '../lib/core/LuxieFramework'
-import { AppConfigurator } from '../lib/core/config/AppConfigurator'
+import { LuxieFramework } from '../libsrc/core/LuxieFramework'
+import { AppConfigurator } from '../libsrc/core/config/AppConfigurator'
 import * as fs from 'fs'
-import { AppPathUtil } from '../lib/core/config/AppPathUtil'
-import { PersistenceTypeormConfig } from '../lib/persistence-typeorm/PersistenceTypeormConfig'
-import { KeyValueTypeormConfig } from '../lib/key-value-typeorm/KeyValueTypeormConfig'
+import { AppPathUtil } from '../libsrc/core/config/AppPathUtil'
+import { PersistenceTypeormConfig } from '../libsrc/persistence-typeorm/PersistenceTypeormConfig'
+import { KeyValueTypeormConfig } from '../libsrc/key-value-typeorm/KeyValueTypeormConfig'
 
 export default () => {
   const config = fs.readFileSync(AppPathUtil.appData + '/.appconfig').toString()

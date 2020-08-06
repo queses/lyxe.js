@@ -1,4 +1,4 @@
 Object.assign(
   module.exports,
-  require('./dist/lib/testing/mocha/mocharc')
+  require('./dist/libsrc/testing/mocha/mocharc')
 )

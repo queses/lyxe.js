@@ -1,4 +1,4 @@
-import { SearchConfig } from '../../../../lib/persistence/SearchConfig'
+import { SearchConfig } from '../../../../libsrc/persistence/SearchConfig'
 
 export class TestSpecialistSearchConf extends SearchConfig {
   public onlyInactive?: boolean = false

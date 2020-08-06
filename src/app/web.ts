@@ -1,8 +1,8 @@
-import '../../lib/core/register-luxie'
-import { LuxieFramework } from '../../lib/core/LuxieFramework'
-import { AppContainer } from '../../lib/core/di/AppContainer'
+import '../../libsrc/core/register-luxie'
+import { LuxieFramework } from '../../libsrc/core/LuxieFramework'
+import { AppContainer } from '../../libsrc/core/di/AppContainer'
 import bootstrap from '../bootstrap'
-import { NestExpressRunner } from '../../lib/web-nest-express/NestExpressRunner'
+import { NestExpressRunner } from '../../libsrc/web-nest-express/NestExpressRunner'
 import { AppModule } from './app.module'
 
 const main = async () => {

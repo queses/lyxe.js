@@ -15,9 +15,6 @@ task('lint', () => {
   return npmCommand(`eslint ${!force ? '--cache' : ''} ${fix ? '--fix' : ''} src/**/*.ts`)
 })
 
-desc('Runs ESLint on lib folder')
-flag('force', 'ignore cache')
-flag('fix', 'fix errors')
 task('lint-lib', () => {
   const { fix, force } = process.env
   return npmCommand(
@@ -27,6 +24,8 @@ task('lint-lib', () => {
 
 desc('Lints and builds code')
 task('build', () => runSerial('lint', 'clean', 'tsc'))
+
+task('build-lib', ['lint', 'clean'], () => npmCommand('tsc -p tsconfig.build.json'))
 
 desc('Run tests')
 flag('only', 'run only tests that matches provided RegExp', String)
@@ -46,7 +45,7 @@ task('test', ['lint', 'tsc'], () => {
     args.push('--inspect-brk', '--nolazy')
   }
 
-  if (typeof only === 'string') {
+  if (typeof only === 'string' && only !== 'true') {
     args.push('-g', only)
   } else if (!slow) {
     args.unshift('MOCHA_FAST_ONLY=true')
@@ -74,3 +73,5 @@ task('do', ['tsc'], () => {
   args.push('./dist/src/app/console.js', cmd)
   return npmCrossEnv(args)
 })
+
+require('../persistence-typeorm/run/jakefile-typeorm')

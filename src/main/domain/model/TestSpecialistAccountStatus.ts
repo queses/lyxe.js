@@ -1,9 +1,9 @@
 import { Column } from 'typeorm'
 import { TestSpecialistAccountStatusType } from './TestSpecialistAccountStatusType'
 import { TestSpecialistAccount } from './TestSpecialistAccount'
-import { CollectedValueObject } from '../../../../lib/persistence-typeorm/CollectedValueObject'
-import { ComposedCollectionElement } from '../../../../lib/persistence-typeorm/annotations/ComposedCollectionElement'
-import { ComposedCollectionParent } from '../../../../lib/persistence-typeorm/annotations/ComposedCollectionParent'
+import { CollectedValueObject } from '../../../../libsrc/persistence-typeorm/CollectedValueObject'
+import { ComposedCollectionElement } from '../../../../libsrc/persistence-typeorm/annotations/ComposedCollectionElement'
+import { ComposedCollectionParent } from '../../../../libsrc/persistence-typeorm/annotations/ComposedCollectionParent'
 
 @ComposedCollectionElement()
 export class TestSpecialistAccountStatus extends CollectedValueObject<TestSpecialistAccount> {

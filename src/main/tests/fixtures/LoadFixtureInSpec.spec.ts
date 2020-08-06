@@ -1,8 +1,8 @@
 import { assert } from 'chai'
-import { MochaFixtureUtil } from '../../../../lib/testing/mocha/MochaFixtureUtil'
+import { MochaFixtureUtil } from '../../../../libsrc/testing/mocha/MochaFixtureUtil'
 import { TestSpecialistAccountFixture } from './TestSpecialistAccountFixture'
-import { itInTransaction } from '../../../../lib/testing/mocha/it-in-transaction'
-import { TestUtil } from '../../../../lib/testing/TestUtil'
+import { itInTransaction } from '../../../../libsrc/testing/mocha/it-in-transaction'
+import { TestUtil } from '../../../../libsrc/testing/TestUtil'
 import { TestSpecialistAccountRepoTkn } from '../../test-tokens'
 
 describe('LoadFixtureInSpec', function () {

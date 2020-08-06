@@ -47,7 +47,7 @@ const getConfig = () => ({
 
 const createZone = (module, dependencies = []) => {
   return {
-    'target': './lib/' + module,
+    'target': './libsrc/' + module,
     'from': './src',
     'except': (module === 'core')
       ? [ './core' ]

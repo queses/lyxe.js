@@ -1,4 +1,4 @@
-import { BaseDomainFixture } from '../../../../lib/testing/fixture/BaseDomainFixture'
+import { BaseDomainFixture } from '../../../../libsrc/testing/fixture/BaseDomainFixture'
 import { TestSpecialistAccount } from '../../domain/model/TestSpecialistAccount'
 import { TestEmbeddedMoney } from '../../domain/model/TestEmbeddedMoney'
 

@@ -13,5 +13,8 @@
     "outDir": "./dist",
     "incremental": true
   },
-  "include": [ "./src", "./lib" ]
+  "include": [
+    "./src",
+    "./libsrc"
+  ]
 }

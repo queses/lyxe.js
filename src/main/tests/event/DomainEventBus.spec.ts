@@ -1,11 +1,11 @@
 import { assert } from 'chai'
-import { IDomainEventHandler } from '../../../../lib/event/IDomainEventHandler'
-import { IDomainEvent } from '../../../../lib/event/IDomainEvent'
-import { AppContainer } from '../../../../lib/core/di/AppContainer'
-import { DomainEventBusTkn } from '../../../../lib/event/luxie-event-tokens'
-import { DomainEventHandler } from '../../../../lib/event/annotations/DomainEventHandler'
-import { TestUtil } from '../../../../lib/testing/TestUtil'
-import { itInTransaction } from '../../../../lib/testing/mocha/it-in-transaction'
+import { IDomainEventHandler } from '../../../../libsrc/event/IDomainEventHandler'
+import { IDomainEvent } from '../../../../libsrc/event/IDomainEvent'
+import { AppContainer } from '../../../../libsrc/core/di/AppContainer'
+import { DomainEventBusTkn } from '../../../../libsrc/event/luxie-event-tokens'
+import { DomainEventHandler } from '../../../../libsrc/event/annotations/DomainEventHandler'
+import { TestUtil } from '../../../../libsrc/testing/TestUtil'
+import { itInTransaction } from '../../../../libsrc/testing/mocha/it-in-transaction'
 
 describe('DomainEventBus', function () {
   before(function () {

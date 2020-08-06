@@ -1,8 +1,8 @@
 import { assert, AssertionError } from 'chai'
 import { ParentTransactionalUseCaseTkn, TestSpecialistAccountRepoTkn, TestSpecialistRepoTkn } from '../../test-tokens'
-import { PersistenceConnectionRegistry } from '../../../../lib/persistence/PersistenceConnectionRegistry'
-import { TestUtil } from '../../../../lib/testing/TestUtil'
-import { AppContainer } from '../../../../lib/core/di/AppContainer'
+import { PersistenceConnectionRegistry } from '../../../../libsrc/persistence/PersistenceConnectionRegistry'
+import { TestUtil } from '../../../../libsrc/testing/TestUtil'
+import { AppContainer } from '../../../../libsrc/core/di/AppContainer'
 
 describe('TransactionalUseCase', function () {
   it('should begin and rollback transactional use case', async function () {

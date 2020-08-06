@@ -1,9 +1,9 @@
-import { IRepository } from '../../../lib/persistence/IRepository'
+import { IRepository } from '../../../libsrc/persistence/IRepository'
 import { TestSpecialist } from './model/TestSpecialist'
-import { IConfigurableRepository } from '../../../lib/persistence/IConfigurableRepository'
+import { IConfigurableRepository } from '../../../libsrc/persistence/IConfigurableRepository'
 import { TestSpecialistAccount } from './model/TestSpecialistAccount'
 import { TestSpecialistSearchConf } from './model/TestSpecialistSearchConf'
-import { TPagePromise } from '../../../lib/persistence/luxie-persistence'
+import { TPagePromise } from '../../../libsrc/persistence/luxie-persistence'
 
 export interface ITestSpecialistRepo extends IRepository<TestSpecialist, number> {
   findByFirstName (needle: string): Promise<TestSpecialist[]>

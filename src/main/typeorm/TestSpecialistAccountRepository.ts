@@ -1,8 +1,8 @@
-import { Repository } from '../../../lib/persistence/annotations/Repository'
+import { Repository } from '../../../libsrc/persistence/annotations/Repository'
 import { TestSpecialistAccountRepoTkn } from '../test-tokens'
 import { TestSpecialistAccount } from '../domain/model/TestSpecialistAccount'
 import { ITestSpecialistAccountRepo } from '../domain/test-repos'
-import { BaseRepository } from '../../../lib/persistence-typeorm/BaseRepository'
+import { BaseRepository } from '../../../libsrc/persistence-typeorm/BaseRepository'
 
 @Repository(TestSpecialistAccountRepoTkn, 'test')
 export class TestSpecialistAccountRepository
