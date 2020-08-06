@@ -1,7 +1,7 @@
 import { JoinColumn, ObjectType, OneToOne } from 'typeorm'
 import { IHasId } from '../../persistence/IHasId'
 import { IComposedHasId } from '../../persistence/IComposedHasId'
-import { TPersistenceId } from '../../persistence/luxie-persistence'
+import { TPersistenceId } from '../../persistence/lyxe-persistence'
 
 export const ComposedEntityParent = <P extends IHasId<ID>, ID extends TPersistenceId, E extends IComposedHasId<P, number, ID>> (
   typeFn: (type?: any) => ObjectType<P>

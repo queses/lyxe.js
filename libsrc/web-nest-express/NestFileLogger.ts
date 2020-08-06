@@ -1,4 +1,4 @@
-import { AppLoggerTkn } from '../logging/luxie-logging-tokens'
+import { AppLoggerTkn } from '../logging/lyxe-logging-tokens'
 import { ReplaceSingleton } from '../core/di/annotations/ReplaceSingleton'
 import { IAppLogger } from '../logging/IAppLogger'
 import * as winston from 'winston'

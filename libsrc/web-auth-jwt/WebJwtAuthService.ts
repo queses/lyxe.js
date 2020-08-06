@@ -1,17 +1,17 @@
 import { InjectService } from '../core/di/annotations/InjectService'
-import { JwtServiceTkn } from './luxie-web-auth-jwt-tokens'
+import { JwtServiceTkn } from './lyxe-web-auth-jwt-tokens'
 import { IJwtService } from './IJwtService'
-import { WebFacadeTkn } from '../web/luxie-web-tokens'
-import { TAnyRequest, TAnyResponse } from '../web/luxie-web'
-import { TAuthJwtPayload } from './luxie-web-auth-jwt'
+import { WebFacadeTkn } from '../web/lyxe-web-tokens'
+import { TAnyRequest, TAnyResponse } from '../web/lyxe-web'
+import { TAuthJwtPayload } from './lyxe-web-auth-jwt'
 import { Cached } from '../core/lang/annotations/Cached'
 import { AppContainer } from '../core/di/AppContainer'
 import { AppConfigurator } from '../core/config/AppConfigurator'
 import { SingletonService } from '../core/di/annotations/SingletonService'
-import { TBaseContextInfo } from '../core/context/luxie-context-info'
+import { TBaseContextInfo } from '../core/context/lyxe-context-info'
 
-const REQ_KEY_CONTEXT = 'luxie-context-info'
-const REQ_KEY_JWT = 'luxie-jwt-content'
+const REQ_KEY_CONTEXT = 'lyxe-context-info'
+const REQ_KEY_JWT = 'lyxe-jwt-content'
 
 @SingletonService()
 export class WebAuthJwtService {

@@ -1,6 +1,6 @@
 import { assert, AssertionError } from 'chai'
 import { itInTransaction } from '../../../../libsrc/testing/mocha/it-in-transaction'
-import { KeyValueContextStorageTkn } from '../../../../libsrc/key-value/luxie-key-value-tokens'
+import { KeyValueContextStorageTkn } from '../../../../libsrc/key-value/lyxe-key-value-tokens'
 import { TransactionalUseCase } from '../../../../libsrc/persistence/annotations/TransactionalUseCase'
 import { BaseUseCase } from '../../../../libsrc/core/context/BaseUseCase'
 

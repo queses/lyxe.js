@@ -1,5 +1,5 @@
 import { SingletonService } from '../../core/di/annotations/SingletonService'
-import { AppCacheTkn } from '../luxie-cache-tokens'
+import { AppCacheTkn } from '../lyxe-cache-tokens'
 import { IAppCache } from '../IAppCache'
 import * as cache from 'cache-manager'
 import { AppConfigurator } from '../../core/config/AppConfigurator'

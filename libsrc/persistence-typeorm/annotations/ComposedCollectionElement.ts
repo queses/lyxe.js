@@ -1,5 +1,5 @@
 import { IComposedHasId } from '../../persistence/IComposedHasId'
-import { TClass } from '../../core/di/luxie-di'
+import { TClass } from '../../core/di/lyxe-di'
 import { Entity } from 'typeorm'
 import { IHasId } from '../../persistence/IHasId'
 

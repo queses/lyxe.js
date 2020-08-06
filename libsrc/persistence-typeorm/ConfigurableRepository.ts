@@ -1,7 +1,7 @@
 import { Page } from '../persistence/Page'
 import { SelectQueryBuilder } from 'typeorm'
 import { IHasId } from '../persistence/IHasId'
-import { TPersistenceId, TSortOrder } from '../persistence/luxie-persistence'
+import { TPersistenceId, TSortOrder } from '../persistence/lyxe-persistence'
 import { BaseRepository, ENTITY_ALIAS } from './BaseRepository'
 import { IConfigurableRepository } from '../persistence/IConfigurableRepository'
 import { SearchConfig } from '../persistence/SearchConfig'

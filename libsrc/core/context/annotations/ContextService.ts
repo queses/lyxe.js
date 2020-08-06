@@ -1,4 +1,4 @@
-import { TServiceId } from '../../di/luxie-di'
+import { TServiceId } from '../../di/lyxe-di'
 import { IContextService } from '../IContextService'
 import { TransientService } from '../../di/annotations/TransientService'
 

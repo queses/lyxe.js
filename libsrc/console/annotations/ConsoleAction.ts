@@ -1,6 +1,6 @@
 import { ConsoleControllerRegistry } from '../ConsoleControllerRegistry'
 import { IConsoleController } from '../IConsoleController'
-import { TClass } from '../../core/di/luxie-di'
+import { TClass } from '../../core/di/lyxe-di'
 
 const ConsoleAction = (name: string, descr: string) => 
   (target: IConsoleController, propertyKey: string) => {

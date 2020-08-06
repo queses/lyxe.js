@@ -1,5 +1,5 @@
 import { IDomainEvent } from './IDomainEvent'
-import { TDomainEventType } from './luxie-event'
+import { TDomainEventType } from './lyxe-event'
 import { IContextService } from '../core/context/IContextService'
 import { IDomainEventHandler } from './IDomainEventHandler'
 

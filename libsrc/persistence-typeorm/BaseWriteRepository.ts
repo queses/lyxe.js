@@ -1,5 +1,5 @@
 import { IHasId } from '../persistence/IHasId'
-import { TPersistenceId } from '../persistence/luxie-persistence'
+import { TPersistenceId } from '../persistence/lyxe-persistence'
 import { IWriteRepository } from '../persistence/IWriteRepository'
 import { EntityManager, ObjectType } from 'typeorm'
 

@@ -3,7 +3,7 @@ import { ServiceInitHandlersRegistry } from './init/ServiceInitHandlersRegistry'
 import { ServiceShutdownHandlersRegistry } from './init/ServiceShutdownHandlersRegistry'
 import { AppPathUtil } from './config/AppPathUtil'
 
-export class LuxeFramework {
+export class LyxeFramework {
   private bootstrappedPlugins: Map<string, boolean> = new Map()
   private bootstrappedModules: Map<string, boolean> = new Map()
 
@@ -87,7 +87,7 @@ export class LuxeFramework {
     }
 
     try {
-      bootstrapPlugin = require(`luxe-plugin-${pluginName}/bootstrap`).default
+      bootstrapPlugin = require(`lyxe-plugin-${pluginName}/bootstrap`).default
     } catch (e) {
       // No plugin in `node_modules` found
     }
@@ -99,7 +99,7 @@ export class LuxeFramework {
     return bootstrapPlugin
   }
 
-  public static get inst (): LuxeFramework {
+  public static get inst (): LyxeFramework {
     // Register framework and bootstrap core module when first time accessed to framework
     require('./bootstrap').default()
 

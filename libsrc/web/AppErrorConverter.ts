@@ -5,7 +5,7 @@ import { ResourceNotFoundError } from '../core/application-errors/ResourceNotFou
 import { InvalidArgumentError } from '../core/application-errors/InvalidAgrumentError'
 import { ResourceTemporaryUnavailableError } from '../core/application-errors/ResourceTemporaryUnavailableError'
 import { InjectService } from '../core/di/annotations/InjectService'
-import { AppLoggerTkn } from '../logging/luxie-logging-tokens'
+import { AppLoggerTkn } from '../logging/lyxe-logging-tokens'
 import { IAppLogger } from '../logging/IAppLogger'
 
 @SingletonService()

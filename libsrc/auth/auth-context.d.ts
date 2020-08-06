@@ -1,4 +1,4 @@
-import { TBaseContextInfo } from '../core/context/luxie-context-info'
+import { TBaseContextInfo } from '../core/context/lyxe-context-info'
 
 export type TAuthContextInfo = TBaseContextInfo & { auth?: TContextAuth }
 

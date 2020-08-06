@@ -1,5 +1,5 @@
 import { Container } from 'inversify'
-import { TServiceId, TClass, TFactoryFunc } from './luxie-di'
+import { TServiceId, TClass, TFactoryFunc } from './lyxe-di'
 import { IContainerInstance } from './IContainerInstance'
 import { ServiceNotFoundError } from '../application-errors/ServiceNotFoundError'
 

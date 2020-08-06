@@ -1,5 +1,5 @@
 import { DomainError } from './DomainError'
-import { TClass } from '../di/luxie-di'
+import { TClass } from '../di/lyxe-di'
 
 export class DomainEntityNotFoundError extends DomainError {
   name = 'DomainEntityNotFoundError'

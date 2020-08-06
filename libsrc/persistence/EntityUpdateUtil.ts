@@ -1,5 +1,5 @@
 import { IHasId } from './IHasId'
-import { TPersistenceId, TUpdateEntityConfig, TUpdateEntityResult } from './luxie-persistence'
+import { TPersistenceId, TUpdateEntityConfig, TUpdateEntityResult } from './lyxe-persistence'
 
 export class EntityUpdateUtil {
   static async fromDto <E extends IHasId<ID>, ID extends TPersistenceId, D extends {}> (

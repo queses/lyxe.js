@@ -3,7 +3,7 @@ import { TestSpecialist } from './model/TestSpecialist'
 import { IConfigurableRepository } from '../../../libsrc/persistence/IConfigurableRepository'
 import { TestSpecialistAccount } from './model/TestSpecialistAccount'
 import { TestSpecialistSearchConf } from './model/TestSpecialistSearchConf'
-import { TPagePromise } from '../../../libsrc/persistence/luxie-persistence'
+import { TPagePromise } from '../../../libsrc/persistence/lyxe-persistence'
 
 export interface ITestSpecialistRepo extends IRepository<TestSpecialist, number> {
   findByFirstName (needle: string): Promise<TestSpecialist[]>

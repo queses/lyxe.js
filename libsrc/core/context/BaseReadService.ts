@@ -1,5 +1,5 @@
 import { BaseContextService } from './BaseContextService'
-import { TBaseContextInfo } from './luxie-context-info'
+import { TBaseContextInfo } from './lyxe-context-info'
 import { AbstractService } from '../di/annotations/AbstractService'
 
 @AbstractService()

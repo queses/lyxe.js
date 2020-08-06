@@ -1,4 +1,4 @@
-import { TServiceId } from '../../di/luxie-di'
+import { TServiceId } from '../../di/lyxe-di'
 import { TransientService } from '../../di/annotations/TransientService'
 import { IUseCase } from '../IUseCase'
 

@@ -1,5 +1,5 @@
-import { LuxieFramework } from '../core/LuxieFramework'
+import { LyxeFramework } from '../core/LuxieFramework'
 
 export default () => {
-  LuxieFramework.requireModules('persistence')
+  LyxeFramework.requireModules('persistence')
 }

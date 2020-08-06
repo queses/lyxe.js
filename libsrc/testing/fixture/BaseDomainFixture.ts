@@ -1,7 +1,7 @@
 import { IDomainFixture } from './IDomainFixture'
 import { IHasId } from '../../persistence/IHasId'
-import { TClass } from '../../core/di/luxie-di'
-import { TPersistenceId } from '../../persistence/luxie-persistence'
+import { TClass } from '../../core/di/lyxe-di'
+import { TPersistenceId } from '../../persistence/lyxe-persistence'
 import { IEntityManager } from '../../persistence/IEntityManager'
 
 export abstract class BaseDomainFixture implements IDomainFixture {

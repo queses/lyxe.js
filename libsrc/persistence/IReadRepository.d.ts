@@ -1,5 +1,5 @@
 import { IHasId } from './IHasId'
-import { TPersistenceId } from './luxie-persistence'
+import { TPersistenceId } from './lyxe-persistence'
 
 export interface IReadRepository <T extends IHasId<ID>, ID extends TPersistenceId> {
   cache (toCache?: boolean): this

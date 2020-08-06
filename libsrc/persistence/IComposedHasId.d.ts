@@ -1,5 +1,5 @@
 import { IHasId } from './IHasId'
-import { TPersistenceId } from './luxie-persistence'
+import { TPersistenceId } from './lyxe-persistence'
 
 export interface IComposedHasId
   <P extends IHasId<PID>, ID extends TPersistenceId = TPersistenceId, PID extends TPersistenceId = TPersistenceId>

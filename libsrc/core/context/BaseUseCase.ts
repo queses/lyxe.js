@@ -1,4 +1,4 @@
-import { TBaseContextInfo } from './luxie-context-info'
+import { TBaseContextInfo } from './lyxe-context-info'
 import { IUseCase } from './IUseCase'
 import { BaseContextService } from './BaseContextService'
 import { AbstractService } from '../di/annotations/AbstractService'

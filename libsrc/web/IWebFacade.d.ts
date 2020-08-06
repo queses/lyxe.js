@@ -1,4 +1,4 @@
-import { TAnyRequest, TAnyResponse, TCookieOptions } from './luxie-web'
+import { TAnyRequest, TAnyResponse, TCookieOptions } from './lyxe-web'
 
 export interface IWebFacade <RQ extends TAnyRequest = TAnyRequest, RS extends TAnyResponse = TAnyResponse> {
   extractIp (req: RQ): string

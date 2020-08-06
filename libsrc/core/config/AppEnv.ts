@@ -1,4 +1,4 @@
-import { TAppLaunchType } from './luxie-config'
+import { TAppLaunchType } from './lyxe-config'
 
 export class AppEnv {
   private static contextType: TAppLaunchType

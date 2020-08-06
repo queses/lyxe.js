@@ -1,9 +1,9 @@
 import { IHasId } from '../IHasId'
-import { TPersistenceId } from '../luxie-persistence'
+import { TPersistenceId } from '../lyxe-persistence'
 import { IRepository } from '../IRepository'
-import { TServiceId } from '../../core/di/luxie-di'
+import { TServiceId } from '../../core/di/lyxe-di'
 import { AppContainer } from '../../core/di/AppContainer'
-import { RepositoryFactoryTkn } from '../luxie-persistence-tokens'
+import { RepositoryFactoryTkn } from '../lyxe-persistence-tokens'
 import { IContextService } from '../../core/context/IContextService'
 import { PersistenceContextUtil } from '../PersistenceContextUtil'
 

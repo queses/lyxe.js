@@ -1,4 +1,4 @@
-import { TSortOrder } from './luxie-persistence'
+import { TSortOrder } from './lyxe-persistence'
 import { PageConfig } from './PageConfig'
 
 export class SearchConfig {

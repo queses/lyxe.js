@@ -1,5 +1,5 @@
 import { AppError } from './AppError'
-import { TClass } from '../di/luxie-di'
+import { TClass } from '../di/lyxe-di'
 
 export class ServiceNotConfiguredError extends AppError {
   name = 'ServiceNotConfiguredError'

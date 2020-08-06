@@ -1,4 +1,4 @@
-import { TServiceId, TClass, TFactoryFunc } from './luxie-di'
+import { TServiceId, TClass, TFactoryFunc } from './lyxe-di'
 
 export interface IContainerInstance {
   get <T> (id: TServiceId<T>): T

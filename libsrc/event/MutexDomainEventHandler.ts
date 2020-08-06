@@ -2,7 +2,7 @@ import { AppContainer } from '../core/di/AppContainer'
 import { IDomainEventHandler } from './IDomainEventHandler'
 import { IDomainEvent } from './IDomainEvent'
 import { BaseDomainEventHandler } from './BaseDomainEventHandler'
-import { MutexTkn } from '../mutex/luxie-mutex-tokens'
+import { MutexTkn } from '../mutex/lyxe-mutex-tokens'
 import { MutexLockTime } from '../mutex/domain/MutexLockTime'
 import { TMutexExtend } from '../mutex/domain/mutex-types'
 

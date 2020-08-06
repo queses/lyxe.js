@@ -1,6 +1,6 @@
-import { LuxieFramework } from '../core/LuxieFramework'
+import { LyxeFramework } from '../core/LuxieFramework'
 
 export default () => {
-  LuxieFramework.requirePlugins('event')
+  LyxeFramework.requirePlugins('event')
   require('./LocalDomainEventBus')
 }

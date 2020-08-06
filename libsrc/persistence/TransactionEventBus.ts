@@ -1,7 +1,7 @@
 import { SingletonService } from '../core/di/annotations/SingletonService'
 import { IEntityManager } from './IEntityManager'
 import { ITransactionEvenBus } from './ITransactionEvenBus'
-import { TransactionEventBusTkn } from './luxie-persistence-tokens'
+import { TransactionEventBusTkn } from './lyxe-persistence-tokens'
 
 @SingletonService(TransactionEventBusTkn)
 export class TransactionEventBus implements ITransactionEvenBus {

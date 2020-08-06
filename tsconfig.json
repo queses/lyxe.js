@@ -11,10 +11,11 @@
     "declaration": true,
     "strictPropertyInitialization": false,
     "outDir": "./dist",
-    "incremental": true
+    "incremental": true,
+    "allowJs": true
   },
   "include": [
     "./src",
-    "./libsrc"
+    "./libsrc", "run"
   ]
 }

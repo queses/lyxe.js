@@ -52,7 +52,7 @@ export class AppConfigurator {
         .setStrict('redis.port', this.getEnvInt('REDIS_PORT'))
         .setStrict('redis.host', this.getEnvString('REDIS_HOST') || 'localhost')
         .setStrict('redis.db', this.getEnvInt('REDIS_DB'))
-        .setStrict('redis.prefixCache', this.getEnvString('REDIS_PREFIX_CACHE') || 'luxie-app-cache')
+        .setStrict('redis.prefixCache', this.getEnvString('REDIS_PREFIX_CACHE') || 'lyxe-app-cache')
     }
 
     this

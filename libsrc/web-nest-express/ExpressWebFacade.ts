@@ -1,9 +1,9 @@
 import { IWebFacade } from '../web/IWebFacade'
 import { Request, Response } from 'express'
-import { TCookieOptions } from '../web/luxie-web'
+import { TCookieOptions } from '../web/lyxe-web'
 import { CookieUtil } from '../web/CookieUtil'
 import { SingletonService } from '../core/di/annotations/SingletonService'
-import { WebFacadeTkn } from '../web/luxie-web-tokens'
+import { WebFacadeTkn } from '../web/lyxe-web-tokens'
 
 @SingletonService(WebFacadeTkn)
 export class ExpressWebFacade implements IWebFacade<Request, Response> {

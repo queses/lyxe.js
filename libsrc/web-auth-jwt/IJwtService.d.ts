@@ -1,4 +1,4 @@
-import { TAuthJwtPayload } from './luxie-web-auth-jwt'
+import { TAuthJwtPayload } from './lyxe-web-auth-jwt'
 
 export interface IJwtService {
   decryptAuthorities (encrypted: string): Promise<string[]>

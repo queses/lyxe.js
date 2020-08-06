@@ -1,10 +1,10 @@
-import '../../core/register-luxie'
+import '../../core/register-lyxe'
 import * as sinon from 'sinon'
 import { use } from 'chai'
 import * as chaiAsPromised from 'chai-as-promised'
 import { AppPathUtil } from '../../core/config/AppPathUtil'
 import { AppConfigurationError } from '../../core/application-errors/AppConfigurationError'
-import { LuxieFramework } from '../../core/LuxieFramework'
+import { LyxeFramework } from '../../core/LuxieFramework'
 
 use(chaiAsPromised)
 
@@ -22,11 +22,11 @@ if (!bootstrapApp) {
 bootstrapApp()
 
 before(async function () {
-  await LuxieFramework.run()
+  await LyxeFramework.run()
 })
 
 after(async function () {
-  await LuxieFramework.shutdown()
+  await LyxeFramework.shutdown()
 })
 
 afterEach(() => {

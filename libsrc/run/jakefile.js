@@ -1,5 +1,5 @@
 const { task, desc } = require('jake')
-const { flag, npmCommand, runSerial, npmCrossEnv } = require('./jake-utils')
+const { flag, npmCommand, runSerial, npmCrossEnv, npmSpawn } = require('./jake-utils')
 const RunError = require('./RunError')
 
 desc('Cleans TypeScript output directory')
@@ -16,17 +16,22 @@ task('lint', () => {
   return npmCommand(`eslint ${!force ? '--cache' : ''} ${fix ? '--fix' : ''} src/**/*.ts`)
 })
 
-task('lint-lib', () => {
-  const { fix, force } = process.env
-  return npmCommand(
-    `eslint ${!force ? '--cache --cache-location .eslintcache.lib' : ''} ${fix ? '--fix' : ''} lib/**/*.ts`
-  )
-})
-
 desc('Lints and builds code')
 task('build', () => runSerial('lint', 'clean', 'tsc'))
 
-task('build-lib', ['lint', 'clean'], () => npmCommand('tsc -p tsconfig.build.json'))
+task('lint-lib', () => {
+  const { fix, force } = process.env
+  return npmCommand(
+    `eslint ${!force ? '--cache --cache-location .eslintcache.lib' : ''} ${fix ? '--fix' : ''} libsrc/**/*.ts`
+  )
+})
+
+task('copy-lib-d-ts', () => npmCommand('copyfiles -u 1 "libsrc/**/*.d.ts" lib'))
+task('build-lib', () => {
+  return runSerial('lint-lib', 'clean')
+    .then(() => npmCommand('tsc -p tsconfig.build.json'))
+    .then(() => runSerial('copy-lib-d-ts'))
+})
 
 desc('Run tests')
 flag('only', 'run only tests that matches provided RegExp', String)
@@ -73,6 +78,21 @@ task('do', ['tsc'], () => {
 
   args.push('./dist/src/app/console.js', cmd)
   return npmCrossEnv(args)
+})
+
+desc('Run web development server')
+flag('dbg', 'debug mode')
+task('dev', () => {
+  const { dbg } = process.env
+
+  if (dbg) {
+    const args = ['DEBUGGER=1', 'node', '--inspect-brk', '--nolazy']
+    return npmCrossEnv(args)
+  } else {
+    const args = ['--watch', 'src', '--ext', 'ts,js', '--ignore', 'src/**/*.spec.ts']
+    args.push('--exec', 'tsc && node dist/src/app/web.js')
+    return npmSpawn('nodemon', args)
+  }
 })
 
 require('../persistence-typeorm/run/jakefile-typeorm')

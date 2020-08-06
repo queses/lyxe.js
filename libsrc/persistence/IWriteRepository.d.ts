@@ -1,5 +1,5 @@
 import { IHasId } from './IHasId'
-import { TPersistenceId } from './luxie-persistence'
+import { TPersistenceId } from './lyxe-persistence'
 
 export interface IWriteRepository <T extends IHasId<ID>, ID extends TPersistenceId> {
   delete (entity: T): Promise<void>

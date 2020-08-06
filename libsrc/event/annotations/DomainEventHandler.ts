@@ -1,8 +1,8 @@
-import { TClass } from '../../core/di/luxie-di'
+import { TClass } from '../../core/di/lyxe-di'
 import { IDomainEventHandler } from '../IDomainEventHandler'
-import { TDomainEventType } from '../luxie-event'
+import { TDomainEventType } from '../lyxe-event'
 import { AppContainer } from '../../core/di/AppContainer'
-import { DomainEventBusTkn } from '../luxie-event-tokens'
+import { DomainEventBusTkn } from '../lyxe-event-tokens'
 import { IDomainEvent } from '../IDomainEvent'
 
 export const DomainEventHandler = <E extends IDomainEvent, T extends IDomainEventHandler<E>> (type: TDomainEventType) => {
