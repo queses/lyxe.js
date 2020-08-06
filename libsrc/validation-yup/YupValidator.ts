@@ -11,7 +11,7 @@ export class YupValidator {
     try {
       await schema.validate(data, { abortEarly: false, stripUnknown: skipUnknown })
     } catch (e) {
-      if (e instanceof ValidationError) {
+      if (e instanceof ValidationError || e.name === 'ValidationError') {
         throw new DomainEntityValidationError(this.extractErrorsInfo(e))
       }
 
