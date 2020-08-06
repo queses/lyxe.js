@@ -1,5 +1,6 @@
 const { task, desc } = require('jake')
 const { flag, npmCommand, runSerial, npmCrossEnv } = require('./jake-utils')
+const RunError = require('./RunError')
 
 desc('Cleans TypeScript output directory')
 task('clean', () => npmCommand('rimraf dist'))
