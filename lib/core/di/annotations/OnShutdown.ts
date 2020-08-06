@@ -1,6 +1,6 @@
 import {AppError} from '../../application-errors/AppError'
 import {ServiceShutdownHandlersRegistry} from '../../init/ServiceShutdownHandlersRegistry'
-import {AppShutdownPhase} from "../AppShutdownPhase";
+import {AppShutdownPhase} from '../AppShutdownPhase'
 
 export const OnShutdown = <C> (phase: AppShutdownPhase = AppShutdownPhase.DEFAULT) => {
   return (target: C, name: string, descriptor: PropertyDescriptor) => {

@@ -5,8 +5,8 @@ import { PromiseUtil } from '../../../../lib/core/lang/PromiseUtil'
 
 describe('Mutex', function () {
   it('should wait on lock', async function () {
-    let counterOne = 0;
-    let counterTwo = 0;
+    let counterOne = 0
+    let counterTwo = 0
     const run = () => AppContainer.get(MutexTkn).wrap('test', 100, async () => {
       counterOne++
       await new Promise(r => setTimeout(r, 50))
