@@ -9,6 +9,14 @@
     "type" : "git",
     "url" : "https://github.com/queses/lyxe.js"
   },
+  "keywords": [
+    "ddd",
+    "solid",
+    "oop",
+    "modular",
+    "backend",
+    "framework"
+  ],
   "scripts": {
     "lyxe": "lyxe",
     "prepublish": "lyxe build-lib",
