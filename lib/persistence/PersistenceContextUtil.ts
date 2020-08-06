@@ -2,10 +2,10 @@ import { IContextService } from '../core/context/IContextService'
 import { IEntityManager } from './IEntityManager'
 import { InvalidArgumentError } from '../core/application-errors/InvalidAgrumentError'
 import { IHasId } from './IHasId'
-import { TPersistenceId } from './luxe-persistence'
+import { TPersistenceId } from './luxie-persistence'
 import { IRepository } from './IRepository'
 import { AppContainer } from '../core/di/AppContainer'
-import { RepositoryFactoryTkn } from './luxe-persistence-tokens'
+import { RepositoryFactoryTkn } from './luxie-persistence-tokens'
 import Token from '../core/di/Token'
 
 export class PersistenceContextUtil {

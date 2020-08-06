@@ -1,13 +1,14 @@
-import { LuxeFramework } from '../../lib/core/LuxeFramework'
+import '../../lib/core/register-luxie'
+import { LuxieFramework } from '../../lib/core/LuxieFramework'
 import { AppContainer } from '../../lib/core/di/AppContainer'
 import bootstrap from '../bootstrap'
 import { ConsoleRunner } from '../../lib/console/ConsoleRunner'
 
 const main = async () => {
-  LuxeFramework.requirePlugins('console')
+  LuxieFramework.requirePlugins('console')
   bootstrap()
 
-  await LuxeFramework.run()
+  await LuxieFramework.run()
   await AppContainer.get(ConsoleRunner).run()
 }
 

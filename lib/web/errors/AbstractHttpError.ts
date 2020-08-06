@@ -1,4 +1,4 @@
-import { TObjectLiteral } from '../../core/lang/luxe-lang'
+import { TObjectLiteral } from '../../core/lang/luxie-lang'
 
 export class AbstractHttpError extends Error {
   name = 'AbstractHttpError'

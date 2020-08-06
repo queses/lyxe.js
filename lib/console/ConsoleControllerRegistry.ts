@@ -1,4 +1,4 @@
-import { TClass } from '../core/di/luxe-di'
+import { TClass } from '../core/di/luxie-di'
 import { IConsoleController } from './IConsoleController'
 import { InvalidArgumentError } from '../core/application-errors/InvalidAgrumentError'
 

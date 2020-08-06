@@ -1,7 +1,7 @@
-import { LuxeFramework } from '../core/LuxeFramework'
+import { LuxieFramework } from '../core/LuxieFramework'
 
 export default () => {
-  LuxeFramework.requirePlugins('web', 'logging')
+  LuxieFramework.requirePlugins('web', 'logging')
   require('./NestFileLogger')
   require('./ExpressWebFacade')
 }

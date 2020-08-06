@@ -1,4 +1,4 @@
-import { TAuthJwtPayload } from './luxe-web-auth-jwt'
+import { TAuthJwtPayload } from './luxie-web-auth-jwt'
 
 export interface IJwtService {
   decryptAuthorities (encrypted: string): Promise<string[]>

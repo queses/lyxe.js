@@ -1,4 +1,4 @@
-import { TClass, TFactoryFunc, TServiceId } from './luxe-di'
+import { TClass, TFactoryFunc, TServiceId } from './luxie-di'
 import { ContainerInstance } from './ContainerInstance'
 
 export class AppContainer {

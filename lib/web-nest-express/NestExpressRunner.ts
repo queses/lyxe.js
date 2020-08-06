@@ -3,10 +3,10 @@ import { NestModule } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { AppConfigurator } from '../core/config/AppConfigurator'
 import { NestExpressApplication } from '@nestjs/platform-express'
-import { TClass } from '../core/di/luxe-di'
-import { LuxeFramework } from '../core/LuxeFramework'
+import { TClass } from '../core/di/luxie-di'
+import { LuxieFramework } from '../core/LuxieFramework'
 import { AppContainer } from '../core/di/AppContainer'
-import { AppLoggerTkn } from '../logging/luxe-logging-tokens'
+import { AppLoggerTkn } from '../logging/luxie-logging-tokens'
 import { WebNestExpressConfig } from './WebNestExpressConfig'
 import { NestCorsUtil } from './NestCorsUtil'
 import { CustomOrigin } from '@nestjs/common/interfaces/external/cors-options.interface'
@@ -22,7 +22,7 @@ export class NestExpressRunner {
           logger: AppContainer.get(AppLoggerTkn)
         }
       ),
-      runFramework ? LuxeFramework.run() : undefined
+      runFramework ? LuxieFramework.run() : undefined
     ])
 
     if (WebNestExpressConfig.inst.useCors) {

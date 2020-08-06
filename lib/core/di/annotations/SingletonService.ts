@@ -1,5 +1,5 @@
 import { injectable } from 'inversify'
-import { TClass, TServiceId } from '../luxe-di'
+import { TClass, TServiceId } from '../luxie-di'
 import { AppContainer } from '../AppContainer'
 
 export const SingletonService = <T> (id?: TServiceId<T>) => (target: TClass<T>) => {

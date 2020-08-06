@@ -1,9 +1,9 @@
-import { TClass, TServiceId } from '../../core/di/luxe-di'
+import { TClass, TServiceId } from '../../core/di/luxie-di'
 import { IUseCase } from '../../core/context/IUseCase'
 import { InvalidArgumentError } from '../../core/application-errors/InvalidAgrumentError'
 import { TransientService } from '../../core/di/annotations/TransientService'
 import { PersistenceConnectionRegistry } from '../PersistenceConnectionRegistry'
-import { TPersistenceConnectionName } from '../luxe-persistence'
+import { TPersistenceConnectionName } from '../luxie-persistence'
 import { PersistenceContextUtil } from '../PersistenceContextUtil'
 import { AppContainer } from '../../core/di/AppContainer'
 

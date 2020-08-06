@@ -1,10 +1,10 @@
 import { IKeyValueContextStorage } from '../key-value/IKeyValueContextStorage'
 import { TransientService } from '../core/di/annotations/TransientService'
 import { InjectService } from '../core/di/annotations/InjectService'
-import { KeyValueContextStorageTkn } from '../key-value/luxe-key-value-tokens'
+import { KeyValueContextStorageTkn } from '../key-value/luxie-key-value-tokens'
 import { AppContainer } from '../core/di/AppContainer'
 import { PromiseUtil } from '../core/lang/PromiseUtil'
-import { AppInitActionTkn } from './luxe-app-init-tokens'
+import { AppInitActionTkn } from './luxie-app-init-tokens'
 import { IAppInitAction } from './IAppInitAction'
 
 @TransientService()

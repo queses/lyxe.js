@@ -1,6 +1,6 @@
 import { DomainError } from './DomainError'
 import { IHasId } from '../../persistence/IHasId'
-import { TPersistenceId } from '../../persistence/luxe-persistence'
+import { TPersistenceId } from '../../persistence/luxie-persistence'
 import { EntityValidationErrorInfo } from '../../persistence/EntityValidationErrorInfo'
 
 export class DomainEntityValidationError <E extends IHasId<ID>, ID extends TPersistenceId> extends DomainError {

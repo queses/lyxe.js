@@ -1,5 +1,5 @@
 import { SingletonService } from '../core/di/annotations/SingletonService'
-import { CryptoServiceTkn } from './luxe-crypto-tokens'
+import { CryptoServiceTkn } from './luxie-crypto-tokens'
 import { TCryptoHashType, TCryptoScenario, TCryptoPasswordHashType } from './framework-crypto'
 import * as crypto from 'crypto'
 import * as bcrypt from 'bcrypt'

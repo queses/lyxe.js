@@ -1,6 +1,6 @@
-import { TBaseContextInfo } from './luxe-context-info'
+import { TBaseContextInfo } from './luxie-context-info'
 import { IUseCase } from './IUseCase'
-import { TServiceId } from '../di/luxe-di'
+import { TServiceId } from '../di/luxie-di'
 import { IReadService } from './IReadService'
 import { IContextService } from './IContextService'
 

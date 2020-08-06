@@ -1,6 +1,6 @@
 import { EntityManager, QueryBuilder } from 'typeorm'
 import { KeyValueItem } from '../model/KeyValueItem'
-import { KeyValueContextStorageTkn } from '../../key-value/luxe-key-value-tokens'
+import { KeyValueContextStorageTkn } from '../../key-value/luxie-key-value-tokens'
 import { TransientService } from '../../core/di/annotations/TransientService'
 import { BaseContextService } from '../../core/context/BaseContextService'
 import { IKeyValueContextStorage } from '../../key-value/IKeyValueContextStorage'

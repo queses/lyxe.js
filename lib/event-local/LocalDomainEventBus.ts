@@ -1,7 +1,7 @@
 import { SingletonService } from '../core/di/annotations/SingletonService'
 import { EventEmitter } from 'events'
 import { IAppLogger } from '../logging/IAppLogger'
-import { AppLoggerTkn } from '../logging/luxe-logging-tokens'
+import { AppLoggerTkn } from '../logging/luxie-logging-tokens'
 import { InjectService } from '../core/di/annotations/InjectService'
 import { IContextService } from '../core/context/IContextService'
 import { IEntityManager } from '../persistence/IEntityManager'
@@ -9,12 +9,12 @@ import { EntityManagerMeta } from '../persistence/EntityManagerMeta'
 import { OnShutdown } from '../core/di/annotations/OnShutdown'
 import { Cached } from '../core/lang/annotations/Cached'
 import { AppContainer } from '../core/di/AppContainer'
-import { TransactionEventBusTkn } from '../persistence/luxe-persistence-tokens'
-import { LuxeFramework } from '../core/LuxeFramework'
-import { DomainEventBusTkn } from '../event/luxe-event-tokens'
+import { TransactionEventBusTkn } from '../persistence/luxie-persistence-tokens'
+import { LuxieFramework } from '../core/LuxieFramework'
+import { DomainEventBusTkn } from '../event/luxie-event-tokens'
 import { IDomainEventBus } from '../event/IDomainEventBus'
 import { IDomainEvent } from '../event/IDomainEvent'
-import { TDomainEventType } from '../event/luxe-event'
+import { TDomainEventType } from '../event/luxie-event'
 import { IDomainEventHandler } from '../event/IDomainEventHandler'
 import { PersistenceContextUtil } from '../persistence/PersistenceContextUtil'
 
@@ -49,7 +49,7 @@ export class LocalDomainEventBus implements IDomainEventBus {
   }
 
   public emit <E extends IDomainEvent> (service: IContextService, eventType: TDomainEventType, event: E): void {
-    if (service.contextInfo && LuxeFramework.hasPlugin('persistence')) {
+    if (service.contextInfo && LuxieFramework.hasPlugin('persistence')) {
       const em: IEntityManager | undefined = PersistenceContextUtil.getTransactionalEm(service)
       if (em) {
         return this.emitWithManager(eventType, event, em)

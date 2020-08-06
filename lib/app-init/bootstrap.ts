@@ -1,6 +1,6 @@
-import { LuxeFramework } from '../core/LuxeFramework'
+import { LuxieFramework } from '../core/LuxieFramework'
 
 export default () => {
-  LuxeFramework.requirePlugins('console', 'key-value-typeorm')
+  LuxieFramework.requirePlugins('console', 'key-value-typeorm')
   require('./console/AppInitController')
 }

@@ -1,5 +1,5 @@
 import { ConnectionOptions } from 'typeorm'
-import { TPersistenceConnectionName } from '../persistence/luxe-persistence'
+import { TPersistenceConnectionName } from '../persistence/luxie-persistence'
 
 export class PersistenceTypeormConfig {
   public useDefaultConnection: boolean = true

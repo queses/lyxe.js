@@ -1,5 +1,5 @@
-import { TAnyRequest } from './luxe-web'
-import { TBaseContextInfo } from '../core/context/luxe-context-info'
+import { TAnyRequest } from './luxie-web'
+import { TBaseContextInfo } from '../core/context/luxie-context-info'
 
 export interface IReqContextService {
   writeContextToReq (req: TAnyRequest): void | Promise<void>

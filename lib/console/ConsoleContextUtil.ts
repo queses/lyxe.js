@@ -1,6 +1,6 @@
 import { IContextService } from '../core/context/IContextService'
-import { TBaseContextInfo } from '../core/context/luxe-context-info'
-import { TServiceId } from '../core/di/luxe-di'
+import { TBaseContextInfo } from '../core/context/luxie-context-info'
+import { TServiceId } from '../core/di/luxie-di'
 import { AppContainer } from '../core/di/AppContainer'
 
 export class ConsoleContextUtil {

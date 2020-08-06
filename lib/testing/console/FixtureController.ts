@@ -2,7 +2,7 @@ import { ConsoleDevController } from '../../console/annotations/ConsoleDevContro
 import { InjectService } from '../../core/di/annotations/InjectService'
 import ConsoleAction from '../../console/annotations/ConsoleAction'
 import { DomainFixtureLoader } from '../fixture/DomainFixtureLoader'
-import { TPersistenceConnectionName } from '../../persistence/luxe-persistence'
+import { TPersistenceConnectionName } from '../../persistence/luxie-persistence'
 import { PersistenceConnectionRegistry } from '../../persistence/PersistenceConnectionRegistry'
 import { AppContainer } from '../../core/di/AppContainer'
 

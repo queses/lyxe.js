@@ -1,6 +1,6 @@
-import { LuxeFramework } from '../core/LuxeFramework'
+import { LuxieFramework } from '../core/LuxieFramework'
 
 export default () => {
-  LuxeFramework.requirePlugins('persistence')
+  LuxieFramework.requirePlugins('persistence')
   require('./DefaultTypeormConnection')
 }

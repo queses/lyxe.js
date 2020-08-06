@@ -1,4 +1,4 @@
-import { LuxeFramework } from '../lib/core/LuxeFramework'
+import { LuxieFramework } from '../lib/core/LuxieFramework'
 import { AppConfigurator } from '../lib/core/config/AppConfigurator'
 import * as fs from 'fs'
 import { AppPathUtil } from '../lib/core/config/AppPathUtil'
@@ -12,6 +12,6 @@ export default () => {
   PersistenceTypeormConfig.useDefaultConnection(false)
   KeyValueTypeormConfig.useWithConnection('test')
 
-  LuxeFramework.requirePlugins('logging', 'key-value-typeorm', 'event-local', 'validation-yup', 'mutex')
-  LuxeFramework.requireModules('main')
+  LuxieFramework.requirePlugins('logging', 'key-value-typeorm', 'event-local', 'validation-yup', 'mutex')
+  LuxieFramework.requireModules('main')
 }

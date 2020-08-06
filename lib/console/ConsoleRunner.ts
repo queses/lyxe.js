@@ -1,12 +1,12 @@
 import { SingletonService } from '../core/di/annotations/SingletonService'
 import { InjectService } from '../core/di/annotations/InjectService'
-import { AppLoggerTkn } from '../logging/luxe-logging-tokens'
+import { AppLoggerTkn } from '../logging/luxie-logging-tokens'
 import { IAppLogger } from '../logging/IAppLogger'
 import { ConsoleControllerRegistry } from './ConsoleControllerRegistry'
 import { AppContainer } from '../core/di/AppContainer'
 import { AppConfigurator } from '../core/config/AppConfigurator'
 import { DebugUtil } from '../core/lang/DebugUtil'
-import { LuxeFramework } from '../core/LuxeFramework'
+import { LuxieFramework } from '../core/LuxieFramework'
 
 @SingletonService()
 export class ConsoleRunner {
@@ -21,7 +21,7 @@ export class ConsoleRunner {
     if (!action) {
       this.logger.error(`No console action found for path "${actionPath}"`)
       if (shutdownFramework) {
-        await LuxeFramework.shutdown()
+        await LuxieFramework.shutdown()
       }
 
       return
@@ -38,7 +38,7 @@ export class ConsoleRunner {
     }
 
     if (shutdownFramework) {
-      await LuxeFramework.shutdown()
+      await LuxieFramework.shutdown()
     }
   }
 

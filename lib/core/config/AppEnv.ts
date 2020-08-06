@@ -1,4 +1,4 @@
-import { TAppLaunchType } from './luxe-config'
+import { TAppLaunchType } from './luxie-config'
 
 export class AppEnv {
   private static contextType: TAppLaunchType

@@ -1,5 +1,5 @@
 import { IHasId } from '../../persistence/IHasId'
-import { TClass } from '../../core/di/luxe-di'
+import { TClass } from '../../core/di/luxie-di'
 import { IEntityManager } from '../../persistence/IEntityManager'
 
 export interface IDomainFixture {

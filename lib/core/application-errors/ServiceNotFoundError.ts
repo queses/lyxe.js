@@ -1,5 +1,5 @@
 import { AppError } from './AppError'
-import { TServiceId } from '../di/luxe-di'
+import { TServiceId } from '../di/luxie-di'
 
 export class ServiceNotFoundError extends AppError {
   name = 'ServiceNotFoundError'

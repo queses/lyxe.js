@@ -1,6 +1,6 @@
 import { Page } from './Page'
 import { IHasId } from './IHasId'
-import { TPersistenceId } from './luxe-persistence'
+import { TPersistenceId } from './luxie-persistence'
 import { SearchConfig } from './SearchConfig'
 import { IRepository } from './IRepository'
 

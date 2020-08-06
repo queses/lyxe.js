@@ -1,0 +1,1 @@
+export type TObjectLiteral <K extends string | number = string, V = any> = { [key in K]: V }

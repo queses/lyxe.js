@@ -1,7 +1,7 @@
-import { LuxeFramework } from '../core/LuxeFramework'
+import { LuxieFramework } from '../core/LuxieFramework'
 
 export default () => {
-  LuxeFramework.requirePlugins('web', 'auth', 'crypto')
+  LuxieFramework.requirePlugins('web', 'auth', 'crypto')
 
   require('./jwt/JwtService')
 }

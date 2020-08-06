@@ -1,6 +1,6 @@
 import { IHasId } from './IHasId'
-import { TPersistenceId } from './luxe-persistence'
-import { TClass } from '../core/di/luxe-di'
+import { TPersistenceId } from './luxie-persistence'
+import { TClass } from '../core/di/luxie-di'
 
 export interface IEntityManager {
   save <T extends IHasId<ID>, ID extends TPersistenceId> (entity: T | T[]): Promise<T>

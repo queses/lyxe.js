@@ -1,33 +1,34 @@
 {
-  "name": "luxe-framework",
-  "version": "1.0.0",
-  "description": "LuxeFramework - Build modular, solid and reliable web apps easily",
+  "name": "luxie",
+  "version": "1.1.0",
+  "description": "LuxieFramework - Build modular, solid and reliable web apps easily",
   "main": "dist/index.js",
   "author": "MaxRattle <quesesr@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "do": "tsc && node dist/src/console.js",
-    "do:dbg": "tsc && cross-env DEBUGGER=true node --inspect-brk --nolazy dist/src/app/console.js",
+    "luxie": "luxie",
+    "do": "luxie do",
+    "do:dbg": "luxie do --debug true",
     "do:prod": "cross-env NODE_ENV=production node dist/src/app/console.js",
     "start": "nodemon --config lib/run/nodemon.json --exec \"tsc && node dist/src/app/web.js\"",
     "start:dbg": "tsc && cross-env DEBUGGER=true node --inspect-brk --nolazy dist/src/app/web.js",
     "start:prod": "gulp build && cross-env NODE_ENV=production node dist/src/app/web.js",
-    "build": "gulp build",
-    "build:lib": "gulp clean && tsc -p tsconfig.build.json",
-    "clean": "gulp clean",
-    "test": "gulp test --only",
-    "test:watch": "gulp test --watch --only",
-    "test:dbg": "gulp test --dbg --only",
-    "test:slow": "gulp test --slow",
-    "lint:lib": "eslint lib/**/*.ts",
-    "orm": "gulp orm --cmd",
-    "orm:prod": "gulp orm --prod --cmd",
-    "orm:test": "gulp orm --test --cmd"
+    "build": "luxie build",
+    "build:lib": "luxie clean && tsc -p tsconfig.build.json",
+    "clean": "luxie clean",
+    "test": "luxie test --only",
+    "test:watch": "luxie test --watch --only",
+    "test:dbg": "luxie test --quiet --dbg --only",
+    "test:slow": "luxie test --slow",
+    "lint:lib": "luxie lintLib",
+    "orm": "luxie orm",
+    "orm:prod": "luxie orm --prod true",
+    "orm:test": "luxie orm --test true"
+  },
+  "bin": {
+    "luxie": "./lib/run/cli.js"
   },
   "dependencies": {
-    "@nestjs/common": "^7.0.7",
-    "@nestjs/core": "^7.0.7",
-    "@nestjs/platform-express": "^7.0.7",
     "bcrypt": "^4.0.1",
     "cache-manager": "^3.2.1",
     "cache-manager-redis": "^0.6.0",
@@ -51,7 +52,6 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "sinon": "^9.0.2",
-    "typeorm": "0.3.0-rc.9",
     "winston": "^3.2.1",
     "yargs": "^15.3.1",
     "yup": "^0.28.3"
@@ -80,6 +80,16 @@
     "source-map-support": "^0.5.16",
     "sqlite3": "^4.1.1",
     "string-argv": "^0.3.1",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "typeorm": "0.3.0-rc.9",
+    "@nestjs/common": "^7.0.7",
+    "@nestjs/core": "^7.0.7",
+    "@nestjs/platform-express": "^7.0.7"
+  },
+  "peerDependencies": {
+    "typeorm": ">= 0.2.0",
+    "@nestjs/common": ">= 7.0.0",
+    "@nestjs/core": "=> 7.0.0",
+    "@nestjs/platform-express": ">= 7.0.0"
   }
 }

@@ -1,4 +1,4 @@
-import { TClass } from './luxe-di'
+import { TClass } from './luxie-di'
 
 export default class Token<T> {
   name: string

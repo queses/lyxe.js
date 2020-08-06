@@ -1,7 +1,7 @@
-import { LuxeFramework } from '../core/LuxeFramework'
+import { LuxieFramework } from '../core/LuxieFramework'
 import { AppEnv } from '../core/config/AppEnv'
 
 export default () => {
   AppEnv.setLaunchType('web')
-  LuxeFramework.requirePlugins('logging', 'cache')
+  LuxieFramework.requirePlugins('logging', 'cache')
 }

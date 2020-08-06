@@ -1,4 +1,4 @@
-import { TPersistenceConnectionName } from '../persistence/luxe-persistence'
+import { TPersistenceConnectionName } from '../persistence/luxie-persistence'
 
 export class KeyValueTypeormConfig {
   public useWithConnection: TPersistenceConnectionName = 'default'

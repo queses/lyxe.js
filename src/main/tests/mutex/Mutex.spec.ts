@@ -1,6 +1,6 @@
 import { assert } from 'chai'
 import { AppContainer } from '../../../../lib/core/di/AppContainer'
-import { MutexTkn } from '../../../../lib/mutex/luxe-mutex-tokens'
+import { MutexTkn } from '../../../../lib/mutex/luxie-mutex-tokens'
 import { PromiseUtil } from '../../../../lib/core/lang/PromiseUtil'
 
 describe('Mutex', function () {

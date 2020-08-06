@@ -1,5 +1,5 @@
 import { SingletonService } from '../core/di/annotations/SingletonService'
-import { AppLoggerTkn } from './luxe-logging-tokens'
+import { AppLoggerTkn } from './luxie-logging-tokens'
 import { IAppLogger } from './IAppLogger'
 
 @SingletonService(AppLoggerTkn)

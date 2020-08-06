@@ -1,8 +1,8 @@
-import { LuxeFramework } from '../core/LuxeFramework'
+import { LuxieFramework } from '../core/LuxieFramework'
 import { AppEnv } from '../core/config/AppEnv'
 
 export default () => {
   AppEnv.setLaunchType('console')
-  LuxeFramework.requirePlugins('logging')
+  LuxieFramework.requirePlugins('logging')
 }
 

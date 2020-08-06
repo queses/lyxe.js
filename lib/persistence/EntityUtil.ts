@@ -2,8 +2,8 @@ import { IHasId } from './IHasId'
 import { DomainEntityNotFoundError } from '../core/domain-errors/DomainEntityNotFoundError'
 import { SearchConfig } from './SearchConfig'
 import { IRepository } from './IRepository'
-import { TPagePromise } from './luxe-persistence'
-import { TClass } from '../core/di/luxe-di'
+import { TPagePromise } from './luxie-persistence'
+import { TClass } from '../core/di/luxie-di'
 
 export class EntityUtil {
   static throwIfNotFound <T extends IHasId> (entity: T, classOrMsg: TClass<T> | string): T {

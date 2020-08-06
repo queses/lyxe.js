@@ -1,10 +1,10 @@
-import { TBaseContextInfo } from './luxe-context-info'
+import { TBaseContextInfo } from './luxie-context-info'
 import { IContextService} from './IContextService'
 import { IUseCase } from './IUseCase'
 import Token from '../di/Token'
 import { IReadService } from './IReadService'
 import { AbstractService } from '../di/annotations/AbstractService'
-import { TClass, TServiceId } from '../di/luxe-di'
+import { TClass, TServiceId } from '../di/luxie-di'
 import { AppContainer } from '../di/AppContainer'
 import { IServiceFactory } from './IServiceFactory'
 

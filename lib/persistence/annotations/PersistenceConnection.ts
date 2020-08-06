@@ -1,5 +1,5 @@
-import { TPersistenceConnectionName } from '../luxe-persistence'
-import { TClass } from '../../core/di/luxe-di'
+import { TPersistenceConnectionName } from '../luxie-persistence'
+import { TClass } from '../../core/di/luxie-di'
 import { IPersistenceConnection } from '../IPersistenceConnection'
 import { PersistenceConnectionRegistry } from '../PersistenceConnectionRegistry'
 import { AppContainer } from '../../core/di/AppContainer'

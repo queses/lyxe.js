@@ -1,6 +1,6 @@
-import { TPersistenceConnectionName } from './luxe-persistence'
+import { TPersistenceConnectionName } from './luxie-persistence'
 import { IPersistenceConnection } from './IPersistenceConnection'
-import { TClass } from '../core/di/luxe-di'
+import { TClass } from '../core/di/luxie-di'
 import { AppConfigurationError } from '../core/application-errors/AppConfigurationError'
 import { AppContainer } from '../core/di/AppContainer'
 import { InvalidArgumentError } from '../core/application-errors/InvalidAgrumentError'

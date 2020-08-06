@@ -1,7 +1,7 @@
 import { BaseWriteRepository } from './BaseWriteRepository'
 import { createQueryBuilder, SelectQueryBuilder } from 'typeorm'
 import { IHasId } from '../persistence/IHasId'
-import { TPersistenceId } from '../persistence/luxe-persistence'
+import { TPersistenceId } from '../persistence/luxie-persistence'
 import { IRepository } from '../persistence/IRepository'
 
 export const ENTITY_ALIAS = 'e'

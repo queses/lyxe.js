@@ -1,6 +1,6 @@
 import { Page } from '../persistence/Page'
 import { IHasId } from '../persistence/IHasId'
-import { TPersistenceId } from '../persistence/luxe-persistence'
+import { TPersistenceId } from '../persistence/luxie-persistence'
 
 export class WebPageViewUtil {
   static async forObjects <V> (

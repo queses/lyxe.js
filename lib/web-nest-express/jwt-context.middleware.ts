@@ -1,8 +1,8 @@
 import { Injectable, NestMiddleware } from '@nestjs/common'
 import { Cached } from '../core/lang/annotations/Cached'
-import { ReqContextServiceTkn } from '../web/luxe-web-tokens'
+import { ReqContextServiceTkn } from '../web/luxie-web-tokens'
 import { TAuthContextInfo } from '../auth/auth-context'
-import { TAnyRequest, TAnyResponse } from '../web/luxe-web'
+import { TAnyRequest, TAnyResponse } from '../web/luxie-web'
 import { DomainAuthenticationNeededError } from '../core/domain-errors/DomainAuthenticationNeededError'
 import { AppContainer } from '../core/di/AppContainer'
 

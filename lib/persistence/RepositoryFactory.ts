@@ -1,10 +1,10 @@
 import { SingletonService } from '../core/di/annotations/SingletonService'
-import { RepositoryFactoryTkn } from './luxe-persistence-tokens'
+import { RepositoryFactoryTkn } from './luxie-persistence-tokens'
 import { IRepositoryFactory } from './IRepositoryFactory'
 import { IRepository } from './IRepository'
 import { IHasId } from './IHasId'
-import { TPersistenceId } from './luxe-persistence'
-import { TServiceId } from '../core/di/luxe-di'
+import { TPersistenceId } from './luxie-persistence'
+import { TServiceId } from '../core/di/luxie-di'
 import { IEntityManager } from './IEntityManager'
 import { AppContainer } from '../core/di/AppContainer'
 

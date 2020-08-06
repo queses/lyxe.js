@@ -1,5 +1,5 @@
-import { LuxeFramework } from '../core/LuxeFramework'
+import { LuxieFramework } from '../core/LuxieFramework'
 
 export default () => {
-  LuxeFramework.requirePlugins('logging')
+  LuxieFramework.requirePlugins('logging')
 }
