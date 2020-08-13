@@ -23,15 +23,15 @@ export abstract class BaseContextService <C extends TBaseContextInfo = TBaseCont
     return this._contextInfo
   }
 
-  public createUseCase <T extends IUseCase<C>>(id: Token<T> | string | symbol | TClass<T>): T {
+  public createUseCase <T extends IUseCase> (id: Token<T> | string | symbol | TClass<T>): T {
     return this.createService<T>(id)
   }
 
-  public createReadService <T extends IReadService<C>>(id: Token<T> | string | symbol | TClass<T>): T {
+  public createReadService <T extends IReadService> (id: Token<T> | string | symbol | TClass<T>): T {
     return this.createService<T>(id)
   }
 
-  public createService <T extends IContextService<C>> (id: TServiceId<T>): T {
+  public createService <T extends IContextService> (id: TServiceId<T>): T {
     return AppContainer.get(id).configure(this.contextInfo)
   }
 }
