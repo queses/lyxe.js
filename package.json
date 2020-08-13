@@ -1,6 +1,6 @@
 {
   "name": "lyxe",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "LyxeFramework - Build modular, solid and reliable web apps easily",
   "main": "lib/core/LyxeFramework.js",
   "author": "Maxim Kobozev <quesesr@gmail.com>",
@@ -18,28 +18,29 @@
     "framework"
   ],
   "scripts": {
-    "lyxe": "lyxe",
-    "prepublish": "lyxe build-lib",
-    "do": "lyxe do",
-    "do:dbg": "lyxe do --debug true",
+    "lyxe": "lyxedev",
+    "prepublish": "lyxedev build-lib",
+    "do": "lyxedev do",
+    "do:dbg": "lyxedev do --debug true",
     "do:prod": "cross-env NODE_ENV=production node dist/src/app/console.js",
-    "dev": "lyxe dev",
-    "dbg": "lyxe dev --dbg",
-    "prod": "lyxe build && cross-env NODE_ENV=production node dist/src/app/web.js",
-    "build": "lyxe build",
-    "build:lib": "lyxe build-lib",
-    "clean": "lyxe clean",
-    "test": "lyxe test",
-    "test:watch": "lyxe test --watch --only",
-    "test:dbg": "lyxe test --quiet --dbg --only",
-    "test:slow": "lyxe test --slow",
-    "lint:lib": "lyxe lintLib",
-    "orm": "lyxe orm",
-    "orm:prod": "lyxe orm --prod true",
-    "orm:test": "lyxe orm --test true"
+    "dev": "lyxedev dev",
+    "dbg": "lyxedev dev --dbg",
+    "prod": "lyxedev build && cross-env NODE_ENV=production node dist/src/app/web.js",
+    "build": "lyxedev build",
+    "build:lib": "lyxedev build-lib",
+    "clean": "lyxedev clean",
+    "test": "lyxedev test",
+    "test:watch": "lyxedev test --watch --only",
+    "test:dbg": "lyxedev test --quiet --dbg --only",
+    "test:slow": "lyxedev test --slow",
+    "lint:lib": "lyxedev lintLib",
+    "orm": "lyxedev orm",
+    "orm:prod": "lyxedev orm --prod true",
+    "orm:test": "lyxedev orm --test true"
   },
   "bin": {
-    "lyxe": "libsrc/run/cli.js"
+    "lyxe": "lib/run/cli.js",
+    "lyxedev": "libsrc/run/cli.js"
   },
   "dependencies": {
     "@types/chai": "^4.2.11",
