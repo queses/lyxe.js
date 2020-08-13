@@ -35,11 +35,11 @@ task('build-lib', () => {
 
 desc('Run tests')
 flag('only', 'run only tests that matches provided RegExp', String)
-flag('slow', 'also run slow tests')
+flag('external', 'also run external tests')
 flag('watch', 'watch files')
 flag('dbg', 'debug mode')
 task('test', ['lint', 'tsc'], () => {
-  const { slow, watch, only, dbg } = process.env
+  const { external, watch, only, dbg } = process.env
   const args = ['NODE_ENV=test', './node_modules/mocha/bin/mocha']
 
   if (watch) {
@@ -53,8 +53,8 @@ task('test', ['lint', 'tsc'], () => {
 
   if (typeof only === 'string' && only !== 'true') {
     args.push('-g', only)
-  } else if (!slow) {
-    args.unshift('MOCHA_FAST_ONLY=true')
+  } else if (!external) {
+    args.unshift('MOCHA_WITH_EXTERNAL=true')
   }
 
   return npmCrossEnv(args)
