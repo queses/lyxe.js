@@ -2,7 +2,7 @@ import { assert } from 'chai'
 import { AppContainer } from '../../../../../libsrc/core/di/AppContainer'
 import { HelloWorldUseCaseTkn } from '../../../test-tokens'
 
-describe('HelloWorldSlow', function () {
+describe('HelloWorldExternal', function () {
   this.slow()
 
   it('should return slow hello world', async function () {

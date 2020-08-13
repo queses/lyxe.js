@@ -40,7 +40,7 @@ export class AppPathUtil {
         : res(matches.filter((path) => (
           !path.endsWith('.spec.js') &&
           !path.endsWith('.test.js') &&
-          !path.endsWith('.slow.js') &&
+          !path.endsWith('.external.js') &&
           StringUtil.startsWithUpper(path.substr(path.lastIndexOf('/') + 1)))
         ))
       )

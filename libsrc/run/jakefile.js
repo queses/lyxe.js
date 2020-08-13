@@ -54,7 +54,7 @@ task('test', ['lint', 'tsc'], () => {
   if (typeof only === 'string' && only !== 'true') {
     args.push('-g', only)
   } else if (!external) {
-    args.unshift('MOCHA_WITH_EXTERNAL=true')
+    args.unshift('MOCHA_SPEC_ONLY=true')
   }
 
   return npmCrossEnv(args)

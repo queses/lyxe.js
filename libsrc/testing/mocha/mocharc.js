@@ -1,5 +1,5 @@
 const getTargets = function () {
-  const testTypeWildcard = process.env.MOCHA_WITH_EXTERNAL ? '(spec|external)' : '(spec)'
+  const testTypeWildcard = process.env.MOCHA_SPEC_ONLY ? '(spec)' : '(spec|external)'
   return [ `./dist/src/*/tests/**/*\.@${testTypeWildcard}.js` ]
 }
 
