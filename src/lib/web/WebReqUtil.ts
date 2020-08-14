@@ -17,6 +17,10 @@ export class WebReqUtil {
     return AppContainer.get(id).configure(this.readContextFromReq<C>(req) || {} as C)
   }
 
+  static createService <S extends IContextService<C>, C extends TBaseContextInfo> (id: TServiceId<S>, req: TAnyRequest): S {
+    return this.createContextService(id, req)
+  }
+
   static limitRate (req: TAnyRequest, limiterKey: string, maxRate: number, inSeconds: number = 1, message?: string) {
     const ip = this.webFacade.extractIp(req)
     return AppContainer.get(WebRateLimiter).limit(ip, limiterKey, maxRate, inSeconds, message)

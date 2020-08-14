@@ -7,4 +7,8 @@ export class ConsoleContextUtil {
   static createContextService <S extends IContextService<C>, C extends TBaseContextInfo> (id: TServiceId<S>): S {
     return AppContainer.get(id).configure({ asSystem: true } as C)
   }
+
+  static createService <S extends IContextService<C>, C extends TBaseContextInfo> (id: TServiceId<S>): S {
+    return this.createContextService(id)
+  }
 }

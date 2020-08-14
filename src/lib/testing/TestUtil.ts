@@ -34,6 +34,13 @@ export class TestUtil {
     return service
   }
 
+  static createService <S extends IContextService<C>, C extends TBaseContextInfo> (
+    id: TServiceId<S>,
+    em: IEntityManager | undefined
+  ) {
+    return this.createContextService(id, em)
+  }
+
   static createServiceFactory <C extends TBaseContextInfo> (em: IEntityManager | undefined) {
     return this.createContextService<ServiceFactory<C>, C>(ServiceFactory, em)
   }
