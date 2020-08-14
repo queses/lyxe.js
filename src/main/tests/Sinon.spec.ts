@@ -1,6 +1,6 @@
 import * as sinon from 'sinon'
 import { assert } from 'chai'
-import { AppContainer } from '../../../libsrc/core/di/AppContainer'
+import { AppContainer } from 'lyxe/lib/core/di/AppContainer'
 import { HelloWorldUseCaseTkn } from '../test-tokens'
 
 describe('Sinon', function () {

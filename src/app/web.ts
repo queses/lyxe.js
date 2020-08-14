@@ -1,8 +1,8 @@
-import '../../libsrc/core/register-lyxe'
-import { LyxeFramework } from '../../libsrc/core/LyxeFramework'
-import { AppContainer } from '../../libsrc/core/di/AppContainer'
+import 'lyxe/lib/core/register-lyxe'
+import { LyxeFramework } from 'lyxe/lib/core/LyxeFramework'
+import { AppContainer } from 'lyxe/lib/core/di/AppContainer'
 import bootstrap from '../bootstrap'
-import { NestExpressRunner } from '../../libsrc/web-nest-express/NestExpressRunner'
+import { NestExpressRunner } from 'lyxe/lib/web-nest-express/NestExpressRunner'
 import { AppModule } from './app.module'
 
 const main = async () => {

@@ -1,6 +1,6 @@
 import { Entity, Column, ManyToOne } from 'typeorm'
 import { TestSpecialistAccount } from './TestSpecialistAccount'
-import { NumberIdEntity } from '../../../../libsrc/persistence-typeorm/NumberIdEntity'
+import { NumberIdEntity } from 'lyxe/lib/persistence-typeorm/NumberIdEntity'
 
 @Entity()
 export class TestSpecialist extends NumberIdEntity {

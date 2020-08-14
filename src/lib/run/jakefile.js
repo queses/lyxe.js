@@ -22,13 +22,16 @@ task('build', () => runSerial('lint', 'clean', 'tsc'))
 task('lint-lib', () => {
   const { fix, force } = process.env
   return npmCommand(
-    `eslint ${!force ? '--cache --cache-location .eslintcache.lib' : ''} ${fix ? '--fix' : ''} libsrc/**/*.ts`
+    `eslint ${!force ? '--cache --cache-location .eslintcache.lib' : ''} ${fix ? '--fix' : ''} src/lib/**/*.ts`
   )
 })
 
-task('copy-lib-d-ts', () => npmCommand('copyfiles -u 1 "libsrc/**/*.d.ts" lib'))
+task('clean-lib', () => npmCommand('rimraf lib'))
+
+task('copy-lib-d-ts', () => npmCommand('copyfiles -u 2 "src/lib/**/*.d.ts" lib'))
+
 task('build-lib', () => {
-  return runSerial('lint-lib', 'clean')
+  return runSerial('lint-lib', 'clean-lib')
     .then(() => npmCommand('tsc -p tsconfig.build.json'))
     .then(() => runSerial('copy-lib-d-ts'))
 })
@@ -76,7 +79,7 @@ task('do', ['tsc'], () => {
     args.push('--inspect-brk', '--nolazy')
   }
 
-  args.push('./dist/src/app/console.js', cmd)
+  args.push('./dist/app/console.js', cmd)
   return npmCrossEnv(args)
 })
 
@@ -90,7 +93,7 @@ task('dev', () => {
     return npmCrossEnv(args)
   } else {
     const args = ['--watch', 'src', '--ext', 'ts,js', '--ignore', 'src/**/*.spec.ts']
-    args.push('--exec', 'tsc && node dist/src/app/web.js')
+    args.push('--exec', 'tsc && node dist/app/web.js')
     return npmSpawn('nodemon', args)
   }
 })

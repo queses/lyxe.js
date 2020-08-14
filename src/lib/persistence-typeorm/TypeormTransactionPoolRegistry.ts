@@ -1,7 +1,6 @@
 import { QueryRunner } from 'typeorm'
 
 export class TypeormTransactionPoolRegistry {
-  private static instance: TypeormTransactionPoolRegistry
   private lastId: number = 0
   private queryRunners: {[key: number]: QueryRunner} = {}
 

@@ -12,10 +12,13 @@
     "strictPropertyInitialization": false,
     "outDir": "./dist",
     "incremental": true,
-    "allowJs": true
+    "allowJs": true,
+    "baseUrl": "./",
+    "paths": {
+      "lyxe/lib/*": ["src/lib/*"]
+    }
   },
   "include": [
-    "./src",
-    "./libsrc", "run"
+    "./src"
   ]
 }

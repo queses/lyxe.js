@@ -12,6 +12,7 @@ let bootstrapApp: (() => void) | undefined
 try {
   bootstrapApp = require(AppPathUtil.appSrc + '/bootstrap').default
 } catch (e) {
+  throw e
   // No bootstrap file in "src" folder found
 }
 

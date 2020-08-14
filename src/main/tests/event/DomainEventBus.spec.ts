@@ -1,11 +1,11 @@
 import { assert } from 'chai'
-import { IDomainEventHandler } from '../../../../libsrc/event/IDomainEventHandler'
-import { IDomainEvent } from '../../../../libsrc/event/IDomainEvent'
-import { AppContainer } from '../../../../libsrc/core/di/AppContainer'
-import { DomainEventBusTkn } from '../../../../libsrc/event/lyxe-event-tokens'
-import { DomainEventHandler } from '../../../../libsrc/event/annotations/DomainEventHandler'
-import { TestUtil } from '../../../../libsrc/testing/TestUtil'
-import { itInTransaction } from '../../../../libsrc/testing/mocha/it-in-transaction'
+import { IDomainEventHandler } from 'lyxe/lib/event/IDomainEventHandler'
+import { IDomainEvent } from 'lyxe/lib/event/IDomainEvent'
+import { AppContainer } from 'lyxe/lib/core/di/AppContainer'
+import { DomainEventBusTkn } from 'lyxe/lib/event/lyxe-event-tokens'
+import { DomainEventHandler } from 'lyxe/lib/event/annotations/DomainEventHandler'
+import { TestUtil } from 'lyxe/lib/testing/TestUtil'
+import { itInTransaction } from 'lyxe/lib/testing/mocha/it-in-transaction'
 
 describe('DomainEventBus', function () {
   before(function () {

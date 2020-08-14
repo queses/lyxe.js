@@ -22,12 +22,13 @@
     "prepublish": "lyxedev build-lib",
     "do": "lyxedev do",
     "do:dbg": "lyxedev do --debug 1",
-    "do:prod": "cross-env NODE_ENV=production node dist/src/app/console.js",
+    "do:prod": "cross-env NODE_ENV=production node dist/app/console.js",
     "dev": "lyxedev dev",
     "dbg": "lyxedev dev --dbg 1",
-    "prod": "lyxedev build && cross-env NODE_ENV=production node dist/src/app/web.js",
+    "prod": "lyxedev build && cross-env NODE_ENV=production node dist/app/web.js",
     "build": "lyxedev build",
     "build:lib": "lyxedev build-lib",
+    "lib": "tsc -p tsconfig.build.json",
     "clean": "lyxedev clean",
     "test": "lyxedev test --only",
     "test:watch": "lyxedev test --watch --only",
@@ -40,7 +41,7 @@
   },
   "bin": {
     "lyxe": "lib/run/cli.js",
-    "lyxedev": "libsrc/run/cli.js"
+    "lyxedev": "src/lib/run/cli.js"
   },
   "dependencies": {
     "@types/chai": "^4.2.11",

@@ -1,4 +1,4 @@
-import { SearchConfig } from '../../../../libsrc/persistence/SearchConfig'
+import { SearchConfig } from 'lyxe/lib/persistence/SearchConfig'
 
 export class TestSpecialistSearchConf extends SearchConfig {
   public onlyInactive?: boolean = false

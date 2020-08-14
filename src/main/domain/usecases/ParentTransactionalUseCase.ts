@@ -1,8 +1,8 @@
-import { TransactionalUseCase } from '../../../../libsrc/persistence/annotations/TransactionalUseCase'
+import { TransactionalUseCase } from 'lyxe/lib/persistence/annotations/TransactionalUseCase'
 import { ChildTransactionalUseCaseTkn, ParentTransactionalUseCaseTkn, TestSpecialistRepoTkn } from '../../test-tokens'
-import { BaseUseCase } from '../../../../libsrc/core/context/BaseUseCase'
+import { BaseUseCase } from 'lyxe/lib/core/context/BaseUseCase'
 import { IParentTransactionalUseCase } from '../test-use-cases'
-import { InjectRepository } from '../../../../libsrc/persistence/annotations/InjectRepository'
+import { InjectRepository } from 'lyxe/lib/persistence/annotations/InjectRepository'
 import { ITestSpecialistRepo } from '../test-repos'
 import { TestSpecialist } from '../model/TestSpecialist'
 

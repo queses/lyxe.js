@@ -1,4 +1,4 @@
-import { IUseCase } from '../../../libsrc/core/context/IUseCase'
+import { IUseCase } from 'lyxe/lib/core/context/IUseCase'
 
 export interface IHelloWorldUseCase extends IUseCase {
   run (): Promise<string>

@@ -1,5 +1,5 @@
 import { assert } from 'chai'
-import { AppContainer } from '../../../../../libsrc/core/di/AppContainer'
+import { AppContainer } from 'lyxe/lib/core/di/AppContainer'
 import { HelloWorldUseCaseTkn } from '../../../test-tokens'
 
 describe('HelloWorldExternal', function () {

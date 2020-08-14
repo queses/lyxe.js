@@ -1,10 +1,10 @@
 import { assert } from 'chai'
-import { itInTransaction } from '../../../../libsrc/testing/mocha/it-in-transaction'
+import { itInTransaction } from 'lyxe/lib/testing/mocha/it-in-transaction'
 import { TestSpecialist } from '../../domain/model/TestSpecialist'
 import { ConfigurableTestSpecialistRepoTkn } from '../../test-tokens'
 import { TestSpecialistSearchConf } from '../../domain/model/TestSpecialistSearchConf'
-import { PageConfig } from '../../../../libsrc/persistence/PageConfig'
-import { TestUtil } from '../../../../libsrc/testing/TestUtil'
+import { PageConfig } from 'lyxe/lib/persistence/PageConfig'
+import { TestUtil } from 'lyxe/lib/testing/TestUtil'
 
 describe('ConfigurableRepository', function () {
   itInTransaction('should sort entities', async function (sf, em) {

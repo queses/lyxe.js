@@ -1,7 +1,7 @@
 import { HelloWorldUseCaseTkn } from '../../test-tokens'
-import { BaseUseCase } from '../../../../libsrc/core/context/BaseUseCase'
+import { BaseUseCase } from 'lyxe/lib/core/context/BaseUseCase'
 import { IHelloWorldUseCase } from '../test-use-cases'
-import { UseCase } from '../../../../libsrc/core/context/annotations/UseCase'
+import { UseCase } from 'lyxe/lib/core/context/annotations/UseCase'
 
 @UseCase(HelloWorldUseCaseTkn)
 export class HelloWorldUseCase extends BaseUseCase implements IHelloWorldUseCase {

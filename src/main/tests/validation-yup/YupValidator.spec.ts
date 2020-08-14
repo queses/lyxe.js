@@ -1,8 +1,8 @@
 import { assert, AssertionError } from 'chai'
 import * as yup from 'yup'
-import { AppContainer } from '../../../../libsrc/core/di/AppContainer'
-import { YupValidator } from '../../../../libsrc/validation-yup/YupValidator'
-import { DomainEntityValidationError } from '../../../../libsrc/core/domain-errors/DomainEntityValidationError'
+import { AppContainer } from 'lyxe/lib/core/di/AppContainer'
+import { YupValidator } from 'lyxe/lib/validation-yup/YupValidator'
+import { DomainEntityValidationError } from 'lyxe/lib/core/domain-errors/DomainEntityValidationError'
 
 describe('YupValidator', function () {
   it('should pass valid object', async function () {

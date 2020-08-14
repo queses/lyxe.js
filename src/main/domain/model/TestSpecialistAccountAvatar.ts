@@ -1,8 +1,8 @@
 import { Column } from 'typeorm'
 import { TestSpecialistAccountPresentation } from './TestSpecialistAccountPresentation'
-import { ComposedCollectionElement } from '../../../../libsrc/persistence-typeorm/annotations/ComposedCollectionElement'
-import { ComposedEntity } from '../../../../libsrc/persistence-typeorm/ComposedEntity'
-import { ComposedCollectionParent } from '../../../../libsrc/persistence-typeorm/annotations/ComposedCollectionParent'
+import { ComposedCollectionElement } from 'lyxe/lib/persistence-typeorm/annotations/ComposedCollectionElement'
+import { ComposedEntity } from 'lyxe/lib/persistence-typeorm/ComposedEntity'
+import { ComposedCollectionParent } from 'lyxe/lib/persistence-typeorm/annotations/ComposedCollectionParent'
 
 @ComposedCollectionElement()
 export class TestSpecialistAccountAvatar extends ComposedEntity<TestSpecialistAccountPresentation> {

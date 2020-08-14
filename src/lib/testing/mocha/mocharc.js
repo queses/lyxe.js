@@ -1,6 +1,6 @@
 const getTargets = function () {
   const testTypeWildcard = process.env.MOCHA_SPEC_ONLY ? '(spec)' : '(spec|external)'
-  return [ `./dist/src/*/tests/**/*\.@${testTypeWildcard}.js` ]
+  return [ `./dist/*/tests/**/*\.@${testTypeWildcard}.js` ]
 }
 
 module.exports = {

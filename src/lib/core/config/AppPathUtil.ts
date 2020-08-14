@@ -6,7 +6,7 @@ import { Cached } from '../lang/annotations/Cached'
 export class AppPathUtil {
   @Cached()
   static get appSrcRelative () {
-    return './src'
+    return './dist'
   }
 
   @Cached()
@@ -16,12 +16,12 @@ export class AppPathUtil {
 
   @Cached()
   static get appLib () {
-    return this.absolutePathOf('./lib')
+    return this.appSrc + '/lib'
   }
 
   @Cached()
   static get appData () {
-    return this.absolutePathOf('data', true)
+    return this.absolutePathOf('data')
   }
 
   @Cached()
@@ -47,7 +47,7 @@ export class AppPathUtil {
     })
   }
 
-  private static absolutePathOf (pathToAppend: string = '', asAssetsDir: boolean = false) {
-    return asAssetsDir ? path.join(process.cwd(), pathToAppend) : path.join(process.cwd(), 'dist', pathToAppend)
+  private static absolutePathOf (pathToAppend: string = '') {
+    return path.join(process.cwd(), pathToAppend)
   }
 }

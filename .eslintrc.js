@@ -1,5 +1,10 @@
 const getZones = () => ([
-  createZone('core')
+  createZone('core'),
+  {
+    'target': './src/lib',
+    'from': './src',
+    'except': [ './lib' ]
+  }
 ])
 
 const getConfig = () => ({
@@ -47,7 +52,7 @@ const getConfig = () => ({
 
 const createZone = (module, dependencies = []) => {
   return {
-    'target': './libsrc/' + module,
+    'target': './src/' + module,
     'from': './src',
     'except': (module === 'core')
       ? [ './core' ]

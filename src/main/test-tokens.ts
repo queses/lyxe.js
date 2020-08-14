@@ -1,5 +1,5 @@
 import { IChildTransactionalUseCase, IHelloWorldUseCase, IParentTransactionalUseCase } from './domain/test-use-cases'
-import Token from '../../libsrc/core/di/Token'
+import Token from 'lyxe/lib/core/di/Token'
 import { IConfigurableTestSpecialistRepo, ITestSpecialistAccountRepo, ITestSpecialistRepo } from './domain/test-repos'
 
 export const TestSpecialistRepoTkn = new Token<ITestSpecialistRepo>()

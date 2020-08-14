@@ -6,7 +6,7 @@ const j = require('jake')
 const nodeModulesDir = path.join(require.resolve('cross-spawn/package.json'), '../../.bin')
 
 const run = (taskName) => {
-  const t = j.Task[taskName];
+  const t = j.Task[taskName]
   return new Promise((resolve) => {
     t.addListener('complete', resolve)
     t.invoke()

@@ -1,8 +1,8 @@
 import { assert, AssertionError } from 'chai'
-import { itInTransaction } from '../../../../libsrc/testing/mocha/it-in-transaction'
-import { KeyValueContextStorageTkn } from '../../../../libsrc/key-value/lyxe-key-value-tokens'
-import { TransactionalUseCase } from '../../../../libsrc/persistence/annotations/TransactionalUseCase'
-import { BaseUseCase } from '../../../../libsrc/core/context/BaseUseCase'
+import { itInTransaction } from 'lyxe/lib/testing/mocha/it-in-transaction'
+import { KeyValueContextStorageTkn } from 'lyxe/lib/key-value/lyxe-key-value-tokens'
+import { TransactionalUseCase } from 'lyxe/lib/persistence/annotations/TransactionalUseCase'
+import { BaseUseCase } from 'lyxe/lib/core/context/BaseUseCase'
 
 describe('KeyValueContextStorage', function () {
   itInTransaction('should save and get item', async function (sf) {
