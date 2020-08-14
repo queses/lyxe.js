@@ -11,7 +11,6 @@ export class ChildTransactionalUseCase extends BaseUseCase implements IChildTran
   @InjectRepository(TestSpecialistRepoTkn)
   private specialistRepo: ITestSpecialistRepo
 
-
   public async run (toThrow: boolean = false) {
     await this.specialistRepo.save(TestSpecialist.create('Test', 'Another'))
 

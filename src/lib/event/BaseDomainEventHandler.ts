@@ -1,18 +1,17 @@
-import { ServiceFactory } from '../core/context/ServiceFactory'
 import { AppContainer } from '../core/di/AppContainer'
 import { IDomainEventHandler } from './IDomainEventHandler'
 import { IDomainEvent } from './IDomainEvent'
-import { IServiceFactory } from '../core/context/IServiceFactory'
+import { ServiceFactory } from 'lyxe/lib/core/context/ServiceFactory'
 
 export abstract class BaseDomainEventHandler <E extends IDomainEvent> implements IDomainEventHandler<E> {
   public abstract handle (event: E): void | Promise<void>
 
-  public configure (sf: IServiceFactory) {
+  public configure (sf: ServiceFactory) {
     this._serviceFactory = sf
     return this
   }
 
-  private _serviceFactory: IServiceFactory
+  private _serviceFactory: ServiceFactory
 
   protected get serviceFactory () {
     if (!this._serviceFactory) {

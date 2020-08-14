@@ -1,17 +1,11 @@
 import { TBaseContextInfo } from './lyxe-context-info'
 import { IContextService} from './IContextService'
-import { IUseCase } from './IUseCase'
-import Token from '../di/Token'
-import { IReadService } from './IReadService'
 import { AbstractService } from '../di/annotations/AbstractService'
-import { TClass, TServiceId } from '../di/lyxe-di'
+import { TServiceId } from '../di/lyxe-di'
 import { AppContainer } from '../di/AppContainer'
-import { IServiceFactory } from './IServiceFactory'
 
 @AbstractService()
-export abstract class BaseContextService <C extends TBaseContextInfo = TBaseContextInfo>
-  implements IContextService<C>, IServiceFactory<C>
-{
+export abstract class BaseContextService <C extends TBaseContextInfo = TBaseContextInfo> implements IContextService<C> {
   private _contextInfo?: C
 
   public configure (context: C | undefined): this {
@@ -23,15 +17,11 @@ export abstract class BaseContextService <C extends TBaseContextInfo = TBaseCont
     return this._contextInfo
   }
 
-  public createUseCase <T extends IUseCase> (id: Token<T> | string | symbol | TClass<T>): T {
-    return this.createService<T>(id)
-  }
-
-  public createReadService <T extends IReadService> (id: Token<T> | string | symbol | TClass<T>): T {
-    return this.createService<T>(id)
-  }
-
   public createService <T extends IContextService> (id: TServiceId<T>): T {
+    return this.createContextService(id)
+  }
+
+  public createContextService <T extends IContextService> (id: TServiceId<T>): T {
     return AppContainer.get(id).configure(this.contextInfo)
   }
 }

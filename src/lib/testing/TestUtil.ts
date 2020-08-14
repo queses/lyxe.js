@@ -8,16 +8,15 @@ import { RepositoryFactoryTkn } from '../persistence/lyxe-persistence-tokens'
 import { IContextService } from '../core/context/IContextService'
 import { PersistenceContextUtil } from '../persistence/PersistenceContextUtil'
 import { TBaseContextInfo } from '../core/context/lyxe-context-info'
-import { IServiceFactory } from '../core/context/IServiceFactory'
 import { ServiceFactory } from '../core/context/ServiceFactory'
 
 export class TestUtil {
   static createRepo <R extends IRepository<T, ID>, T extends IHasId<ID>, ID extends TPersistenceId> (
     id: TServiceId<R>,
-    emSf: IEntityManager | IServiceFactory | undefined
+    emSf: IEntityManager | ServiceFactory | undefined
   ) {
-    if (emSf && (emSf as IServiceFactory).contextInfo) {
-      emSf = PersistenceContextUtil.getTransactionalEm(emSf as IServiceFactory)
+    if (emSf && (emSf as ServiceFactory).contextInfo) {
+      emSf = PersistenceContextUtil.getTransactionalEm(emSf as ServiceFactory)
     }
 
     return AppContainer.get(RepositoryFactoryTkn).get(id, emSf as IEntityManager | undefined)
@@ -36,6 +35,6 @@ export class TestUtil {
   }
 
   static createServiceFactory <C extends TBaseContextInfo> (em: IEntityManager | undefined) {
-    return this.createContextService<IServiceFactory<C>, C>(ServiceFactory, em)
+    return this.createContextService<ServiceFactory<C>, C>(ServiceFactory, em)
   }
 }

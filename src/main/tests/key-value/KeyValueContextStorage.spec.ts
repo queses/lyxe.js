@@ -6,7 +6,7 @@ import { BaseUseCase } from 'lyxe/lib/core/context/BaseUseCase'
 
 describe('KeyValueContextStorage', function () {
   itInTransaction('should save and get item', async function (sf) {
-    const storage = sf.createService(KeyValueContextStorageTkn)
+    const storage = sf.createContextService(KeyValueContextStorageTkn)
     const key = 'key-value-storage-test-item-key'
     await storage.set(key, { status: 'ok' })
 
@@ -20,7 +20,7 @@ describe('KeyValueContextStorage', function () {
   }, 'test')
 
   itInTransaction('should save and get date', async function (sf) {
-    const storage = sf.createService(KeyValueContextStorageTkn)
+    const storage = sf.createContextService(KeyValueContextStorageTkn)
     const key = 'key-value-storage-test-date-key'
     const sourceDate = new Date()
     await storage.set(key, sourceDate)
@@ -37,11 +37,11 @@ describe('KeyValueContextStorage', function () {
   itInTransaction('should work in nested transaction', async function (sf) {
     const key = 'key-value-storage-test-date-key'
     const value = 'something'
-    const useCase = sf.createUseCase(SetItemInTransaction)
+    const useCase = sf.createContextService(SetItemInTransaction)
 
     await assert.isRejected(useCase.run(key, value), OkError)
 
-    const storage = sf.createService(KeyValueContextStorageTkn)
+    const storage = sf.createContextService(KeyValueContextStorageTkn)
     assert.isFalse(await storage.has(key))
   }, 'test')
 })
@@ -49,7 +49,7 @@ describe('KeyValueContextStorage', function () {
 @TransactionalUseCase(undefined, 'test')
 class SetItemInTransaction extends BaseUseCase {
   public async run (key: string, value: string) {
-    const keyValue = this.createService(KeyValueContextStorageTkn)
+    const keyValue = this.createContextService(KeyValueContextStorageTkn)
     await keyValue.set(key, value)
 
     if (await keyValue.get(key) !== value) {
