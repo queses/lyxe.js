@@ -15,3 +15,5 @@ or
 ## Documentation
 
 **WIP** 🚧
+
+You can see example in https://github.com/queses/lyxe-example.
