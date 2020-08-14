@@ -1,6 +1,6 @@
-import { BaseDomainFixture } from 'lyxe/lib/testing/fixture/BaseDomainFixture'
 import { TestSpecialistAccount } from '../../domain/model/TestSpecialistAccount'
 import { TestEmbeddedMoney } from '../../domain/model/TestEmbeddedMoney'
+import { BaseDomainFixture } from '../../../lib/testing/fixture/BaseDomainFixture'
 
 export class TestSpecialistAccountFixture extends BaseDomainFixture {
   public getEntities() {

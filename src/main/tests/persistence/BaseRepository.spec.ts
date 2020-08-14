@@ -1,9 +1,9 @@
 import { assert } from 'chai'
-import { itInTransaction } from 'lyxe/lib/testing/mocha/it-in-transaction'
 import { TestSpecialist } from '../../domain/model/TestSpecialist'
-import { IRepository } from 'lyxe/lib/persistence/IRepository'
 import { TestSpecialistRepoTkn } from '../../test-tokens'
-import { TestUtil } from 'lyxe/lib/testing/TestUtil'
+import { itInTransaction } from '../../../lib/testing/mocha/it-in-transaction'
+import { TestUtil } from '../../../lib/testing/TestUtil'
+import { IRepository } from '../../../lib/persistence/IRepository'
 
 describe('BaseRepository', function () {
   itInTransaction('should find all entities', async function (sf, em) {

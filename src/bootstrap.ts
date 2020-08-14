@@ -1,11 +1,9 @@
-require('module-alias').addAlias('lyxe/lib', __dirname + '/lib')
-
-import { LyxeFramework } from 'lyxe/lib/core/LyxeFramework'
-import { AppConfigurator } from 'lyxe/lib/core/config/AppConfigurator'
 import * as fs from 'fs'
-import { AppPathUtil } from 'lyxe/lib/core/config/AppPathUtil'
-import { PersistenceTypeormConfig } from 'lyxe/lib/persistence-typeorm/PersistenceTypeormConfig'
-import { KeyValueTypeormConfig } from 'lyxe/lib/key-value-typeorm/KeyValueTypeormConfig'
+import { AppConfigurator } from './lib/core/config/AppConfigurator'
+import { AppPathUtil } from './lib/core/config/AppPathUtil'
+import { KeyValueTypeormConfig } from './lib/key-value-typeorm/KeyValueTypeormConfig'
+import { LyxeFramework } from './lib/core/LyxeFramework'
+import { PersistenceTypeormConfig } from './lib/persistence-typeorm/PersistenceTypeormConfig'
 
 export default () => {
   const config = fs.readFileSync(AppPathUtil.appData + '/.appconfig').toString()

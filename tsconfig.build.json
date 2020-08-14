@@ -2,8 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./lib",
-    "baseUrl": "./src/lib",
-    "paths": {}
+    "baseUrl": "./src/lib"
   },
   "include": [
     "./src/lib"

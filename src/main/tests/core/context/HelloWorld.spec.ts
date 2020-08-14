@@ -1,6 +1,6 @@
 import { assert } from 'chai'
-import { AppContainer } from 'lyxe/lib/core/di/AppContainer'
 import { HelloWorldUseCaseTkn } from '../../../test-tokens'
+import { AppContainer } from '../../../../lib/core/di/AppContainer'
 
 describe('HelloWorld', function () {
   it('should return hello world', async function () {

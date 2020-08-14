@@ -1,8 +1,8 @@
 import 'lyxe/lib/core/register-lyxe'
-import { LyxeFramework } from 'lyxe/lib/core/LyxeFramework'
-import { AppContainer } from 'lyxe/lib/core/di/AppContainer'
 import bootstrap from '../bootstrap'
-import { ConsoleRunner } from 'lyxe/lib/console/ConsoleRunner'
+import { LyxeFramework } from '../lib/core/LyxeFramework'
+import { AppContainer } from '../lib/core/di/AppContainer'
+import { ConsoleRunner } from '../lib/console/ConsoleRunner'
 
 const main = async () => {
   LyxeFramework.requirePlugins('console')

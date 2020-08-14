@@ -1,8 +1,8 @@
 import { assert, AssertionError } from 'chai'
 import { ParentTransactionalUseCaseTkn, TestSpecialistAccountRepoTkn, TestSpecialistRepoTkn } from '../../test-tokens'
-import { PersistenceConnectionRegistry } from 'lyxe/lib/persistence/PersistenceConnectionRegistry'
-import { TestUtil } from 'lyxe/lib/testing/TestUtil'
-import { AppContainer } from 'lyxe/lib/core/di/AppContainer'
+import { TestUtil } from '../../../lib/testing/TestUtil'
+import { AppContainer } from '../../../lib/core/di/AppContainer'
+import { PersistenceConnectionRegistry } from '../../../lib/persistence/PersistenceConnectionRegistry'
 
 describe('TransactionalUseCase', function () {
   it('should begin and rollback transactional use case', async function () {

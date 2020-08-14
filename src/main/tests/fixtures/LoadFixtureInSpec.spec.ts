@@ -1,9 +1,9 @@
 import { assert } from 'chai'
-import { MochaFixtureUtil } from 'lyxe/lib/testing/mocha/MochaFixtureUtil'
 import { TestSpecialistAccountFixture } from './TestSpecialistAccountFixture'
-import { itInTransaction } from 'lyxe/lib/testing/mocha/it-in-transaction'
-import { TestUtil } from 'lyxe/lib/testing/TestUtil'
 import { TestSpecialistAccountRepoTkn } from '../../test-tokens'
+import { MochaFixtureUtil } from '../../../lib/testing/mocha/MochaFixtureUtil'
+import { itInTransaction } from '../../../lib/testing/mocha/it-in-transaction'
+import { TestUtil } from '../../../lib/testing/TestUtil'
 
 describe('LoadFixtureInSpec', function () {
   MochaFixtureUtil.loadFixturesIn(TestSpecialistAccountFixture, 'test')

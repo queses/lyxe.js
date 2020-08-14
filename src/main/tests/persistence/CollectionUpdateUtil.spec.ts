@@ -1,6 +1,6 @@
 import { assert } from 'chai'
 import { TestPhoto } from '../../domain/model/TestPhoto'
-import { CollectionUpdateUtil } from 'lyxe/lib/persistence/CollectionUpdateUtil'
+import { CollectionUpdateUtil } from '../../../lib/persistence/CollectionUpdateUtil'
 
 describe('CollectionUpdateUtil', function () {
   it('should not update identical collection', function () {

@@ -1,9 +1,9 @@
-import { IRepository } from 'lyxe/lib/persistence/IRepository'
 import { TestSpecialist } from './model/TestSpecialist'
-import { IConfigurableRepository } from 'lyxe/lib/persistence/IConfigurableRepository'
 import { TestSpecialistAccount } from './model/TestSpecialistAccount'
 import { TestSpecialistSearchConf } from './model/TestSpecialistSearchConf'
-import { TPagePromise } from 'lyxe/lib/persistence/lyxe-persistence'
+import { IRepository } from '../../lib/persistence/IRepository'
+import { IConfigurableRepository } from '../../lib/persistence/IConfigurableRepository'
+import { TPagePromise } from '../../lib/persistence/lyxe-persistence'
 
 export interface ITestSpecialistRepo extends IRepository<TestSpecialist, number> {
   findByFirstName (needle: string): Promise<TestSpecialist[]>

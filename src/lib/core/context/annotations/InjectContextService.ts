@@ -1,7 +1,3 @@
-import { IContextService } from 'lyxe/lib/core/context/IContextService'
-import { TServiceId } from 'lyxe/lib/core/di/lyxe-di'
-import { IUseCase } from 'lyxe/lib/core/context/IUseCase'
-
 /**
  * Creates and injects ContextService instance into current ContextService.
  * If the transferred service is an UseCase, then each call creates a new instance.
@@ -9,6 +5,10 @@ import { IUseCase } from 'lyxe/lib/core/context/IUseCase'
  * @param id
  * @constructor
  */
+import { IContextService } from '../IContextService'
+import { TServiceId } from '../../di/lyxe-di'
+import { IUseCase } from '../IUseCase'
+
 export const InjectContextService = <S extends IContextService> (id: TServiceId<S>) => {
   return (target: IContextService, name: string) => {
     Object.defineProperty(target, name, {

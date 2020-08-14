@@ -2,9 +2,9 @@ import { Column, Entity } from 'typeorm'
 import { TestEmbeddedMoney } from './TestEmbeddedMoney'
 import { TestSpecialistAccountStatus } from './TestSpecialistAccountStatus'
 import { TestSpecialistAccountPresentation } from './TestSpecialistAccountPresentation'
-import { NumberIdEntity } from 'lyxe/lib/persistence-typeorm/NumberIdEntity'
-import { HasComposedEntity } from 'lyxe/lib/persistence-typeorm/annotations/HasComposedEntity'
-import { HasValuesCollection } from 'lyxe/lib/persistence-typeorm/annotations/HasValuesCollection'
+import { NumberIdEntity } from '../../../lib/persistence-typeorm/NumberIdEntity'
+import { HasComposedEntity } from '../../../lib/persistence-typeorm/annotations/HasComposedEntity'
+import { HasValuesCollection } from '../../../lib/persistence-typeorm/annotations/HasValuesCollection'
 
 @Entity()
 export class TestSpecialistAccount extends NumberIdEntity {

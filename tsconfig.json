@@ -13,10 +13,7 @@
     "outDir": "./dist",
     "incremental": true,
     "allowJs": true,
-    "baseUrl": "./",
-    "paths": {
-      "lyxe/lib/*": ["src/lib/*"]
-    }
+    "baseUrl": "./"
   },
   "include": [
     "./src"

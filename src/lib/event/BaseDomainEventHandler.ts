@@ -1,7 +1,7 @@
 import { AppContainer } from '../core/di/AppContainer'
 import { IDomainEventHandler } from './IDomainEventHandler'
 import { IDomainEvent } from './IDomainEvent'
-import { ServiceFactory } from 'lyxe/lib/core/context/ServiceFactory'
+import { ServiceFactory } from '../core/context/ServiceFactory'
 
 export abstract class BaseDomainEventHandler <E extends IDomainEvent> implements IDomainEventHandler<E> {
   public abstract handle (event: E): void | Promise<void>

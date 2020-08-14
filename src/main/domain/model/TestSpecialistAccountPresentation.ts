@@ -1,9 +1,9 @@
 import { Column, Entity } from 'typeorm'
 import { TestSpecialistAccountAvatar } from './TestSpecialistAccountAvatar'
 import { TestSpecialistAccount } from './TestSpecialistAccount'
-import { ComposedEntity } from 'lyxe/lib/persistence-typeorm/ComposedEntity'
-import { HasComposedCollection } from 'lyxe/lib/persistence-typeorm/annotations/HasComposedCollection'
-import { ComposedEntityParent } from 'lyxe/lib/persistence-typeorm/annotations/ComposedEntityParent'
+import { ComposedEntity } from '../../../lib/persistence-typeorm/ComposedEntity'
+import { HasComposedCollection } from '../../../lib/persistence-typeorm/annotations/HasComposedCollection'
+import { ComposedEntityParent } from '../../../lib/persistence-typeorm/annotations/ComposedEntityParent'
 
 @Entity()
 export class TestSpecialistAccountPresentation extends ComposedEntity<TestSpecialistAccount> {

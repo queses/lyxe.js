@@ -1,6 +1,6 @@
-import { TransientService } from '../di/annotations/TransientService'
 import { BaseContextService } from './BaseContextService'
 import { TBaseContextInfo } from './lyxe-context-info'
+import { ContextService } from './annotations/ContextService'
 
-@TransientService()
+@ContextService()
 export class ServiceFactory <C extends TBaseContextInfo = TBaseContextInfo> extends BaseContextService<C> {}

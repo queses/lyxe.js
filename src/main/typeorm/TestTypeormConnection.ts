@@ -1,7 +1,7 @@
 import { ConnectionOptions } from 'typeorm'
-import { AppPathUtil } from 'lyxe/lib/core/config/AppPathUtil'
-import { BaseTypeormConnection } from 'lyxe/lib/persistence-typeorm/BaseTypeormConnection'
-import { PersistenceConnection } from 'lyxe/lib/persistence/annotations/PersistenceConnection'
+import { PersistenceConnection } from '../../lib/persistence/annotations/PersistenceConnection'
+import { AppPathUtil } from '../../lib/core/config/AppPathUtil'
+import { BaseTypeormConnection } from '../../lib/persistence-typeorm/BaseTypeormConnection'
 
 @PersistenceConnection('test')
 export class TestTypeormConnection extends BaseTypeormConnection {

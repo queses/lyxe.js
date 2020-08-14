@@ -1,6 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
-import { NestModuleMetaUtil } from 'lyxe/lib/web-nest-express/NestModuleMetaUtil'
 import { MainModule } from '../main/web/main.module'
+import { NestModuleMetaUtil } from '../lib/web-nest-express/NestModuleMetaUtil'
 
 @Module(
   NestModuleMetaUtil.createModuleMeta({

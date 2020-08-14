@@ -1,8 +1,8 @@
 import { TestSpecialist } from '../domain/model/TestSpecialist'
-import { Repository } from 'lyxe/lib/persistence/annotations/Repository'
 import { TestSpecialistRepoTkn } from '../test-tokens'
-import { BaseRepository } from 'lyxe/lib/persistence-typeorm/BaseRepository'
 import { ITestSpecialistRepo } from '../domain/test-repos'
+import { BaseRepository } from '../../lib/persistence-typeorm/BaseRepository'
+import { Repository } from '../../lib/persistence/annotations/Repository'
 
 @Repository(TestSpecialistRepoTkn, 'test')
 export class TestSpecialistRepo extends BaseRepository<TestSpecialist, number> implements ITestSpecialistRepo {

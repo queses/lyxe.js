@@ -1,9 +1,9 @@
 import 'lyxe/lib/core/register-lyxe'
-import { LyxeFramework } from 'lyxe/lib/core/LyxeFramework'
-import { AppContainer } from 'lyxe/lib/core/di/AppContainer'
 import bootstrap from '../bootstrap'
-import { NestExpressRunner } from 'lyxe/lib/web-nest-express/NestExpressRunner'
 import { AppModule } from './app.module'
+import { LyxeFramework } from '../lib/core/LyxeFramework'
+import { AppContainer } from '../lib/core/di/AppContainer'
+import { NestExpressRunner } from '../lib/web-nest-express/NestExpressRunner'
 
 const main = async () => {
   LyxeFramework.requirePlugins('web-nest-express')

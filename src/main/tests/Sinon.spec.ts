@@ -1,7 +1,7 @@
 import * as sinon from 'sinon'
 import { assert } from 'chai'
-import { AppContainer } from 'lyxe/lib/core/di/AppContainer'
 import { HelloWorldUseCaseTkn } from '../test-tokens'
+import { AppContainer } from '../../lib/core/di/AppContainer'
 
 describe('Sinon', function () {
   it('should replace Date.now', function () {

@@ -1,8 +1,8 @@
-import ConsoleAction from 'lyxe/lib/console/annotations/ConsoleAction'
-import ConsoleController from 'lyxe/lib/console/annotations/ConsoleController'
-import { InjectService } from 'lyxe/lib/core/di/annotations/InjectService'
-import { AppLoggerTkn } from 'lyxe/lib/logging/lyxe-logging-tokens'
-import { IAppLogger } from 'lyxe/lib/logging/IAppLogger'
+import ConsoleController from '../../lib/console/annotations/ConsoleController'
+import { InjectService } from '../../lib/core/di/annotations/InjectService'
+import { AppLoggerTkn } from '../../lib/logging/lyxe-logging-tokens'
+import { IAppLogger } from '../../lib/logging/IAppLogger'
+import ConsoleAction from '../../lib/console/annotations/ConsoleAction'
 
 @ConsoleController('hello')
 export class HelloConsoleAction {
