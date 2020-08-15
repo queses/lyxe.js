@@ -1,6 +1,6 @@
 import { InvalidArgumentError } from '../core/application-errors/InvalidAgrumentError'
 
-export class NestCorsUtil {
+export class ExpressCorsUtil {
   public static getOriginWithSubdomains (url: string) {
     let protocol = ''
     let host = ''

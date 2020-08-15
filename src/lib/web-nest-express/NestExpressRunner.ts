@@ -8,13 +8,16 @@ import { LyxeFramework } from '../core/LyxeFramework'
 import { AppContainer } from '../core/di/AppContainer'
 import { AppLoggerTkn } from '../logging/lyxe-logging-tokens'
 import { WebNestExpressConfig } from './WebNestExpressConfig'
-import { NestCorsUtil } from './NestCorsUtil'
+import { ExpressCorsUtil } from '../web-express/ExpressCorsUtil'
 import { CustomOrigin } from '@nestjs/common/interfaces/external/cors-options.interface'
 import { AppPathUtil } from '../core/config/AppPathUtil'
 
 @SingletonService()
 export class NestExpressRunner {
-  public async run (appModuleClass: TClass<NestModule>, runFramework: boolean = true) {
+  public async run (
+    appModuleClass: TClass<NestModule>,
+    modifyApp?: (app: NestExpressApplication) => void | Promise<void>
+  ) {
     const [ app ] =  await Promise.all([
       NestFactory.create<NestExpressApplication>(
         appModuleClass,
@@ -22,23 +25,32 @@ export class NestExpressRunner {
           logger: AppContainer.get(AppLoggerTkn)
         }
       ),
-      runFramework ? LyxeFramework.run() : undefined
+      LyxeFramework.run()
     ])
 
     if (WebNestExpressConfig.inst.useCors) {
       app.enableCors({
-        origin: NestCorsUtil.getOriginWithSubdomains(AppConfigurator.get<string>('web.mainHost')) as CustomOrigin,
+        origin: ExpressCorsUtil.getOriginWithSubdomains(AppConfigurator.get<string>('web.mainHost')) as CustomOrigin,
+        optionsSuccessStatus: 200,
         credentials: true
       })
     }
 
-    if (WebNestExpressConfig.inst.useStaticDirectory) {
+    if (WebNestExpressConfig.inst.usePublicDirectory) {
       app.useStaticAssets(AppPathUtil.appData + '/public', { prefix: '/public/' })
+    }
+
+    if (WebNestExpressConfig.inst.useStaticRootDirectory) {
       app.useStaticAssets(AppPathUtil.appData + '/static-root')
     }
 
-    await app.listen(AppConfigurator.get<number>('web.port'))
+    if (modifyApp) {
+      const modifyAppResult = modifyApp(app)
+      if (modifyAppResult) {
+        await modifyAppResult
+      }
+    }
 
-    return app
+    await app.listen(AppConfigurator.get<number>('web.port'))
   }
 }

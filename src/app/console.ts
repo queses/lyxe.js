@@ -1,4 +1,4 @@
-import 'lyxe/lib/core/register-lyxe'
+import '../lib/core/register-lyxe'
 import bootstrap from '../bootstrap'
 import { LyxeFramework } from '../lib/core/LyxeFramework'
 import { AppContainer } from '../lib/core/di/AppContainer'

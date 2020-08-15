@@ -85,15 +85,17 @@ task('do', ['tsc'], () => {
 
 desc('Run web development server')
 flag('dbg', 'debug mode')
+flag('file', 'name of file that starts server')
 task('dev', () => {
-  const { dbg } = process.env
+  const { dbg, file } = process.env
+  const fileName = (file && typeof file === 'string') ? file : 'dist/app/web.js'
 
   if (dbg) {
     const args = ['DEBUGGER=1', 'node', '--inspect-brk', '--nolazy']
     return npmCrossEnv(args)
   } else {
     const args = ['--watch', 'src', '--ext', 'ts,js', '--ignore', 'src/**/*.spec.ts']
-    args.push('--exec', 'tsc && node dist/app/web.js')
+    args.push('--exec', 'tsc && node ' + fileName)
     return npmSpawn('nodemon', args)
   }
 })

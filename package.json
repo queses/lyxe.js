@@ -25,6 +25,7 @@
     "do:prod": "cross-env NODE_ENV=production node dist/app/console.js",
     "dev": "lyxedev dev",
     "dbg": "lyxedev dev --dbg 1",
+    "dev:express": "lyxedev dev --file dist/app/web-express.js",
     "prod": "lyxedev build && cross-env NODE_ENV=production node dist/app/web.js",
     "build": "lyxedev build",
     "build:lib": "lyxedev build-lib",
@@ -94,6 +95,7 @@
     "@typescript-eslint/eslint-plugin": "^2.19.2",
     "@typescript-eslint/parser": "^2.19.2",
     "copyfiles": "^2.3.0",
+    "cors": "^2.8.5",
     "eslint": "^7.6.0",
     "eslint-plugin-import": "^2.20.1",
     "express": "^4.17.1",
@@ -106,6 +108,7 @@
     "@nestjs/common": ">= 7.0.0",
     "@nestjs/core": ">= 7.0.0",
     "@nestjs/platform-express": ">= 7.0.0",
-    "typeorm": ">= 0.2.0"
+    "typeorm": ">= 0.2.0",
+    "express": ">= 4.0.0"
   }
 }

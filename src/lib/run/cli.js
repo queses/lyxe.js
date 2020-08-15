@@ -14,12 +14,12 @@ if (help || h || !_[0]) {
   const args = Object.keys(params).map((key) => `${key}=${params[key]}`)
   args.unshift('--jakefile', jakefile)
 
-  if (params.quiet) {
-    args.unshift('--quiet')
-  }
-
   if (_[1]) {
     args.push('cmd=' + _[1])
+  }
+
+  if (params.quiet || _[0] === 'dev' || _[0] === 'start') {
+    args.unshift('--quiet')
   }
 
   args.push(_[0])

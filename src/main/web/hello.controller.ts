@@ -4,6 +4,6 @@ import { Controller, Get } from '@nestjs/common'
 export class HelloController {
   @Get('')
   public hello () {
-    return 'Hello!'
+    return { message: 'Hello from LyxeJS!' }
   }
 }
