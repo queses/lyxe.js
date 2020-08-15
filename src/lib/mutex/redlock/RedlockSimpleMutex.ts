@@ -89,6 +89,12 @@ export class RedlockSimpleMutex implements IMutex {
     )
 
     this.redlockCreated = true
-    return new Redlock([ client ])
+    return new Redlock(
+      [ client ],
+      {
+        retryCount: 1000,
+        retryDelay:  250
+      }
+    )
   }
 }
