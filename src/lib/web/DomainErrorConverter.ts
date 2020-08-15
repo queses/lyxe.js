@@ -21,15 +21,20 @@ export class DomainErrorConverter {
     let body: TObjectLiteral | undefined
     if (error instanceof DomainInvalidArgumentError) {
       status = 400
+      this.logger.debug(error.message)
     } else if (error instanceof DomainEntityNotFoundError) {
       status = 404
+      this.logger.debug(error.message)
     } else if (error instanceof DomainAuthenticationNeededError) {
       status = 401
+      this.logger.debug(error.message)
     } else if (error instanceof DomainAccessError) {
       status = 403
+      this.logger.debug(error.message)
     } else if (error instanceof DomainEntityValidationError) {
       status = 422
       body = error.errors
+      this.logger.debug(error.message)
     } else {
       status = 500
       this.logger.error(error.message, error.stack)

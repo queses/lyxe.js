@@ -1,6 +1,7 @@
 import { SingletonService } from '../core/di/annotations/SingletonService'
 import { AppLoggerTkn } from './lyxe-logging-tokens'
 import { IAppLogger } from './IAppLogger'
+import { AppEnv } from '../core/config/AppEnv'
 
 @SingletonService(AppLoggerTkn)
 export class AppConsoleLogger implements IAppLogger {
@@ -17,6 +18,10 @@ export class AppConsoleLogger implements IAppLogger {
   }
 
   public debug (message: string): void {
+    if (AppEnv.inProduction) {
+      return
+    }
+
     console.debug(message)
   }
 }

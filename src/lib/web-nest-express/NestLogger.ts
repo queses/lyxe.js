@@ -6,9 +6,10 @@ import { Logger } from '@nestjs/common'
 import { AppConfigurator } from '../core/config/AppConfigurator'
 import { AppPathUtil } from '../core/config/AppPathUtil'
 import { Cached } from '../core/lang/annotations/Cached'
+import { AppEnv } from '../core/config/AppEnv'
 
 @ReplaceSingleton(AppLoggerTkn)
-export class NestFileLogger implements IAppLogger {
+export class NestLogger implements IAppLogger {
   public error (message: string, trace: string) {
     if (message) {
       this.errorFileLogger.log('error', message, { trace, at: new Date().toLocaleString() })
@@ -34,6 +35,10 @@ export class NestFileLogger implements IAppLogger {
   }
 
   public debug (message: any): void {
+    if (AppEnv.inProduction) {
+      return
+    }
+
     if (message && AppConfigurator.get<boolean>('web.logInfoToFile')) {
       this.infoFileLogger.log('debug', message, { at: new Date().toLocaleString() })
     }

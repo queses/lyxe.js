@@ -17,10 +17,13 @@ export class AppErrorConverter {
     let status: number
     if (error instanceof ResourceNotFoundError) {
       status = 404
+      this.logger.debug(error.message)
     } else if (error instanceof InvalidArgumentError) {
       status = 400
+      this.logger.debug(error.message)
     } else if (error instanceof ResourceTemporaryUnavailableError) {
       status = 503
+      this.logger.debug(error.message)
     } else {
       status = 500
       this.logger.error(error.message, error.stack)
