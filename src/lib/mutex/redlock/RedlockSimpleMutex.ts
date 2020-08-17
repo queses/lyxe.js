@@ -92,7 +92,7 @@ export class RedlockSimpleMutex implements IMutex {
     return new Redlock(
       [ client ],
       {
-        retryCount: 1000,
+        retryCount: 25000,
         retryDelay:  250
       }
     )
