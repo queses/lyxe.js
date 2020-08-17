@@ -1,6 +1,7 @@
 const { task, desc } = require('jake')
 const { flag, npmCommand, runSerial, npmCrossEnv, npmSpawn } = require('./jake-utils')
 const RunError = require('./RunError')
+const stringArgv = require('string-argv').default
 
 desc('Cleans TypeScript output directory')
 task('clean', () => npmCommand('rimraf dist'))
@@ -79,8 +80,8 @@ task('do', ['tsc'], () => {
     args.push('--inspect-brk', '--nolazy')
   }
 
-  args.push('./dist/app/console.js', cmd)
-  return npmCrossEnv(args)
+  args.push('./dist/app/console.js')
+  return npmCrossEnv(args.concat(stringArgv(cmd)))
 })
 
 desc('Run web development server')
