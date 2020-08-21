@@ -37,7 +37,7 @@ const flag = (flag, description, type = Boolean) => {
 }
 
 const npmSpawn = (args = []) => new Promise((resolve) => {
-  crossEnv(args, { shell: true }).removeAllListeners('exit').on('exit', (code) => {
+  crossEnv(args).removeAllListeners('exit').on('exit', (code) => {
     if (code === 0) {
       resolve()
     } else {
