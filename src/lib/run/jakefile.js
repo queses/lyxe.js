@@ -44,15 +44,15 @@ flag('watch', 'watch files')
 flag('dbg', 'debug mode')
 task('test', ['lint', 'tsc'], () => {
   const { external, watch, only, dbg } = process.env
-  const args = ['NODE_ENV=test', './node_modules/mocha/bin/_mocha']
-
-  if (watch) {
-    args.push('--watch')
-  }
-
+  const args = ['NODE_ENV=test']
   if (dbg) {
     args.unshift('DEBUGGER=1')
     args.push('--inspect-brk', '--nolazy')
+  }
+
+  args.push('./node_modules/mocha/bin/_mocha')
+  if (watch) {
+    args.push('--watch')
   }
 
   if (typeof only === 'string' && only !== 'true') {
