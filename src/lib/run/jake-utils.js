@@ -1,9 +1,6 @@
 const stringArgv = require('string-argv').default
-const path = require('path')
-const spawn = require('cross-spawn')
 const j = require('jake')
-
-const nodeModulesDir = path.join(require.resolve('cross-spawn/package.json'), '../../.bin')
+const crossEnv = require('cross-env')
 
 const run = (taskName) => {
   const t = j.Task[taskName]
@@ -39,34 +36,16 @@ const flag = (flag, description, type = Boolean) => {
   j.desc(`${j.currentTaskDescription}\n     └ ${flag}: ${typeName} - ${description}`)
 }
 
-const npmSpawn = (binary, args = []) => new Promise((resolve) => {
-  const child = spawn(
-    nodeModulesDir + '/' + binary,
-    args,
-    { cwd: process.cwd(), stdio: 'inherit' }
-  )
-
-  child.on('exit', (code) => {
-    if (code) {
-      process.exit(code)
-    } else {
+const npmSpawn = (args = []) => new Promise((resolve) => {
+  crossEnv(args, { shell: true }).removeAllListeners('exit').on('exit', (code) => {
+    if (code === 0) {
       resolve()
+    } else {
+      process.exit((code === null ) ? 1 : code)
     }
   })
-
-  process.on('SIGTERM', () => child.kill('SIGTERM'))
-  process.on('SIGINT', () => child.kill('SIGINT'))
-  process.on('SIGBREAK', () => child.kill('SIGBREAK'))
-  process.on('SIGHUP', () => child.kill('SIGHUP'))
 })
 
-const npmCommand = function (command) {
-    const args = stringArgv(command)
-    return npmSpawn(args.shift(), args)
-  }
+const npmCommand = (command) => npmSpawn(stringArgv(command))
 
-const npmCrossEnv = function (args) {
-  return npmSpawn('cross-env', args)
-}
-
-module.exports = { run, runSerial, flag, npmCommand, npmSpawn, npmCrossEnv }
+module.exports = { run, runSerial, flag, npmCommand, npmSpawn }

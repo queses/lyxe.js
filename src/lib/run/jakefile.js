@@ -1,5 +1,5 @@
 const { task, desc } = require('jake')
-const { flag, npmCommand, runSerial, npmCrossEnv, npmSpawn } = require('./jake-utils')
+const { flag, npmCommand, runSerial, npmSpawn } = require('./jake-utils')
 const RunError = require('./RunError')
 const stringArgv = require('string-argv').default
 
@@ -61,7 +61,7 @@ task('test', ['lint', 'tsc'], () => {
     args.unshift('MOCHA_SPEC_ONLY=true')
   }
 
-  return npmCrossEnv(args)
+  return npmSpawn(args)
 })
 
 desc('Perform application console action')
@@ -81,7 +81,7 @@ task('do', ['tsc'], () => {
   }
 
   args.push('./dist/app/console.js')
-  return npmCrossEnv(args.concat(stringArgv(cmd)))
+  return npmSpawn(args.concat(stringArgv(cmd)))
 })
 
 desc('Run web development server')
@@ -92,12 +92,12 @@ task('dev', () => {
   const fileName = (file && typeof file === 'string') ? file : 'dist/app/web.js'
 
   if (dbg) {
-    const args = ['DEBUGGER=1', 'node', '--inspect-brk', '--nolazy']
-    return npmCrossEnv(args)
+    const args = ['DEBUGGER=1', 'node', '--inspect-brk', '--nolazy', fileName]
+    return npmSpawn(args)
   } else {
-    const args = ['--watch', 'src', '--ext', 'ts,js', '--ignore', 'src/**/*.spec.ts']
-    args.push('--exec', 'tsc && node ' + fileName)
-    return npmSpawn('nodemon', args)
+    const args = ['nodemon', '--watch', 'src', '--ext', 'ts,js', '--ignore', 'src/**/*.spec.ts']
+    args.push('--exec', `"tsc && node '${fileName}"`)
+    return npmSpawn(args)
   }
 })
 
