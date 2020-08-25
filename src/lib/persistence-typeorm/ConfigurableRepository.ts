@@ -55,7 +55,7 @@ export abstract class ConfigurableRepository
     return this.getPageFromValues(await super.queryEntities(q), q as SelectQueryBuilder<T>, pageConfig)
   }
 
-  protected async queryRawEntities <U extends any> (q?: SelectQueryBuilder<T>, config?: C): Promise<U[]> {
+  protected async queryRawEntities <U extends any> (q?: SelectQueryBuilder<T>, config?: C): Promise<Page<U>> {
     let pageOptions: PageConfig | undefined
     if (config instanceof SearchConfig) {
       pageOptions = config.page
