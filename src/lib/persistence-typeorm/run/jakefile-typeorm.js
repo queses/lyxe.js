@@ -1,5 +1,5 @@
 const { task, desc } = require('jake')
-const { npmCrossEnv, flag } = require('../../run/jake-utils')
+const { npmSpawn, flag } = require('../../run/jake-utils')
 const RunError = require('../../run/RunError')
 
 desc('Runs TypeORM CLI command')
@@ -20,5 +20,5 @@ task('orm', ['tsc'], () => {
     args.unshift('NODE_ENV=production')
   }
 
-  return npmCrossEnv(args)
+  return npmSpawn(args)
 })
