@@ -65,7 +65,7 @@ export class EntityUtil {
 
     let proto = Object.getPrototypeOf(entity)
     // Выполняем цикл пока proto не null или пока proto не присвоен базововый прототип (у него есть метод valueOf)
-    while (proto && !Object.hasOwnProperty('valueOf')) {
+    while (proto && !proto.hasOwnProperty('valueOf')) {
       this.parseKeysForDto(Object.getOwnPropertyNames(proto) as string[], dto, entity, extra)
       proto = Object.getPrototypeOf(proto)
     }
