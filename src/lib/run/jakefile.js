@@ -14,7 +14,7 @@ flag('force', 'ignore cache')
 flag('fix', 'fix errors')
 task('lint', () => {
   const { fix, force } = process.env
-  return npmCommand(`eslint ${!force ? '--cache' : ''} ${fix ? '--fix' : ''} src/**/*.ts`)
+  return npmCommand(`eslint ${!force ? '--cache' : ''} ${fix ? '--fix' : ''} "src/**/*.ts"`)
 })
 
 desc('Lints and builds code')
@@ -23,7 +23,7 @@ task('build', () => runSerial('lint', 'clean', 'tsc'))
 task('lint-lib', () => {
   const { fix, force } = process.env
   return npmCommand(
-    `eslint ${!force ? '--cache --cache-location .eslintcache.lib' : ''} ${fix ? '--fix' : ''} src/lib/**/*.ts`
+    `eslint ${!force ? '--cache --cache-location .eslintcache.lib' : ''} ${fix ? '--fix' : ''} "src/lib/**/*.ts"`
   )
 })
 
@@ -95,8 +95,8 @@ task('dev', () => {
     const args = ['DEBUGGER=1', 'node', '--inspect-brk', '--nolazy', fileName]
     return npmSpawn(args)
   } else {
-    const args = ['nodemon', '--watch', 'src', '--ext', 'ts,js', '--ignore', 'src/**/*.spec.ts']
-    args.push('--exec', `"tsc && node '${fileName}"`)
+    const args = ['nodemon', '--watch', 'src', '--ext', 'ts,js', '--ignore', '"src/**/*.spec.ts"']
+    args.push('--exec', `tsc && node "${fileName}"`)
     return npmSpawn(args)
   }
 })
