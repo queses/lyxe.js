@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "lyxe": "lyxedev",
-    "prepublish": "lyxedev build-lib",
+    "prepublishOnly": "lyxedev test && lyxedev build-lib",
     "do": "lyxedev do",
     "do:dbg": "lyxedev do --debug 1",
     "do:prod": "cross-env NODE_ENV=production node dist/app/console.js",
