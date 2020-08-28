@@ -12,25 +12,30 @@ export class WebRateLimiter {
   public async limit (clientId: string, limiterKey: string, maxRate: number, inSeconds: number = 1, message?: string) {
     let limiter = this.limiters.get(limiterKey)
     if (!limiter) {
-      limiter = this.createLimiter(limiterKey, maxRate, inSeconds)
+      limiter = await this.createLimiter(limiterKey, maxRate, inSeconds)
       this.limiters.set(limiterKey, limiter)
     }
 
-    try {
-      await limiter.consume(clientId)
-    } catch (err) {
-      throw new ResourceTemporaryUnavailableError(message)
-    }
+    await limiter.consume(clientId).catch((err) => {
+      if (err instanceof Error) {
+        throw err
+      } else {
+        throw new ResourceTemporaryUnavailableError(message)
+      }
+    })
   }
 
-  private createLimiter (keyPrefix: string, points: number, duration: number) {
+  private async createLimiter (keyPrefix: string, points: number, duration: number) {
     if (AppConfigurator.get('redis.enabled')) {
-      return new RateLimiterRedis({
+      const limiter = new RateLimiterRedis({
         points,
         duration,
         keyPrefix,
         storeClient: this.redisClient,
       })
+
+      // Waiting 500ms till redis connection established
+      return new Promise(r => setTimeout(r, 500)).then(() => limiter)
     } else {
       return new RateLimiterMemory({
         points,
