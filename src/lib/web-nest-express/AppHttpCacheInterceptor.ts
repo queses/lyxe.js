@@ -3,11 +3,13 @@ import { Request } from 'express'
 
 @Injectable()
 export class AppHttpCacheInterceptor extends CacheInterceptor {
-  trackBy(context: ExecutionContext): string | undefined {
+  trackBy (context: ExecutionContext) {
     const req = context.switchToHttp().getRequest<Request>()
-    const query = JSON.stringify(req.query)
-    const auth = req.header('Authorization') || ''
+    if (req.method !== 'GET') {
+      return undefined
+    }
 
-    return `${req.url}__${query}__${auth}`
+    const auth = req.header('Authorization') || ''
+    return `${req.url}__${auth}`
   }
 }
