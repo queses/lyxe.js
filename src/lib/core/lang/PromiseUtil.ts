@@ -7,10 +7,20 @@ export class PromiseUtil {
   }
 
   static timeoutExecution <V> (promise: Promise<V>, operationDescription: string, timeoutMs: number = 2500): Promise<V> {
+    let pending = true
     return Promise.race([
-      promise,
+      promise.then(result => {
+        pending = false
+        return result
+      }),
       new Promise((resolve, reject) => {
-        return setTimeout(() => reject(new CalculationTimeourError(operationDescription, timeoutMs)), timeoutMs)
+        setTimeout(() => {
+          if (pending) {
+            reject(new CalculationTimeourError(operationDescription, timeoutMs))
+          } else {
+            resolve()
+          }
+        }, timeoutMs)
       })
     ]) as Promise<V>
   }
