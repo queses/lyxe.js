@@ -29,6 +29,7 @@
     "prod": "lyxedev build && cross-env NODE_ENV=production node dist/app/web.js",
     "build": "lyxedev build",
     "build:lib": "lyxedev build-lib",
+    "build:lib:noclear": "lyxedev build-lib --noclear",
     "lib": "tsc -p tsconfig.build.json",
     "clean": "lyxedev clean",
     "test": "lyxedev test --only",
