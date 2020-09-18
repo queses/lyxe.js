@@ -91,7 +91,7 @@ export class EntityUtil {
         continue
       }
 
-      const value = Reflect.get(entity, property)
+      const value = Reflect.apply(entity[key], entity, [])
       if (typeof value === 'undefined' || value instanceof Promise) {
         // continue
       } else if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || value === null) {
