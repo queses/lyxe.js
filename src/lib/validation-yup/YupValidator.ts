@@ -5,7 +5,7 @@ import { SingletonService } from '../core/di/annotations/SingletonService'
 
 @SingletonService()
 export class YupValidator {
-  async validateData  <T extends object> (schema: ObjectSchema<T>, data: T, skipUnknown: boolean = false) {
+  async validateData  <T extends Record<string, unknown>> (schema: ObjectSchema<T>, data: T, skipUnknown: boolean = false) {
     this.removeEmptyFieldValues(data)
 
     try {
@@ -19,7 +19,7 @@ export class YupValidator {
     }
   }
 
-  private removeEmptyFieldValues <T extends {}> (values: T) {
+  private removeEmptyFieldValues <T extends Record<string, unknown>> (values: T) {
     for (const field in values) {
       // noinspection JSUnfilteredForInLoop
       const value: any = values[field]

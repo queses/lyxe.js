@@ -47,7 +47,6 @@ export class WebRateLimiter {
   @Cached()
   private get redisClient () {
     return redis.createClient({
-      /* eslint @typescript-eslint/camelcase: off */
       enable_offline_queue: false
     })
   }

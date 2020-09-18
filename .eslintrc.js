@@ -22,6 +22,7 @@ const getConfig = () => ({
   },
   'rules':  {
     '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unused-vars': ['warn', { 'args': 'none' }],
     '@typescript-eslint/member-delimiter-style': ['warn', {
@@ -40,8 +41,8 @@ const getConfig = () => ({
     '@typescript-eslint/no-inferrable-types': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
-    "semi": "off",
-    "@typescript-eslint/semi": ['warn', 'never'],
+    'semi': 'off',
+    '@typescript-eslint/semi': ['warn', 'never'],
     'quotes': 'off',
     '@typescript-eslint/quotes': ['warn', 'single', { 'allowTemplateLiterals': true }],
     'prefer-rest-params': 'off',

@@ -1,8 +1,10 @@
-export type TAuthJwtPayload <E extends {} = {}> = E & {
-  iat?: number
-  exp: number
+export type TAuthJwtPayload <E extends Record<string, string> = Record<string, string>> = E & {
+  iat?: string
+  exp: string
   uid: string
   atl: string
 }
 
-export type TRefreshJwtPayload <E extends {} = {}> = E & { uid: string }
+export type TRefreshJwtPayload <E extends Record<string, string> = Record<string, string>> = E & {
+  uid: string
+}

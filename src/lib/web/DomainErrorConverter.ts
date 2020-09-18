@@ -4,7 +4,6 @@ import { InjectService } from '../core/di/annotations/InjectService'
 import { AppLoggerTkn } from '../logging/lyxe-logging-tokens'
 import { IAppLogger } from '../logging/IAppLogger'
 import { DomainError } from '../core/domain-errors/DomainError'
-import { TObjectLiteral } from '../core/lang/lyxe-lang'
 import { DomainEntityNotFoundError } from '../core/domain-errors/DomainEntityNotFoundError'
 import { DomainInvalidArgumentError } from '../core/domain-errors/DomainInvalidArgumentError'
 import { DomainAuthenticationNeededError } from '../core/domain-errors/DomainAuthenticationNeededError'
@@ -18,7 +17,7 @@ export class DomainErrorConverter {
 
   convert (error: DomainError): AbstractHttpError {
     let status: number
-    let body: TObjectLiteral | undefined
+    let body: Record<string, any> | undefined
     if (error instanceof DomainInvalidArgumentError) {
       status = 400
       this.logger.debug(error.message)

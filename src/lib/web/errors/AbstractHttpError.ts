@@ -1,12 +1,10 @@
-import { TObjectLiteral } from '../../core/lang/lyxe-lang'
-
 export class AbstractHttpError extends Error {
   name = 'AbstractHttpError'
 
   public readonly status: number
-  private readonly extraPayload: TObjectLiteral
+  private readonly extraPayload: Record<string, unknown>
 
-  constructor (status: number, message: string, extraPayload: TObjectLiteral = {}) {
+  constructor (status: number, message: string, extraPayload: Record<string, unknown> = {}) {
     super(message)
     this.status = status
     this.message = message

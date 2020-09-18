@@ -12,7 +12,7 @@ export const AuthorizeSystem = <S extends IContextService<C>, C extends TAuthCon
     return
   }
 
-  const method: Function = descriptor.value
+  const method: (...args: any) => any = descriptor.value
   Reflect.set(target, name, function <A = any> (this: S, ...args: A[]) {
     if (this.contextInfo && this.contextInfo.asSystem) {
       return

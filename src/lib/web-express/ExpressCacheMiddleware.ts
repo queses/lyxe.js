@@ -2,7 +2,6 @@ import { InvalidArgumentError } from '../core/application-errors/InvalidAgrument
 import { NextFunction, Request, Response } from 'express'
 import * as cache from 'cache-manager'
 import { Cached } from '../core/lang/annotations/Cached'
-import { TObjectLiteral } from '../core/lang/lyxe-lang'
 import { AppContainer } from '../core/di/AppContainer'
 import { AppLoggerTkn } from '../logging/lyxe-logging-tokens'
 
@@ -57,7 +56,7 @@ export class ExpressCacheMiddleware {
     return `web:express:cache:${req.url}__${auth}`
   }
 
-  private getCachedRes (key: string): Promise<{ status: number, headers: TObjectLiteral, body?: string | Buffer } | undefined> {
+  private getCachedRes (key: string): Promise<{ status: number, headers: Record<string, any>, body?: string | Buffer } | undefined> {
     return this.cacheManager.get(key)
   }
 
@@ -92,7 +91,7 @@ export class ExpressCacheMiddleware {
     }
   }
 
-  private cacheRes (key: string, status: number, headers: TObjectLiteral, body: string | Buffer | undefined): void {
+  private cacheRes (key: string, status: number, headers: Record<string, any>, body: string | Buffer | undefined): void {
     this.cacheManager.set(key, { status, headers, body }, { ttl: this.ttl }).catch((err: Error) => {
       this.logger.error(err.message, err.stack)
     })

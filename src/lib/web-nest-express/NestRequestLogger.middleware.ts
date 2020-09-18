@@ -6,7 +6,7 @@ import { Cached } from '../core/lang/annotations/Cached'
 
 @Injectable()
 export class NestRequestLoggerMiddleware implements NestMiddleware {
-  use (req: Request, res: Response, next: Function) {
+  use (req: Request, res: Response, next: () => void) {
     next()
     const body = !!Object.keys(req.body).length ? ' ' + JSON.stringify(req.body) : ''
     this.logger.log(req.method + ' ' + req.url + body)

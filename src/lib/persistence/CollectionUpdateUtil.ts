@@ -39,7 +39,7 @@ export class CollectionUpdateUtil {
     }))
   }
 
-  static fromObjects <T, V extends object> (
+  static fromObjects <T, V extends Record<string, unknown>> (
     oldCollection: T[], newValues: V[],
     getValueFromItem: (collectionItem: T) => V,
     createValue: (value: V, index: number, oldItem?: T) => T,

@@ -59,7 +59,7 @@ export class LocalDomainEventBus implements IDomainEventBus {
     this.emitter.emit(eventType, event)
   }
 
-  public remove <E extends IDomainEvent> (eventType: TDomainEventType): void {
+  public remove (eventType: TDomainEventType): void {
     this.emitter.removeAllListeners(eventType)
   }
 

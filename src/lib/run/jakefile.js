@@ -3,8 +3,8 @@ const { flag, npmCommand, runSerial, npmSpawn } = require('./jake-utils')
 const RunError = require('./RunError')
 const stringArgv = require('string-argv').default
 
-desc('Cleans TypeScript output directory')
-task('clean', () => npmCommand('rimraf dist'))
+desc('Clears TypeScript output directory')
+task('clear', () => npmCommand('rimraf dist'))
 
 desc('Runs TypeScript compiler')
 task('tsc', () => npmCommand('tsc'))
@@ -18,7 +18,7 @@ task('lint', () => {
 })
 
 desc('Lints and builds code')
-task('build', () => runSerial('lint', 'clean', 'tsc'))
+task('build', () => runSerial('lint', 'clear', 'tsc'))
 
 task('lint-lib', () => {
   const { fix, force } = process.env
@@ -27,12 +27,14 @@ task('lint-lib', () => {
   )
 })
 
-task('clean-lib', () => npmCommand('rimraf lib'))
+task('clear-lib', () => npmCommand('rimraf lib'))
 
 task('copy-lib-d-ts', () => npmCommand('copyfiles -u 2 "src/lib/**/*.d.ts" lib'))
 
 task('build-lib', () => {
-  return runSerial('lint-lib', 'clean-lib')
+  const { noclear } = process.env
+  return runSerial('lint-lib')
+    .then(() => noclear ? undefined : runSerial('clear-lib'))
     .then(() => npmCommand('tsc -p tsconfig.build.json'))
     .then(() => runSerial('copy-lib-d-ts'))
 })

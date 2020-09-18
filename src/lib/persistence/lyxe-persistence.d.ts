@@ -9,17 +9,17 @@ export type TPagePromise<T> = Promise<Page<T>>
 
 export type TSortOrder = 'ASC' | 'DESC'
 
-export type TUpdateEntityConfig <E extends IHasId<ID>, ID extends TPersistenceId, D extends {}> =
+export type TUpdateEntityConfig <E extends IHasId<ID>, ID extends TPersistenceId, D extends Record<string, unknown>> =
   Array<TUpdateEntityFieldConfig<E, ID, D>>
 
-export type TUpdateEntityResult <D extends {}> = {
+export type TUpdateEntityResult <D extends Record<string, unknown>> = {
   [fieldName in keyof D]?: {
     oldValue: any
     newValue: any
   }
 }
 
-type TUpdateEntityFieldConfig <E extends IHasId<ID>, ID extends TPersistenceId, D extends {}> = [
+type TUpdateEntityFieldConfig <E extends IHasId<ID>, ID extends TPersistenceId, D extends Record<string, unknown>> = [
   TUpdateEntityFieldConfigFieldName<D>,
   TUpdateEntityFieldConfigGetter,
   TUpdateEntityFieldConfigSetter<E, ID>,

@@ -2,7 +2,7 @@ import { IHasId } from './IHasId'
 import { TPersistenceId, TUpdateEntityConfig, TUpdateEntityResult } from './lyxe-persistence'
 
 export class EntityUpdateUtil {
-  static async fromDto <E extends IHasId<ID>, ID extends TPersistenceId, D extends {}> (
+  static async fromDto <E extends IHasId<ID>, ID extends TPersistenceId, D extends Record<string, unknown>> (
     fieldsConfig: TUpdateEntityConfig<E, ID, D>, entity: E, dto: D
   ): Promise<TUpdateEntityResult<D>> {
     const result: TUpdateEntityResult<D> = {}

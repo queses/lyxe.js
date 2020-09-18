@@ -12,7 +12,7 @@ export const TransactionalUseCase = (
   connectionName?: TPersistenceConnectionName
 ) => (target: TClass<IUseCase>) => {
   const runMethodName: keyof IUseCase = 'run'
-  const runMethod: Function = Reflect.get(target.prototype, runMethodName)
+  const runMethod: (...args: any) => any = Reflect.get(target.prototype, runMethodName)
 
   Reflect.set(target.prototype, runMethodName, async function (this: IUseCase, ...args: any[]) {
     const connection = AppContainer.get(PersistenceConnectionRegistry).get(connectionName)

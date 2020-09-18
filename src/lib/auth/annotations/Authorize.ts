@@ -12,7 +12,7 @@ export const Authorize = <S extends IContextService<C>, C extends TAuthContextIn
     return
   }
 
-  const method: Function = descriptor.value
+  const method: (...args: any) => any = descriptor.value
   Reflect.set(target, name, function <A = any> (this: S, ...args: A[]) {
     const auth: TContextAuth | undefined = this.contextInfo ? this.contextInfo.auth : undefined
     AuthorityUtil.checkAuth(auth, authorities, message)

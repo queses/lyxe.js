@@ -1,7 +1,7 @@
 import { StringUtil } from './StringUtil'
 
 export class EnumUtil {
-  static getEnumValues <T extends {}> (enumType: T): Array<T[keyof T]> {
+  static getEnumValues <T extends Record<string, unknown>> (enumType: T): Array<T[keyof T]> {
     const keys = Object.keys(enumType)
     const result: Array<T[keyof T]> = []
     for (const key of keys) {
@@ -13,7 +13,7 @@ export class EnumUtil {
     return result
   }
 
-  static isInEnum = <T extends {}> (value: string | number, enumType: T): boolean => {
+  static isInEnum = <T extends Record<string, unknown>> (value: string | number, enumType: T): boolean => {
     const keys = Object.keys(enumType)
     for (const key of keys) {
       if (!StringUtil.startsWithNumber(key) && enumType[key as keyof T] === value as any) {
