@@ -19,21 +19,21 @@ export class RedlockSimpleMutex implements IMutex {
   private locks: Map<string, Redlock.Lock> = new Map()
   private redlockCreated: boolean = false
 
-  async lock (name: string, lockTime: MutexLockTime | number): Promise<MutexLock> {
-    const lock = await this.redlock.lock('lx:mutex:' + name, lockTime)
+  async lock (name: string, lockTimeMs: MutexLockTime | number): Promise<MutexLock> {
+    const lock = await this.redlock.lock('lx:mutex:' + name, lockTimeMs)
     this.locks.set(name, lock)
 
     return new MutexLock(name, this)
   }
 
-  async extend (name: string, lockTime: MutexLockTime | number): Promise<void> {
+  async extend (name: string, lockTimeMs: MutexLockTime | number): Promise<void> {
     const lock = this.locks.get(name)
     if (!lock) {
       throw new MutexLockError(`Cannot extend lock "${name}" because the lock has already expired`)
     }
 
     try {
-      await lock.extend(lockTime)
+      await lock.extend(lockTimeMs)
     } catch (err) {
       if (err instanceof Redlock.LockError) {
         throw new MutexLockError(err.message)
@@ -64,10 +64,10 @@ export class RedlockSimpleMutex implements IMutex {
 
   async wrap <T> (
     name: string,
-    lockTime: MutexLockTime | number,
+    lockTimeMs: MutexLockTime | number,
     cb: (extend: TMutexExtend) => Promise<T> | T
   ): Promise<T> {
-    const lock = await this.lock(name, lockTime)
+    const lock = await this.lock(name, lockTimeMs)
     const result = await cb(lock.extend.bind(lock))
     await lock.unlock()
     return result
