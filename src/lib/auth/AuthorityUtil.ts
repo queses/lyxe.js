@@ -1,11 +1,21 @@
-import { DomainAccessError } from '../core/domain-errors/DomainAccessError'
 import { TContextAuth } from './auth-context'
 import { AuthContextMeta } from './AuthContextMeta'
+import { DomainAccessError } from '../core/domain-errors/DomainAccessError'
 
 export class AuthorityUtil {
-  public static checkAuth (auth: TContextAuth | undefined, authorities: Array<string | string[]>, errorMessage?: string) {
-    if (!auth || !Array.isArray(auth.authorities) || !auth.authorities.length) {
+  public static checkAuthorities (
+    auth: TContextAuth | undefined,
+    authorities: Array<string | string[]>,
+    errorMessage?: string
+  ) {
+    if (!this.hasAuthorities(auth, authorities)) {
       throw new DomainAccessError(errorMessage)
+    }
+  }
+
+  public static hasAuthorities (auth: TContextAuth | undefined, authorities: Array<string | string[]>): boolean {
+    if (!auth || !Array.isArray(auth.authorities) || !auth.authorities.length) {
+      return false
     }
 
     let ctxAuthorities: Set<string> = Reflect.getMetadata(AuthContextMeta.AUTH_AUTHORITIES_SET, auth)
@@ -21,9 +31,7 @@ export class AuthorityUtil {
       hasAccess = Array.isArray(item) ? this.hasAll(item, ctxAuthorities) : ctxAuthorities.has(item)
     }
 
-    if (!hasAccess) {
-      throw new DomainAccessError(errorMessage)
-    }
+    return hasAccess
   }
 
   private static hasAll (authorities: string[], inSet: Set<string>) {
