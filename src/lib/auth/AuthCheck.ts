@@ -12,7 +12,7 @@ export class AuthCheck {
     return new this(srv)
   }
 
-  public static getHas (
+  public static doesHave (
     srvOrCtx: IContextService<TAuthContextInfo> | TAuthContextInfo | undefined,
     ...authorities: Array<string | string[]>
   ) {
@@ -23,7 +23,7 @@ export class AuthCheck {
     return (ctx && ctx.asSystem) ? true : AuthorityUtil.hasAuthorities(ctx?.auth, authorities)
   }
 
-  public static getHasStrict (
+  public static doesHaveStrict (
     srvOrCtx: IContextService<TAuthContextInfo> | TAuthContextInfo | undefined,
     ...authorities: Array<string | string[]>
   ) {

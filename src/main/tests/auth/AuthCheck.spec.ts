@@ -40,19 +40,19 @@ describe('AuthCheck', function () {
 
   it('should get has authorities', function () {
     const sf = AppContainer.get(ServiceFactory).configure(createAuthContext(['USER', 'READER', 'AUTHOR'], false))
-    assert.isTrue(AuthCheck.getHas(sf, 'USER', 'ADMIN'))
-    assert.isFalse(AuthCheck.getHas(sf, ['USER', 'ADMIN']))
-    assert.isTrue(AuthCheck.getHas(sf, ['USER', 'READER', 'AUTHOR']))
+    assert.isTrue(AuthCheck.doesHave(sf, 'USER', 'ADMIN'))
+    assert.isFalse(AuthCheck.doesHave(sf, ['USER', 'ADMIN']))
+    assert.isTrue(AuthCheck.doesHave(sf, ['USER', 'READER', 'AUTHOR']))
 
     const sfNoAuth = AppContainer.get(ServiceFactory).configure({ asSystem: false })
-    assert.isFalse(AuthCheck.getHas(sfNoAuth, 'USER'))
+    assert.isFalse(AuthCheck.doesHave(sfNoAuth, 'USER'))
 
     const sfSystemNoAuth = AppContainer.get(ServiceFactory).configure({ asSystem: true })
-    assert.isTrue(AuthCheck.getHas(sfSystemNoAuth, 'USER'))
-    assert.isFalse(AuthCheck.getHasStrict(sfSystemNoAuth, 'USER'))
+    assert.isTrue(AuthCheck.doesHave(sfSystemNoAuth, 'USER'))
+    assert.isFalse(AuthCheck.doesHaveStrict(sfSystemNoAuth, 'USER'))
 
-    assert.isTrue(AuthCheck.getHas({ asSystem: true }, 'USER'))
-    assert.isFalse(AuthCheck.getHas(undefined, 'USER'))
+    assert.isTrue(AuthCheck.doesHave({ asSystem: true }, 'USER'))
+    assert.isFalse(AuthCheck.doesHave(undefined, 'USER'))
   })
 })
 
