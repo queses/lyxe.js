@@ -2,7 +2,7 @@ import { CalculationTimeourError } from '../application-errors/CalculationTimeou
 import { AppError } from '../application-errors/AppError'
 
 export class PromiseUtil {
-  static sleep (timeMs: number) {
+  static sleep (timeMs: number): Promise<void> {
     return new Promise(r => setTimeout(r, timeMs))
   }
 
@@ -46,7 +46,7 @@ export class PromiseUtil {
 
   static async waitFor (
     condition: () => boolean | Promise<boolean>,
-    timeStepMs: number = 200,
+    timeStepMs: number = 100,
     maxWaitTimeMs = 5000
   ) {
     const maxIndex = maxWaitTimeMs / timeStepMs
