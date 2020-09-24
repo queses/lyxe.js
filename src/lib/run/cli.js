@@ -19,7 +19,7 @@ if (help || h || !_[0]) {
     args.push('cmd=' + _.slice(1).join(' '))
   }
 
-  if (params.quiet || _[0] === 'dev' || _[0] === 'start') {
+  if (params.quiet || _[0] === 'dev' || _[0] === 'start' || _[0] === 'do') {
     args.unshift('--quiet')
   }
 
