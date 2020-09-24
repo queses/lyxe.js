@@ -1,6 +1,6 @@
 {
   "name": "lyxe",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "LyxeFramework - Build modular, solid and reliable web apps easily",
   "main": "lib/core/LyxeFramework.js",
   "author": "Maxim Kobozev <quesesr@gmail.com>",
