@@ -8,18 +8,17 @@ export class EntityUpdateUtil {
     const result: TUpdateEntityResult<D> = {}
     for (const fieldConfig of fieldsConfig) {
       const [ name, getter, setter, transform ] = fieldConfig
-      let newValue = dto[name]
-
-      if (typeof newValue === 'undefined') {
+      if (!dto.hasOwnProperty(name)) {
         continue
       }
 
+      let newValue = dto[name]
       let oldValue = getter.bind(entity)()
       if (oldValue instanceof Promise) {
         oldValue = await oldValue
       }
 
-      if (typeof transform === 'function') {
+      if (typeof newValue !== 'undefined' && typeof transform === 'function') {
         newValue = transform(newValue, oldValue)
         if (newValue instanceof Promise) {
           newValue = await newValue
