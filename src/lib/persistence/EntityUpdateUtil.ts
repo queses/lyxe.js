@@ -26,7 +26,7 @@ export class EntityUpdateUtil {
       }
 
       if (newValue !== oldValue) {
-        const setterResult = setter.bind(entity)(newValue)
+        const setterResult = setter.bind(entity)(typeof newValue !== 'undefined' ? newValue : null)
         if (setterResult instanceof Promise) {
           await setterResult
         }
