@@ -11,6 +11,9 @@ import { ResourceNotFoundError } from '../../core/application-errors/ResourceNot
 import { InvalidArgumentError } from '../../core/application-errors/InvalidAgrumentError'
 import { AppPathUtil } from '../../core/config/AppPathUtil'
 import { PromiseUtil } from '../../core/lang/PromiseUtil'
+import { MutexTkn } from '../../mutex/lyxe-mutex-tokens'
+import { IMutex } from '../../mutex/domain/IMutex'
+import { MutexLockTime } from '../../mutex/domain/MutexLockTime'
 
 const MAX_FILE_SIZE = 50000000 // 50 mb
 const MAX_TTL_MS = 43200000 // 12 hours
@@ -27,6 +30,9 @@ const rename = promisify(fs.rename)
 export class FsAppFileCache implements IAppFileCache {
   @InjectService(AppCacheTkn)
   private appCache: IAppCache
+
+  @InjectService(MutexTkn)
+  private mutex: IMutex
 
   private path = '/filecache'
   private lastCleaningAt?: number = Date.now()
@@ -66,12 +72,9 @@ export class FsAppFileCache implements IAppFileCache {
       throw new InvalidArgumentError('File is too large to save in cache')
     }
 
-    if (await this.lockWrite(key)) {
+    await this.mutex.wrap(key, MutexLockTime.DEFAULT, async () => {
       await writeFile(this.checkAndTransformKeyToPath(key), value)
-      await this.unlockWrite(key)
-    } else {
-      return
-    }
+    })
 
     const now = Date.now()
     if (!this.lastCleaningAt || now > this.lastCleaningAt + MAX_TTL_MS) {
@@ -83,19 +86,6 @@ export class FsAppFileCache implements IAppFileCache {
   async delete (key: string) {
     const filePath = this.transformKeyToPath(key)
     await access(filePath).then(() => rimraf(filePath)).catch(() => {})
-  }
-
-  private async lockWrite (key: string): Promise<boolean> {
-    if (await this.appCache.get(key)) {
-      return false
-    } else {
-      await this.appCache.set(key, true, 3600)
-      return true
-    }
-  }
-
-  public unlockWrite (key: string): Promise<void> {
-    return this.appCache.delete(key)
   }
 
   private encodeKey (key: string) {

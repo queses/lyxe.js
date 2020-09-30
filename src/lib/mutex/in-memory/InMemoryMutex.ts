@@ -13,7 +13,7 @@ import { TMutexExtend } from '../domain/mutex-types'
 export class InMemoryMutex implements IMutex {
   private locks: Map<string, number> = new Map()
 
-  async lock (name: string, lockTime: MutexLockTime | number): Promise<MutexLock> {
+  async lock (name: string, lockTimeMs: MutexLockTime | number): Promise<MutexLock> {
     const oldUnlockAt = this.locks.get(name)
     if (oldUnlockAt && oldUnlockAt >= Date.now()) {
       await PromiseUtil.waitFor(() => {
@@ -21,20 +21,20 @@ export class InMemoryMutex implements IMutex {
         if (currentOldUnlockAt && currentOldUnlockAt >= Date.now()) {
           return false
         } else {
-          this.locks.set(name, Date.now() + lockTime)
+          this.locks.set(name, Date.now() + lockTimeMs)
           return true
         }
-      }, 100, lockTime * 100)
+      }, 100, lockTimeMs * 100)
     } else {
-      this.locks.set(name, Date.now() + lockTime)
+      this.locks.set(name, Date.now() + lockTimeMs)
     }
 
     return new MutexLock(name, this)
   }
 
-  async extend (name: string, lockTime: MutexLockTime | number): Promise<void> {
+  async extend (name: string, lockTimeMs: MutexLockTime | number): Promise<void> {
     if (this.locks.has(name)) {
-      const unlockAt = Date.now() + lockTime
+      const unlockAt = Date.now() + lockTimeMs
       this.locks.set(name, unlockAt)
     } else {
       throw new MutexLockError(`Cannot extend lock "${name}" because the lock has already expired`)
@@ -51,10 +51,10 @@ export class InMemoryMutex implements IMutex {
 
   async wrap <T> (
     name: string,
-    lockTime: MutexLockTime | number,
+    lockTimeMs: MutexLockTime | number,
     cb: (extend: TMutexExtend) => Promise<T> | T
   ): Promise<T> {
-    const lock = await this.lock(name, lockTime)
+    const lock = await this.lock(name, lockTimeMs)
     const result = await cb(lock.extend.bind(lock))
     await lock.unlock()
     return result

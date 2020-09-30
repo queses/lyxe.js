@@ -30,7 +30,7 @@ export class ConsoleRunner {
     const inst = AppContainer.get(action.controllerClass)
 
     const tStart = process.hrtime()
-    const method: Function = Reflect.get(inst, action.method)
+    const method: (...args: any) => any = Reflect.get(inst, action.method)
     await method.call(inst, args)
 
     if (AppConfigurator.get('console.measureActionsTime')) {

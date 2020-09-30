@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Post } from '@nestjs/common'
-import { TObjectLiteral } from '../../lib/core/lang/lyxe-lang'
 import { DomainEntityValidationError } from '../../lib/core/domain-errors/DomainEntityValidationError'
 import { EntityValidationErrorInfo } from '../../lib/persistence/EntityValidationErrorInfo'
 
@@ -11,7 +10,7 @@ export class HelloController {
   }
 
   @Post('')
-  public namedHello (@Body() body: TObjectLiteral) {
+  public namedHello (@Body() body: Record<string, unknown>) {
     if (!body || !body.name) {
       throw new DomainEntityValidationError(new EntityValidationErrorInfo('name', 'name is required'))
     }

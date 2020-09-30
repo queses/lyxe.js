@@ -2,15 +2,25 @@ import { CalculationTimeourError } from '../application-errors/CalculationTimeou
 import { AppError } from '../application-errors/AppError'
 
 export class PromiseUtil {
-  static sleep (timeMs: number) {
+  static sleep (timeMs: number): Promise<void> {
     return new Promise(r => setTimeout(r, timeMs))
   }
 
   static timeoutExecution <V> (promise: Promise<V>, operationDescription: string, timeoutMs: number = 2500): Promise<V> {
+    let pending = true
     return Promise.race([
-      promise,
+      promise.then(result => {
+        pending = false
+        return result
+      }),
       new Promise((resolve, reject) => {
-        return setTimeout(() => reject(new CalculationTimeourError(operationDescription, timeoutMs)), timeoutMs)
+        setTimeout(() => {
+          if (pending) {
+            reject(new CalculationTimeourError(operationDescription, timeoutMs))
+          } else {
+            resolve()
+          }
+        }, timeoutMs)
       })
     ]) as Promise<V>
   }
@@ -36,7 +46,7 @@ export class PromiseUtil {
 
   static async waitFor (
     condition: () => boolean | Promise<boolean>,
-    timeStepMs: number = 200,
+    timeStepMs: number = 100,
     maxWaitTimeMs = 5000
   ) {
     const maxIndex = maxWaitTimeMs / timeStepMs

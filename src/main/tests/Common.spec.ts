@@ -1,6 +1,7 @@
 import { assert } from 'chai'
+import { AppError } from '../../lib/core/application-errors/AppError'
 
-describe('framework common', function () {
+describe('Common', function () {
   it('should set metadata', function () {
     const object = new Date()
 
@@ -9,5 +10,9 @@ describe('framework common', function () {
     
     const newObject = new Date()
     assert.isUndefined(Reflect.getMetadata('test:point', newObject))
+  })
+
+  it('should assert promise rejection', async function () {
+    await assert.isRejected(Promise.reject(new AppError('Bad thing happened!')), AppError)
   })
 })

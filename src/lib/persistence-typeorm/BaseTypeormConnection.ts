@@ -56,7 +56,7 @@ export abstract class BaseTypeormConnection implements IPersistenceConnection {
     return this.connection.synchronize(true)
   }
 
-  async beginTransaction <T> (currentTransactionEntityManager?: IEntityManager): Promise<IEntityManager> {
+  async beginTransaction (currentTransactionEntityManager?: IEntityManager): Promise<IEntityManager> {
     if (!this.connection) {
       await this.connect()
     }
@@ -75,12 +75,12 @@ export abstract class BaseTypeormConnection implements IPersistenceConnection {
     return entityManager as IEntityManager
   }
 
-  public async commitTransaction <T> (entityManager: IEntityManager): Promise<void> {
+  public async commitTransaction (entityManager: IEntityManager): Promise<void> {
     await this.transactionManager.commit(this.checkEntityManager(entityManager))
     this.transactionListener.handleCommit(entityManager)
   }
 
-  public async rollbackTransaction <T> (entityManager: IEntityManager): Promise<void> {
+  public async rollbackTransaction (entityManager: IEntityManager): Promise<void> {
     await this.transactionManager.rollback(this.checkEntityManager(entityManager))
     this.transactionListener.handleRollback(entityManager)
   }

@@ -17,6 +17,7 @@ import { IDomainEvent } from '../event/IDomainEvent'
 import { TDomainEventType } from '../event/lyxe-event'
 import { IDomainEventHandler } from '../event/IDomainEventHandler'
 import { PersistenceContextUtil } from '../persistence/PersistenceContextUtil'
+import { LimitedPromisesPool } from '../core/lang/LimitedPromisesPool'
 
 @SingletonService(DomainEventBusTkn)
 export class LocalDomainEventBus implements IDomainEventBus {
@@ -24,27 +25,26 @@ export class LocalDomainEventBus implements IDomainEventBus {
   private logger: IAppLogger
 
   private emitter: EventEmitter = new EventEmitter()
-  private pendingPromises: Array<Promise<void> | undefined> = []
+  private promisesPool = new LimitedPromisesPool(32)
 
   @OnShutdown()
   public static async waitForFinish (): Promise<void> {
     const inst = AppContainer.get(DomainEventBusTkn)
-    if (inst instanceof this && inst.pendingPromises.length) {
-      await Promise.all(inst.pendingPromises)
+    if (inst instanceof this && inst.promisesPool.hasPending) {
+      await inst.promisesPool.waitForAll()
     }
   }
 
   public listen <E extends IDomainEvent> (eventType: TDomainEventType, handler: IDomainEventHandler<E>): void {
     this.emitter.addListener(eventType, (...args: any) => {
-      const result = Reflect.apply(handler.handle, handler, args)
-      if (result instanceof Promise) {
-        const index = this.pendingPromises.length
-        this.pendingPromises.push(
-          result
-            .catch((err: Error) => this.logger.error(err.message))
-            .then(() => this.onPromisedTaskFinish(index))
-        )
-      }
+      this.promisesPool.add(async () => {
+        const result = Reflect.apply(handler.handle, handler, args)
+        if (result instanceof Promise) {
+          await result.catch((err: Error) => this.logger.error(err.message))
+        }
+      }, (err: Error) => {
+        this.logger.error(err.message)
+      })
     })
   }
 
@@ -59,7 +59,7 @@ export class LocalDomainEventBus implements IDomainEventBus {
     this.emitter.emit(eventType, event)
   }
 
-  public remove <E extends IDomainEvent> (eventType: TDomainEventType): void {
+  public remove (eventType: TDomainEventType): void {
     this.emitter.removeAllListeners(eventType)
   }
 
@@ -67,14 +67,6 @@ export class LocalDomainEventBus implements IDomainEventBus {
     const transactionStarter: IEntityManager = Reflect.getMetadata(EntityManagerMeta.TRANSACTION_STARTER, em)
     if (transactionStarter) {
       this.transactionEventBus.listenToCommit(transactionStarter, () => this.emitter.emit(eventType, event))
-    }
-  }
-
-  private onPromisedTaskFinish (promiseIndex: number) {
-    if (promiseIndex === this.pendingPromises.length - 1) {
-      this.pendingPromises = []
-    } else {
-      this.pendingPromises[promiseIndex] = undefined
     }
   }
 

@@ -1,15 +1,15 @@
 import { AppLoggerTkn } from '../logging/lyxe-logging-tokens'
 import { ReplaceSingleton } from '../core/di/annotations/ReplaceSingleton'
 import { IAppLogger } from '../logging/IAppLogger'
-import * as winston from 'winston'
 import { Logger } from '@nestjs/common'
 import { AppConfigurator } from '../core/config/AppConfigurator'
 import { AppPathUtil } from '../core/config/AppPathUtil'
 import { Cached } from '../core/lang/annotations/Cached'
 import { AppEnv } from '../core/config/AppEnv'
+import * as winston from 'winston'
 
 @ReplaceSingleton(AppLoggerTkn)
-export class NestLogger implements IAppLogger {
+export class WinstonNestLogger implements IAppLogger {
   public error (message: string, trace: string) {
     if (message) {
       this.errorFileLogger.log('error', message, { trace, at: new Date().toLocaleString() })
@@ -19,15 +19,15 @@ export class NestLogger implements IAppLogger {
   }
 
   public log (message: any, context?: string): void {
-    if (message && AppConfigurator.get<boolean>('web.logInfoToFile')) {
-      this.errorFileLogger.log('info', message, { at: new Date().toLocaleString() })
+    if (message && this.logInfoToFile) {
+      this.infoFileLogger.log('info', message, { at: new Date().toLocaleString() })
     }
 
     Logger.log(message, context)
   }
 
   public warn (message: any, context?: string): any {
-    if (message && AppConfigurator.get<boolean>('web.logInfoToFile')) {
+    if (message && this.logInfoToFile) {
       this.infoFileLogger.log('warn', message, { at: new Date().toLocaleString() })
     }
 
@@ -39,11 +39,16 @@ export class NestLogger implements IAppLogger {
       return
     }
 
-    if (message && AppConfigurator.get<boolean>('web.logInfoToFile')) {
+    if (message && this.logInfoToFile) {
       this.infoFileLogger.log('debug', message, { at: new Date().toLocaleString() })
     }
 
     Logger.debug(message)
+  }
+
+  @Cached()
+  private get logInfoToFile () {
+    return AppConfigurator.get<boolean>('web.logInfoToFile')
   }
 
   @Cached()

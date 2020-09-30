@@ -37,7 +37,7 @@ export class EntityUtil {
     }
   }
 
-  static async processInChunks <E extends IHasId, S extends SearchConfig, R extends IRepository<E, any>> (
+  static async processInChunks <E extends IHasId, S extends SearchConfig> (
     so: S,
     search: (so: S) => TPagePromise<E>,
     handle: (item: E) => any | Promise<any>
@@ -56,16 +56,18 @@ export class EntityUtil {
     }
   }
 
-  static mapToDto <D extends object, E extends object = object> (entity: E, extra?: Partial<D> | any): D | undefined {
+  static mapToDto <D extends Record<string, unknown>, E extends Record<string, any> = Record<string, any>> (
+    entity: E,
+    extra?: Partial<D> | any
+  ): D | undefined {
     if (!entity || !entity.constructor) {
       return undefined
     }
 
     const dto = {} as D
-
     let proto = Object.getPrototypeOf(entity)
     // Выполняем цикл пока proto не null или пока proto не присвоен базововый прототип (у него есть метод valueOf)
-    while (proto && !Object.hasOwnProperty('valueOf')) {
+    while (proto && !proto.hasOwnProperty('valueOf')) {
       this.parseKeysForDto(Object.getOwnPropertyNames(proto) as string[], dto, entity, extra)
       proto = Object.getPrototypeOf(proto)
     }
@@ -73,7 +75,12 @@ export class EntityUtil {
     return extra ? Object.assign(dto, extra) : dto
   }
 
-  private static parseKeysForDto <D extends {}, E extends {} = {}> (keys: string[], dto: D, entity: E, extra?: Partial<D>): D {
+  private static parseKeysForDto <D extends Record<string, unknown>, E extends Record<string, any>> (
+    keys: string[],
+    dto: D,
+    entity: E,
+    extra?: Partial<D>
+  ): D {
     for (const key of keys) {
       if (!key.startsWith('get')) {
         continue
@@ -84,13 +91,13 @@ export class EntityUtil {
         continue
       }
 
-      const value = Reflect.get(entity, property)
+      const value = Reflect.apply(entity[key], entity, [])
       if (typeof value === 'undefined' || value instanceof Promise) {
         // continue
       } else if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || value === null) {
         Reflect.set(dto, property, value)
       } else if (Array.isArray(value)) {
-        Reflect.set(dto, property, value.map((item: object) => this.mapToDto(item)))
+        Reflect.set(dto, property, value.map((item: Record<string, unknown>) => this.mapToDto(item)))
       } else if (typeof value === 'object') {
         Reflect.set(dto, property, this.mapToDto(value))
       }

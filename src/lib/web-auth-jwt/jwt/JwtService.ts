@@ -14,13 +14,13 @@ export class JwtService implements IJwtService {
   @InjectService(CryptoServiceTkn)
   private cryptoSrv: ICryptoService
 
-  async buildAuthToken <E extends {} = {}> (
+  async buildAuthToken <E extends Record<string, string | number>> (
     authId: number, authorities: string[], extraPayload: E, customDuration?: number
   ): Promise<string> {
-    const payload: Partial<TAuthJwtPayload<E>> = Object.assign({
+    const payload = Object.assign({
       uid: authId.toString(),
       atl: await this.encryptAuthorities(authorities)
-    }, extraPayload)
+    } as Partial<TAuthJwtPayload>, extraPayload)
 
     return this.buildToken(payload, customDuration || AppConfigurator.get('auth.authTokenDuration'))
   }
@@ -29,7 +29,7 @@ export class JwtService implements IJwtService {
     return this.buildToken({ uid: authId.toString() }, AppConfigurator.get('auth.refreshTokenDuration'))
   }
 
-  async verifyAndDecode <P extends {}> (token: string): Promise<P> {
+  async verifyAndDecode <P extends Record<string, unknown>> (token: string): Promise<P> {
     return new Promise<P>((resolve, reject) => jwt.verify(
       token,
       this.signKey,
@@ -42,7 +42,7 @@ export class JwtService implements IJwtService {
   }
 
   getTokenTimeLeft <P extends TAuthJwtPayload = TAuthJwtPayload> (token: P): number {
-    const left = token ? Math.floor(token.exp - Date.now() / 1000) : 0
+    const left = token ? Math.floor(parseInt(token.exp, 10) - Date.now() / 1000) : 0
     return left > 0 ? left : 0
   }
 
@@ -63,7 +63,7 @@ export class JwtService implements IJwtService {
     return await this.cryptoSrv.encrypt(authorities.join(','), 'JWT')
   }
 
-  private buildToken (payload: object, duration: number) {
+  private buildToken (payload: Record<string, unknown>, duration: number) {
     return new Promise<string>((resolve, reject) => jwt.sign(
       payload,
       this.signKey,

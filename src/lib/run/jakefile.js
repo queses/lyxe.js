@@ -3,8 +3,8 @@ const { flag, npmCommand, runSerial, npmSpawn } = require('./jake-utils')
 const RunError = require('./RunError')
 const stringArgv = require('string-argv').default
 
-desc('Cleans TypeScript output directory')
-task('clean', () => npmCommand('rimraf dist'))
+desc('Clears TypeScript output directory')
+task('clear', () => npmCommand('rimraf dist'))
 
 desc('Runs TypeScript compiler')
 task('tsc', () => npmCommand('tsc'))
@@ -14,25 +14,27 @@ flag('force', 'ignore cache')
 flag('fix', 'fix errors')
 task('lint', () => {
   const { fix, force } = process.env
-  return npmCommand(`eslint ${!force ? '--cache' : ''} ${fix ? '--fix' : ''} src/**/*.ts`)
+  return npmCommand(`eslint ${!force ? '--cache' : ''} ${fix ? '--fix' : ''} "src/**/*.ts"`)
 })
 
 desc('Lints and builds code')
-task('build', () => runSerial('lint', 'clean', 'tsc'))
+task('build', () => runSerial('lint', 'clear', 'tsc'))
 
 task('lint-lib', () => {
   const { fix, force } = process.env
   return npmCommand(
-    `eslint ${!force ? '--cache --cache-location .eslintcache.lib' : ''} ${fix ? '--fix' : ''} src/lib/**/*.ts`
+    `eslint ${!force ? '--cache --cache-location .eslintcache.lib' : ''} ${fix ? '--fix' : ''} "src/lib/**/*.ts"`
   )
 })
 
-task('clean-lib', () => npmCommand('rimraf lib'))
+task('clear-lib', () => npmCommand('rimraf lib'))
 
 task('copy-lib-d-ts', () => npmCommand('copyfiles -u 2 "src/lib/**/*.d.ts" lib'))
 
 task('build-lib', () => {
-  return runSerial('lint-lib', 'clean-lib')
+  const { noclear } = process.env
+  return runSerial('lint-lib')
+    .then(() => noclear ? undefined : runSerial('clear-lib'))
     .then(() => npmCommand('tsc -p tsconfig.build.json'))
     .then(() => runSerial('copy-lib-d-ts'))
 })
@@ -95,8 +97,8 @@ task('dev', () => {
     const args = ['DEBUGGER=1', 'node', '--inspect-brk', '--nolazy', fileName]
     return npmSpawn(args)
   } else {
-    const args = ['nodemon', '--watch', 'src', '--ext', 'ts,js', '--ignore', 'src/**/*.spec.ts']
-    args.push('--exec', `"tsc && node '${fileName}"`)
+    const args = ['nodemon', '--watch', 'src', '--ext', 'ts,js', '--ignore', '"src/**/*.spec.ts"']
+    args.push('--exec', `tsc && node "${fileName}"`)
     return npmSpawn(args)
   }
 })

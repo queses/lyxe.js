@@ -17,12 +17,12 @@ export class WebPersistenceCache {
   @InjectService(AppCacheTkn)
   private appCache: IAppCache
 
-  async ofData <T extends {}> (key: string, ttl: number, getData: () => Promise<T>): Promise<T> {
+  async ofData <T extends Record<string, unknown>> (key: string, ttlSec: number, getData: () => Promise<T>): Promise<T> {
     const fullKey = 'web-domain-data-cache:' + key
     let data = await this.appCache.get<T>(fullKey)
     if (!data) {
       data = await getData()
-      this.appCache.set(fullKey, data, ttl).catch(err => { throw err })
+      this.appCache.set(fullKey, data, ttlSec).catch(err => { throw err })
     }
 
     return data
