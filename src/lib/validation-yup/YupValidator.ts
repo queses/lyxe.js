@@ -5,8 +5,8 @@ import { SingletonService } from '../core/di/annotations/SingletonService'
 
 @SingletonService()
 export class YupValidator {
-  async validateData  <T extends object> (schema: ObjectSchema<T>, data: T, skipUnknown: boolean = false) {
-    this.removeEmptyFieldValues(data)
+  async validateData <T extends Record<string, any>> (schema: ObjectSchema<T>, data: T, skipUnknown: boolean = false) {
+    this.removeNaNFromValues(data)
 
     try {
       await schema.validate(data, { abortEarly: false, stripUnknown: skipUnknown })
@@ -19,23 +19,23 @@ export class YupValidator {
     }
   }
 
-  private removeEmptyFieldValues <T extends {}> (values: T) {
+  private removeNaNFromValues <T extends Record<string, any>> (values: T): void {
     for (const field in values) {
-      // noinspection JSUnfilteredForInLoop
-      const value: any = values[field]
-      if (value === '' || value === 'NaN') {
-        // noinspection JSUnfilteredForInLoop
-        delete values[field]
-      } else if (typeof value !== 'object') {
-        continue
+      if (!values.hasOwnProperty(field)) {
+        return
       }
 
-      if (Array.isArray(value)) {
-        for (const item of value) {
-          this.removeEmptyFieldValues(item)
+      const value: any = values[field]
+      if (isNaN(value) || value === 'NaN') {
+        delete values[field]
+      } else if (typeof value === 'object') {
+        if (!Array.isArray(value)) {
+          this.removeNaNFromValues(value)
+        } else if (typeof value[0] === 'object') {
+          for (const item of value) {
+            this.removeNaNFromValues(item)
+          }
         }
-      } else {
-        this.removeEmptyFieldValues(value)
       }
     }
   }
