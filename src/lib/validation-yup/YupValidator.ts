@@ -26,7 +26,7 @@ export class YupValidator {
       }
 
       const value: any = values[field]
-      if (isNaN(value) || value === 'NaN') {
+      if ((typeof value === 'number' && isNaN(value)) || value === 'NaN') {
         delete values[field]
       } else if (typeof value === 'object') {
         if (!Array.isArray(value)) {
