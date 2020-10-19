@@ -41,7 +41,7 @@ export class WebAuthJwtService {
     }
 
     const token = authHeader.substr(7)
-    const decoded = this.jwtSrv.verifyAndDecode(token).catch(() => {}) as Promise<TAuthJwtPayload | undefined>
+    const decoded = await this.jwtSrv.verifyAndDecode(token).catch(() => undefined) as TAuthJwtPayload | undefined
     req[REQ_KEY_JWT] = decoded
 
     return decoded
