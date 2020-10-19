@@ -15,7 +15,9 @@ export class AppErrorConverter {
 
   convert (error: AppError): AbstractHttpError {
     let status: number
-    if (error instanceof ResourceNotFoundError) {
+    if (error instanceof AbstractHttpError) {
+      return error
+    } else if (error instanceof ResourceNotFoundError) {
       status = 404
       this.logger.debug(error.message)
     } else if (error instanceof InvalidArgumentError) {

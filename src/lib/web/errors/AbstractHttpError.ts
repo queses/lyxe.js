@@ -1,4 +1,6 @@
-export class AbstractHttpError extends Error {
+import {AppError} from '../../core/application-errors/AppError'
+
+export class AbstractHttpError extends AppError {
   name = 'AbstractHttpError'
 
   public readonly status: number
