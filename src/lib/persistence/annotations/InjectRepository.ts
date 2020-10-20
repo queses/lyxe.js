@@ -14,7 +14,11 @@ export const InjectRepository = <
 > (id: TServiceId<R>) => (target: IContextService, name: string) => {
   Object.defineProperty(target, name, {
     get (this: IContextService) {
-      const value = AppContainer.get(RepositoryFactoryTkn).get(id, PersistenceContextUtil.getTransactionalEm(this))
+      const value = AppContainer
+        .get(RepositoryFactoryTkn)
+        .get(id, PersistenceContextUtil.getTransactionalEm(this))
+        .cache(!!(this.contextInfo && this.contextInfo.inReadContext === true))
+
       Object.defineProperty(this, name, { value })
       return value
     },
