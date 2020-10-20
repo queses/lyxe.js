@@ -31,7 +31,8 @@ export class LocalDomainEventBus implements IDomainEventBus {
   public static async waitForFinish (): Promise<void> {
     const inst = AppContainer.get(DomainEventBusTkn)
     if (inst instanceof this && inst.promisesPool.hasPending) {
-      await inst.promisesPool.waitForAll()
+      // Setting maximum timeout for waiting equal to 5 seconds per handler
+      await inst.promisesPool.waitForAll(inst.promisesPool.currentPending * 5000)
     }
   }
 

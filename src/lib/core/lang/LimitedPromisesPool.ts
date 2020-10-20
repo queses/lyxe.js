@@ -26,8 +26,12 @@ export class LimitedPromisesPool {
     return this.pendingCounter > 0
   }
 
-  waitForAll () {
-    return PromiseUtil.waitFor(() => !this.hasPending, 25)
+  get currentPending () {
+    return this.pendingCounter
+  }
+
+  waitForAll (maxWaitTimeMs?: number) {
+    return PromiseUtil.waitFor(() => !this.hasPending, 25, maxWaitTimeMs)
   }
 
   private afterPromise () {
