@@ -94,7 +94,16 @@ export class EntityUtil {
       const value = Reflect.apply(entity[key], entity, [])
       if (typeof value === 'undefined' || value instanceof Promise) {
         // continue
-      } else if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || value === null) {
+      } else if (
+        typeof value === 'string' ||
+        typeof value === 'number' ||
+        typeof value === 'boolean' ||
+        typeof value === 'symbol' ||
+        typeof value === 'bigint' ||
+        value instanceof RegExp ||
+        value instanceof Date ||
+        value === null
+      ) {
         Reflect.set(dto, property, value)
       } else if (Array.isArray(value)) {
         Reflect.set(dto, property, value.map((item: Record<string, unknown>) => this.mapToDto(item)))
