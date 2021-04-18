@@ -1,10 +1,10 @@
 import { SearchConfig } from '../../../lib/persistence/SearchConfig'
 
 export class TestSpecialistSearchConf extends SearchConfig {
-  public onlyInactive?: boolean = false
+  public searchDeleted?: boolean = false
 
-  public searchOnlyInactive () {
-    this.onlyInactive = true
+  public searchAlsoDeleted () {
+    this.searchDeleted = true
     return this
   }
 

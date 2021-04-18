@@ -11,7 +11,7 @@ export class TestSpecialist extends NumberIdEntity {
   private lastName: string
 
   @Column()
-  private isActive: boolean = true
+  private isDeleted: boolean = false
 
   @ManyToOne(type => TestSpecialistAccount)
   private account: TestSpecialistAccount
@@ -23,6 +23,8 @@ export class TestSpecialist extends NumberIdEntity {
     
     return inst
   }
+
+  public getFirstName () { return this.firstName }
   
   public changeFirstName (newName: string) {
     this.firstName = newName
@@ -37,5 +39,8 @@ export class TestSpecialist extends NumberIdEntity {
     return true
   }
 
-  public getFirstName () { return this.firstName }
+  public delete () {
+    this.isDeleted = true
+    return this
+  }
 }

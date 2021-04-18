@@ -44,19 +44,19 @@ describe('ConfigurableRepository', function () {
     assert.equal(page[0].getFirstName(), 'Abbey')
   }, 'test')
 
-  itInTransaction('should find entity', async function (sf, em) {
+  itInTransaction('should find entities by condition', async function (sf, em) {
     const repo = TestUtil.createRepo(ConfigurableTestSpecialistRepoTkn, em)
     await repo.saveMany(createEntities())
-    const opts: TestSpecialistSearchConf = new TestSpecialistSearchConf(new PageConfig(2, 1)).sortFirstName()
+    const opts: TestSpecialistSearchConf = new TestSpecialistSearchConf(new PageConfig(9, 1)).sortFirstName()
 
-    const page = await repo.findWhereFirstNameLike('%b%', opts)
+    const page = await repo.findWhereFirstNameLike('%e%', opts)
     assert.lengthOf(page, 2)
     assert.equal(page[0].getFirstName(), 'Abbey')
-    assert.equal(page[1].getFirstName(), 'Bob')
+    assert.equal(page[1].getFirstName(), 'Ben')
 
-    opts.onlyInactive = true
-    const inactivePage = await repo.findWhereFirstNameLike('%b%', opts)
-    assert.lengthOf(inactivePage, 0)
+    opts.searchAlsoDeleted()
+    const deletedPage = await repo.findWhereFirstNameLike('%e%', opts)
+    assert.lengthOf(deletedPage, 3)
   }, 'test')
 
   itInTransaction('should count entities', async function (sf, em) {
@@ -67,16 +67,29 @@ describe('ConfigurableRepository', function () {
     const count = await repo.countWhereLastNameStartsWith('W', opts)
     assert.equal(count, 3)
 
-    opts.searchOnlyInactive()
-    const inactiveCount = await repo.countWhereLastNameStartsWith('W', opts)
-    assert.equal(inactiveCount, 0)
+    opts.searchAlsoDeleted()
+    const withDeletedCount = await repo.countWhereLastNameStartsWith('W', opts)
+    assert.equal(withDeletedCount, 4)
+  }, 'test')
+
+  itInTransaction('should find by ids', async function (sf, em) {
+    const repo = TestUtil.createRepo(ConfigurableTestSpecialistRepoTkn, em)
+    await repo.saveMany(createEntities().concat())
+
+    const all = await repo.findAll(new TestSpecialistSearchConf().searchAlsoDeleted())
+    const byIds = await repo.findByIds(all.map(entity => entity.getId()))
+    const indexOfDeleted = all.findIndex(entity => entity.getFirstName() === 'Deleted')
+
+    assert.lengthOf(byIds, 4)
+    assert.isUndefined(byIds[indexOfDeleted])
   }, 'test')
 })
 
 const createEntities = () => {
   return [
-    TestSpecialist.create('Bob', 'Williams'),
+    TestSpecialist.create('Ben', 'Williams'),
     TestSpecialist.create('Carrol', 'Williams'),
-    TestSpecialist.create('Abbey', 'Williams')
+    TestSpecialist.create('Abbey', 'Williams'),
+    TestSpecialist.create('Deleted', 'Williams').delete()
   ]
 }

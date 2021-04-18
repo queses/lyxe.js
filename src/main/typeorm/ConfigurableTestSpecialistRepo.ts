@@ -6,12 +6,16 @@ import { ConfigurableRepository } from '../../lib/persistence-typeorm/Configurab
 import { Repository } from '../../lib/persistence/annotations/Repository'
 
 @Repository(ConfigurableTestSpecialistRepoTkn, 'test')
-export class ConfigurableTestSpecialistQueryRepo extends ConfigurableRepository<TestSpecialist, number> {
+export class ConfigurableTestSpecialistRepo extends ConfigurableRepository<TestSpecialist, number> {
   protected get entityClass () { return TestSpecialist }
 
-  public transformQuery (q: SelectQueryBuilder<TestSpecialist>, options: TestSpecialistSearchConf): ObjectLiteral {
-    if (options.onlyInactive) {
-      q.andWhere(`e.isActive != true`)
+  public transformQuery (q: SelectQueryBuilder<TestSpecialist>, options?: TestSpecialistSearchConf): ObjectLiteral {
+    if (!options) {
+      options = new TestSpecialistSearchConf()
+    }
+
+    if (!options.searchDeleted) {
+      q.andWhere(`e.isDeleted != true`)
     }
 
     return q

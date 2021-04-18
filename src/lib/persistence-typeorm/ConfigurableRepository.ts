@@ -41,7 +41,8 @@ export abstract class ConfigurableRepository
       const pageSize = (config && config.page) ? config.page.size : 0
       return this.createPage([], 1, pageSize, 0)
     } else {
-      return this.sortResultByIds(await this.queryEntities(this.queryBuilder().whereInIds(ids), config), ids)
+      const q = this.queryBuilder().andWhere('e.id IN (:...ids)', { ids })
+      return this.sortResultByIds(await this.queryEntities(q, config), ids)
     }
   }
 
@@ -49,9 +50,9 @@ export abstract class ConfigurableRepository
     let pageConfig: PageConfig | undefined
     if (config instanceof SearchConfig) {
       pageConfig = config.page
-      q = this.applyConfigToQuery(q, config)
     }
 
+    q = this.applyConfigToQuery(q, config)
     return this.getPageFromValues(await super.queryEntities(q), q as SelectQueryBuilder<T>, pageConfig)
   }
 
@@ -77,13 +78,11 @@ export abstract class ConfigurableRepository
 
   protected countEntities (q?: SelectQueryBuilder<T>, config?: C) {
     q = this.applyConfigToQuery(q, config)
-
     return q.getCount()
   }
 
   protected async entityExists (q?: SelectQueryBuilder<T>, config?: C) {
     q = this.applyConfigToQuery(q, config)
-
     return (await q.getCount()) > 0
   }
 
