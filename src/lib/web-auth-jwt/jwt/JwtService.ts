@@ -73,7 +73,7 @@ export class JwtService implements IJwtService {
         issuer: AppConfigurator.get<string>('web.frontendHost'),
         audience: AppConfigurator.get<string>('web.mainHost')
       },
-      (err, encoded) => err ? reject(err) : resolve(encoded)
+      (err, encoded) => err ? reject(err) : resolve(encoded as string)
     ))
   }
 

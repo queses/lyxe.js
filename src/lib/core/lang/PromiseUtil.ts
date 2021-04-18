@@ -18,7 +18,7 @@ export class PromiseUtil {
           if (pending) {
             reject(new CalculationTimeourError(operationDescription, timeoutMs))
           } else {
-            resolve()
+            resolve(null as unknown as V)
           }
         }, timeoutMs)
       })
@@ -26,15 +26,18 @@ export class PromiseUtil {
   }
 
   static limitPromiseMap <T, U> (concurrency: number, items: T[], mapper: (item: T, index: number, all: T[]) => Promise<U>) {
-    const mapped: U[] = new Array(items.length)
-    const addPromise = (index: number): Promise<void> | undefined => (index < items.length)
-      ? mapper(items[index], index, items).then(result => {
-        mapped[index] = result
-        return addPromise(index + concurrency)
-      })
-      : undefined
+    const mapped = new Array<U>(items.length)
 
-    const promises: Array<Promise<void> | undefined> = []
+    const addPromise = (index: number): Promise<U | null> | null =>
+        index < items.length
+            ? mapper(items[index], index, items)
+                .then(result => {
+                  mapped[index] = result
+                })
+                .then(() => addPromise(index + concurrency))
+            : null
+
+    const promises = []
     for (let i = 0; i < concurrency; i++) {
       promises.push(addPromise(i))
     }
