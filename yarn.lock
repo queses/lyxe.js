@@ -1847,9 +1847,9 @@ fn.name@1.x.x:
   integrity sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==
 
 follow-redirects@^1.10.0:
-  version "1.13.0"
-  resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.13.0.tgz"
-  integrity sha512-aq6gF1BEKje4a9i9+5jimNFIpq4Q1WiwBToeRK5NvZBd/TRsmW8BsJfOEGkr76TbOyPVD3OVDN910EcUNtRYEA==
+  version "1.14.7"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.7.tgz#2004c02eb9436eee9a21446a6477debf17e81685"
+  integrity sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==
 
 forever-agent@~0.6.1:
   version "0.6.1"
@@ -4714,6 +4714,11 @@ yargs@16.2.0, yargs@^16.0.0, yargs@^16.0.3, yargs@^16.1.0, yargs@^16.2.0:
     string-width "^4.2.0"
     y18n "^5.0.5"
     yargs-parser "^20.2.2"
+
+yarn@^1.22.10:
+  version "1.22.17"
+  resolved "https://registry.yarnpkg.com/yarn/-/yarn-1.22.17.tgz#bf910747d22497b573131f7341c0e1d15c74036c"
+  integrity sha512-H0p241BXaH0UN9IeH//RT82tl5PfNraVpSpEoW+ET7lmopNC61eZ+A+IDvU8FM6Go5vx162SncDL8J1ZjRBriQ==
 
 yup@^0.28.3:
   version "0.28.5"
